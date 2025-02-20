@@ -130,6 +130,32 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Utilitys\InputManager.cpp" />
+    <ClCompile Include="Utilitys\ProjectConfig.cpp" />
+    <ClCompile Include="Scenes\End\End.cpp" />
+    <ClCompile Include="Scenes\Result\Result.cpp" />
+    <ClCompile Include="Scenes\Pause\Pause.cpp" />
+    <ClCompile Include="Scenes\InGame\InGame.cpp" />
+    <ClCompile Include="Scenes\Help\Help.cpp" />
+    <ClCompile Include="Scenes\SceneManager.cpp" />
+    <ClCompile Include="Scenes\Title\Title.cpp" />
+    <ClCompile Include="Utilitys\Vector2D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="Utilitys\InputManager.h" />
+    <ClInclude Include="Utilitys\ProjectConfig.h" />
+    <ClInclude Include="Scenes\End\End.h" />
+    <ClInclude Include="Scenes\SceneFactory.h" />
+    <ClInclude Include="Scenes\Result\Result.h" />
+    <ClInclude Include="Scenes\Pause\Pause.h" />
+    <ClInclude Include="Scenes\InGame\InGame.h" />
+    <ClInclude Include="Scenes\Help\Help.h" />
+    <ClInclude Include="Scenes\SceneManager.h" />
+    <ClInclude Include="Scenes\SceneBase.h" />
+    <ClInclude Include="Scenes\Title\Title.h" />
+    <ClInclude Include="Utilitys\Singleton.h" />
+    <ClInclude Include="Utilitys\Vector2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
