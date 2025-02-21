@@ -28,14 +28,16 @@ eSceneType InGame::Update(const float &delta_second)
 	InputManager* input = InputManager::GetInstance();
 
 	//スタートボタンが押されたら
-	if (input->GetButtonDown(XINPUT_BUTTON_START) == true)
+	if (input->GetButtonDown(XINPUT_BUTTON_START) == true ||
+		input->GetKeyDown(KEY_INPUT_TAB))
 	{
 		//ポーズ画面へ
 		return eSceneType::pause;
 	}
 
 	//決定
-	if (input->GetButtonDown(XINPUT_BUTTON_A) == true)
+	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
 		//リザルト画面へ
 		return eSceneType::result;
