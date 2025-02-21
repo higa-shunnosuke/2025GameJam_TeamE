@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include "DxLib.h"
+#include "../Utilitys/InputManager.h"
 
 /// <summary>
 /// シーンタイプ
@@ -12,6 +13,7 @@ enum class eSceneType
 	title,		// タイトル
 	help,		// ヘルプ
 	in_game,	// インゲーム
+	pause,
 	re_start,	// リスタート
 	result,		// リザルト
 	end,		// 終了

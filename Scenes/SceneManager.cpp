@@ -44,6 +44,7 @@ void SceneManager::Update(float delta_second)
 		// シーン切り替え処理
 		ChangeScene(next_scene_type);
 	}
+
 }
 
 // 終了時処理

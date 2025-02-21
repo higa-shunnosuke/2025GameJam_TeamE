@@ -29,9 +29,10 @@ public:
 			return dynamic_cast<SceneBase*>(new Help());
 			break;
 		case eSceneType::in_game:
+		case eSceneType::re_start:
 			return dynamic_cast<SceneBase*>(new InGame());
 			break;
-		case eSceneType::re_start:
+		case eSceneType::pause:
 			return dynamic_cast<SceneBase*>(new Pause());
 			break;
 		case eSceneType::result:

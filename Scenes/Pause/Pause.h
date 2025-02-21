@@ -5,6 +5,10 @@
 class Pause : public SceneBase
 {
 private:
+	int cursor;			//カーソルカウンタ
+	int start_color;	//ポーズ解除ボタンの色
+	int restart_color;	//リスタートボタンの色
+	int quit_color;		//ゲーム終了ボタンの色
 
 public:
 	// コンストラクタ
