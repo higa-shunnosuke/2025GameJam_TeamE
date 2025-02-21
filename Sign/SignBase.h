@@ -81,16 +81,19 @@ protected:
 	/// <param name="min_val">最小値</param>
 	/// <param name="max_val">最大値</param>
 	/// <returns>ランダムな値</returns>
-	uint64_t GetRandRange(uint64_t min_val, uint64_t max_val) 
+	int GetRandRange(int min_val, int max_val) 
 	{
-		//乱数生成器
-		static std::mt19937_64 mt64(0);
+		//ハードウェア乱数生成器を使用してシードを生成
+		std::random_device rand_device;
 
-		//[min_val, max_val] の一様分布整数 (int) の分布生成器
-		std::uniform_int_distribution<uint64_t> get_rand_uni_int(min_val, max_val);
+		//MersenneTwisterアルゴリズムを使った乱数生成
+		std::mt19937 generator(rand_device());
 
-		//乱数を生成
-		return get_rand_uni_int(mt64);
+		//min_valとmax_valの範囲で均等分布
+		std::uniform_int_distribution<> distribution(min_val, max_val);
+
+		//ランダムな値を生成して返す	
+		return distribution(generator);
 	}
 
 public:
