@@ -2,6 +2,9 @@
 
 #include "SignBase.h"
 
+/// <summary>
+/// ランダム早押しの合図のクラス
+/// </summary>
 class RandomQuickPressSign :public SignBase
 {
 public:

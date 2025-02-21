@@ -37,22 +37,22 @@ void RandomQuickPressSign::Draw() const
 		{
 		case XINPUT_BUTTON_A:
 			//Aボタンの合図を描画
-			DrawFormatString(0, 0, 0xffffff, "A");
+			DrawFormatString(320, 140, 0xffffff, "A");
 			break;
 
 		case XINPUT_BUTTON_B:
 			//Bボタンの合図を描画
-			DrawFormatString(0, 0, 0xffffff, "B");
+			DrawFormatString(320, 140, 0xffffff, "B");
 			break;
 
 		case XINPUT_BUTTON_X:
 			//Xボタンの合図を描画
-			DrawFormatString(0, 0, 0xffffff, "X");
+			DrawFormatString(320, 140, 0xffffff, "X");
 			break;
 
 		case XINPUT_BUTTON_Y:
 			//Yボタンの合図を描画
-			DrawFormatString(0, 0, 0xffffff, "Y");
+			DrawFormatString(320, 140, 0xffffff, "Y");
 			break;
 
 		default:
