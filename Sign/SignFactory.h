@@ -9,18 +9,22 @@
 class SignFactory
 {
 private:
-	static SignFactory* instance;			//インスタンス
+	static SignFactory* instance;								//インスタンス
 
 private:
-	class RandomQuickPressSign* random_quick_press_sign;
+	class RandomQuickPressSign* random_quick_press_sign;		//ランダム早押し合図のインスタンス
 
 private:
-	//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	SignFactory() = default;
 	SignFactory(const SignFactory&) = delete;
 	SignFactory& operator =(const SignFactory) = delete;
 
-	//デストラクタ
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~SignFactory() = default;
 
 	/// <summary>

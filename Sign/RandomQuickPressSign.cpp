@@ -12,25 +12,34 @@ RandomQuickPressSign::~RandomQuickPressSign()
 
 void RandomQuickPressSign::Initialize()
 {
+	//親クラスの初期化処理
 	__super::Initialize();
 
+	//押すボタンをいれる
 	sign_button.push_back(ChooseButton());
 }
 
 void RandomQuickPressSign::Update(float delta_second)
 {
+	//親クラスの更新処理
 	__super::Update(delta_second);
 }
 
 void RandomQuickPressSign::Finalize()
 {
+	//親クラスの終了処理
 	__super::Finalize();
+
+	//配列を空にする
+	sign_button.clear();
 }
 
 void RandomQuickPressSign::Draw() const
 {
+	//親クラスの描画処理
 	__super::Draw();
 
+	//合図を出す場合
 	if (is_sign)
 	{
 		switch (sign_button[0])

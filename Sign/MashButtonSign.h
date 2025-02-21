@@ -2,21 +2,18 @@
 
 #include "SignBase.h"
 
-/// <summary>
-/// ランダム早押しの合図のクラス
-/// </summary>
-class RandomQuickPressSign :public SignBase
+class MashButtonSign :public SignBase
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	RandomQuickPressSign();
+	MashButtonSign();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~RandomQuickPressSign();
+	~MashButtonSign();
 
 	/// <summary>
 	/// 初期化処理
@@ -38,10 +35,4 @@ public:
 	/// 描画処理
 	/// </summary>
 	virtual void Draw() const override;
-
-private:
-	//押させるボタンを決める
-	int ChooseButton();
-
 };
-

@@ -15,23 +15,27 @@ protected:
 	std::vector<int>sign_image;		//合図の画像
 	std::vector<int>sign_button;	//押すボタン
 
-	int current_waiting_time;		//待ち時間
+	int waiting_time;				//待ち時間
 
 	float count_time;				//計測時間
 
 	bool is_sign;					//合図を出す？
 
 public:
-	//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	SignBase() :
-		current_waiting_time(0),
+		waiting_time(0),
 		count_time(0.f),
 		is_sign(false)
 	{
 
 	}
 
-	//デストラクタ
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~SignBase()
 	{
 
@@ -42,7 +46,7 @@ public:
 	/// </summary>
 	virtual void Initialize()
 	{
-		current_waiting_time = static_cast<int>(GetRandRange(1, MAX_RANDOM_TIME));
+		waiting_time = GetRandRange(1, MAX_RANDOM_TIME);
 	}
 
 	/// <summary>
@@ -54,8 +58,10 @@ public:
 		//計測
 		count_time += delta_second;
 
-		if (count_time > current_waiting_time)
+		//計測時間が待ち時間を超えた場合
+		if (count_time > waiting_time)
 		{
+			//合図を出す
 			is_sign = true;
 		}
 
@@ -101,6 +107,9 @@ protected:
 
 public:
 	//押すボタンを取得
-	std::vector<int>GetSignButton() { return sign_button; }
+	std::vector<int>GetSignButton()const { return sign_button; }
+
+	//待ち時間を取得
+	int GetWaitingTime()const { return waiting_time; }
 
 };
