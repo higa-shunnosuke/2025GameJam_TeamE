@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 template <class Type>
 class Singleton
@@ -6,10 +6,10 @@ class Singleton
 protected:
 	Singleton() = default;
 
-	// ÉRÉsÅ[ÉKÅ[Éh
+	// „Ç≥„Éî„Éº„Ç¨„Éº„Éâ
 	Singleton(const Singleton&) = delete;
 	Singleton& operator = (const Singleton&) = delete;
-	// ~ÉRÉsÅ[ÉKÅ[Éh
+	// ~„Ç≥„Éî„Éº„Ç¨„Éº„Éâ
 
 protected:
 	~Singleton() = default;

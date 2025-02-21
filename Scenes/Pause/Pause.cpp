@@ -1,49 +1,141 @@
-#include "Pause.h"
+ï»¿#include "Pause.h"
 #include "DxLib.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-Pause::Pause()
+#define COLOR_ON 0xff0000	//èµ¤
+#define COLOR_OFF 0xffffff	//ç™½
+
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+Pause::Pause() :
+	cursor(),
+	start_color(),
+	restart_color(),
+	quit_color()
 {
 
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Pause::~Pause()
 {
 
 }
 
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 void Pause::Initialize()
 {
-	// eƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Initialize();
 
+	//ãƒœã‚¿ãƒ³ã®è‰²ã‚’åˆæœŸåŒ–
+	start_color = COLOR_OFF;
+	restart_color = COLOR_OFF;
+	quit_color = COLOR_OFF;
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 eSceneType Pause::Update(const float &delta_second)
 {
+	//å…¥åŠ›ç®¡ç†ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
+	InputManager* input = InputManager::GetInstance();
 
-	// eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	if (cursor == 0)
+	{
+		//ãƒãƒ¼ã‚ºè§£é™¤ãƒœã‚¿ãƒ³ã®è‰²ã‚’å¤‰æ›´
+		start_color = COLOR_ON;
+		restart_color = COLOR_OFF;
+		quit_color = COLOR_OFF;
+	}
+	else if (cursor == 1)
+	{
+		//ãƒªã‚¹ã‚¿ãƒ¼ãƒˆãƒœã‚¿ãƒ³ã®è‰²ã‚’å¤‰æ›´
+		start_color = COLOR_OFF;
+		restart_color = COLOR_ON;
+		quit_color = COLOR_OFF;
+	}
+	else
+	{
+		//ã‚²ãƒ¼ãƒ çµ‚äº†ãƒœã‚¿ãƒ³ã®è‰²ã‚’å¤‰æ›´
+		start_color = COLOR_OFF;
+		restart_color = COLOR_OFF;
+		quit_color = COLOR_ON;
+	}
+
+	//ã‚«ãƒ¼ã‚½ãƒ«ã‚’ä¸‹ã¸å‹•ã‹ã™
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) == true ||
+		input->GetKeyDown(KEY_INPUT_DOWN))
+	{
+		if (cursor > 1)
+		{
+			cursor = 0;
+		}
+		else
+		{
+			cursor++;
+		}
+	}
+
+	//ã‚«ãƒ¼ã‚½ãƒ«ã‚’ä¸Šã«å‹•ã‹ã™
+	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) == true ||
+		input->GetKeyDown(KEY_INPUT_UP))
+	{
+		if (cursor < 0)
+		{
+			cursor = 1;
+		}
+		else
+		{
+			cursor--;
+		}
+	}
+
+	//æ±ºå®š
+	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+		input->GetKeyDown(KEY_INPUT_RETURN))
+	{
+		if (cursor == 0)
+		{
+			//ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ç”»é¢ã¸
+			return eSceneType::in_game;
+		}
+		else if (cursor == 1)
+		{
+			//ã‚¤ãƒ³ã‚²ãƒ¼ãƒ ç”»é¢ã¸
+			return eSceneType::re_start;
+		}
+		else
+		{
+			//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã¸
+			return eSceneType::title;
+		}
+	}
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	return __super::Update(delta_second);
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void Pause::Draw() const
 {
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºå¤‰æ›´
+	SetFontSize(32);
+
+	DrawFormatString(10, 10, 0xffffff, "Pause");
+	DrawFormatString(10, 40, 0xffffff, "cursor:%d", cursor);
+	DrawFormatString(280, 240, start_color, "Start");
+	DrawFormatString(280, 270, restart_color, "ReStart");
+	DrawFormatString(280, 300, quit_color, "Quit");
+	DrawFormatString(10, 450, 0xffffff, "True = A,False = B");
 
 }
 
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 void Pause::Finalize()
 {
-	// eƒNƒ‰ƒX‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®çµ‚äº†æ™‚å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Finalize();
 }
 
-// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvæ“¾ˆ—
+// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—å–å¾—å‡¦ç†
 const eSceneType Pause::GetNowSceneType() const
 {
-	return eSceneType::title;
+	return eSceneType::pause;
 }

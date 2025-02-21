@@ -1,44 +1,44 @@
-#pragma once
+ï»¿#pragma once
 
 #include "..//SceneBase.h"
 
-//ƒGƒ“ƒh‰æ–Ê
+//ã‚¨ãƒ³ãƒ‰ç”»é¢
 class End : public SceneBase
 {
 private:
 
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	End();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~End();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	virtual void Initialize() override;
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
-	/// <param name="delta_second">1ƒtƒŒ[ƒ€“–‚½‚è‚ÌŠÔ</param>
-	/// <returns>Ÿ‚ÌƒV[ƒ“ƒ^ƒCƒvî•ñ</returns>
+	/// <param name="delta_second">1ãƒ•ãƒ¬ãƒ¼ãƒ å½“ãŸã‚Šã®æ™‚é–“</param>
+	/// <returns>æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—æƒ…å ±</returns>
 	virtual eSceneType Update(const float& delta_second) override;
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	virtual void Draw() const override;
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†æ™‚å‡¦ç†
 	/// </summary>
 	virtual void Finalize() override;
 
 	/// <summary>
-	/// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvî•ñ‚ğæ“¾‚·‚é
+	/// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒv</returns>
+	/// <returns>ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
 };

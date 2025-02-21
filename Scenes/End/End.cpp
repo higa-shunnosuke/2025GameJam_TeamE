@@ -1,49 +1,58 @@
-#include "End.h"
+ï»¿#include "End.h"
 #include "DxLib.h"
+#include "../../Application.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 End::End()
 {
 
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 End::~End()
 {
 
 }
 
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 void End::Initialize()
 {
-	// eƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Initialize();
 
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 eSceneType End::Update(const float &delta_second)
 {
-	
-	// eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	//ã‚²ãƒ¼ãƒ ã‚’çµ‚äº†ã•ã›ã‚‹
+	Application* app = Application::GetInstance();
+	app->QuitGame(true);
+
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	return __super::Update(delta_second);
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void End::Draw() const
 {
-	
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºå¤‰æ›´
+	SetFontSize(32);
+
+	DrawFormatString(10, 10, 0xffffff, "End");
+	DrawFormatString(100, 240, 0xffffff, "Thank you for playing");
+
 }
 
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 void End::Finalize()
 {
-	// eƒNƒ‰ƒX‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®çµ‚äº†æ™‚å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Finalize();
 }
 
-// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvæ“¾ˆ—
+// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—å–å¾—å‡¦ç†
 const eSceneType End::GetNowSceneType() const
 {
-	return eSceneType::title;
+	return eSceneType::end;
 }

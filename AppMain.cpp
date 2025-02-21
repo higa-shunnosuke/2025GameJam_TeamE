@@ -1,12 +1,8 @@
-/****************************************************************
-* R6ƒQ[ƒ€ŠJ”­‰—p‡T
-* ‰‘ãƒX[ƒp[ƒ}ƒŠƒI‚ÌWorld1-1‚ğì‚ë‚¤I
-*****************************************************************/
-#include "DxLib.h"
+ï»¿#include "DxLib.h"
 #include "Utilitys/ProjectConfig.h"
 #include "Application.h"
 
-// ƒƒCƒ“ŠÖ”iƒvƒƒOƒ‰ƒ€‚Í‚±‚±‚©‚çn‚Ü‚è‚Ü‚·j
+// ãƒ¡ã‚¤ãƒ³é–¢æ•°ï¼ˆãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ã“ã“ã‹ã‚‰å§‹ã¾ã‚Šã¾ã™ï¼‰
 int WINAPI WinMain(
 	_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -15,24 +11,24 @@ int WINAPI WinMain(
 {
 	try
 	{
-		// ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚ğ¶¬‚·‚é
+		// ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 		Application* app = Application::GetInstance();
 
-		// ‰Šú‰»ˆ—
+		// åˆæœŸåŒ–å‡¦ç†
 		app->WakeUp();
 
-		// Àsˆ—
+		// å®Ÿè¡Œå‡¦ç†
 		app->Run();
 
-		// I—¹ˆ—
+		// çµ‚äº†æ™‚å‡¦ç†
 		app->Shutdown();
 	}
 	catch (std::string error_log)
 	{
-		// ƒGƒ‰[“à—e‚ğo—Í‚·‚é
+		// ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’å‡ºåŠ›ã™ã‚‹
 		return ErrorThrow(error_log);
 	}
 
-	// I—¹ó‘Ô‚ğ’Ê’m‚·‚é
+	// çµ‚äº†çŠ¶æ…‹ã‚’é€šçŸ¥ã™ã‚‹
 	return D_SUCCESS;
 }

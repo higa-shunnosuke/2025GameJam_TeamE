@@ -1,49 +1,62 @@
-#include "Result.h"
+ï»¿#include "Result.h"
 #include "DxLib.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Result::Result()
 {
 
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Result::~Result()
 {
 
 }
 
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 void Result::Initialize()
 {
-	// eƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Initialize();
 
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 eSceneType Result::Update(const float &delta_second)
 {
+	//å…¥åŠ›ç®¡ç†ã‚¯ãƒ©ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
+	InputManager* input = InputManager::GetInstance();
 
-	// eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	//æ±ºå®š
+	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+		input->GetKeyDown(KEY_INPUT_RETURN))
+	{
+		//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã¸
+		return eSceneType::title;
+	}
+
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	return __super::Update(delta_second);
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void Result::Draw() const
 {
+	// ãƒ•ã‚©ãƒ³ãƒˆã‚µã‚¤ã‚ºå¤‰æ›´
+	SetFontSize(32);
 
+	DrawFormatString(10, 10, 0xffffff, "Result");
 }
 
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 void Result::Finalize()
 {
-	// eƒNƒ‰ƒX‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®çµ‚äº†æ™‚å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Finalize();
 }
 
-// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvæ“¾ˆ—
+// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—å–å¾—å‡¦ç†
 const eSceneType Result::GetNowSceneType() const
 {
-	return eSceneType::title;
+	return eSceneType::result;
 }

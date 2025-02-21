@@ -1,154 +1,154 @@
-#pragma once
+﻿#pragma once
 
 #include "Vector2D.h"
 #include "Singleton.h"
 
-// �}�N����`
-#define	D_KEYCODE_MAX	(256)		// �L�[�{�[�h���͒l�ő吔
-#define D_BUTTON_MAX	(16)		// �R���g���[���[�̓��̓{�^���ő吔
+// マクロ定義
+#define	D_KEYCODE_MAX	(256)		// キーボード入力値最大数
+#define D_BUTTON_MAX	(16)		// コントローラーの入力ボタン最大数
 
 /// <summary>
-/// ���͊Ǘ��N���X�iSingleton�j
+/// 入力管理クラス（Singleton）
 /// </summary>
 class InputManager : public Singleton<InputManager>
 {
 private:
-	// ���N���X�̃|�C���^�i���̂��A�h���X�̐�ŕۗL�j
+	// 自クラスのポインタ（実体をアドレスの先で保有）
 	static InputManager* instance;
 
-	// �L�[���͏��
-	char now_key[D_KEYCODE_MAX];		// ���݂̓��͒l
-	char old_key[D_KEYCODE_MAX];		// �O��̓��͒l
+	// キー入力情報
+	char now_key[D_KEYCODE_MAX];		// 現在の入力値
+	char old_key[D_KEYCODE_MAX];		// 前回の入力値
 
-	// �R���g���[���[���͏��
-	bool now_button[D_BUTTON_MAX];		// ���݂̃{�^�����͒l
-	bool old_button[D_BUTTON_MAX];		// �O��̃{�^�����͒l
-	float trigger[2];					// �g���K�[���͒l�i0.0f�`1.0f�j
-	Vector2D stick[2];					// �X�e�B�b�N���͒l�i-1.0f�`1.0f�j
+	// コントローラー入力情報
+	bool now_button[D_BUTTON_MAX];		// 現在のボタン入力値
+	bool old_button[D_BUTTON_MAX];		// 前回のボタン入力値
+	float trigger[2];					// トリガー入力値（0.0f～1.0f）
+	Vector2D stick[2];					// スティック入力値（-1.0f～1.0f）
 
 private:
-	// �N���X�̎��̂������o�֐����ł��������ł��Ȃ��悤�ɂ���
+	// クラスの実体をメンバ関数内でしか生成できないようにする
 	InputManager() = default;
-	// �R�s�[�K�[�h
+	// コピーガード
 	InputManager(const InputManager& v) = delete;
 	InputManager& operator = (const InputManager& v) = delete;
-	// ~�R�s�[�K�[�h
+	// ~コピーガード
 
 public:
 	~InputManager() = default;
 
 public:
 	/// <summary>
-	/// �C���X�^���X�擾����
+	/// インスタンス取得処理
 	/// </summary>
-	/// <returns>�C���X�^���X�̃|�C���^��ԋp����</returns>
+	/// <returns>インスタンスのポインタを返却する</returns>
 	static InputManager* GetInstance();
 
 	/// <summary>
-	/// �C���X�^���X�폜����
+	/// インスタンス削除処理
 	/// </summary>
 	static void DeleteInstance();
 
 public:
 	/// <summary>
-	/// �X�V����
+	/// 更新処理
 	/// </summary>
 	void Update();
 
 public:
-	// ���͏�Ԃ̎擾
+	// 入力状態の取得
 
 	/// <summary>
-	/// �L�[�{�[�h�̃L�[��������Ă��邩�m�F����
+	/// キーボードのキーが押されているか確認する
 	/// </summary>
-	/// <param name="key_code">���蓖�Ă�ꂽ�L�[</param>
-	/// <returns>������Ă�����Atrue</returns>
+	/// <param name="key_code">割り当てられたキー</param>
+	/// <returns>押されていたら、true</returns>
 	bool GetKey(int key_code) const;
 
 	/// <summary>
-	/// �L�[�{�[�h�̃L�[�������ꂽ�u�Ԃ��m�F����
+	/// キーボードのキーが押された瞬間か確認する
 	/// </summary>
-	/// <param name="key_code">���蓖�Ă�ꂽ�L�[</param>
-	/// <returns>�����ꂽ�u�ԂȂ�Atrue</returns>
+	/// <param name="key_code">割り当てられたキー</param>
+	/// <returns>押された瞬間なら、true</returns>
 	bool GetKeyDown(int key_code) const;
 
 	/// <summary>
-	/// �L�[�{�[�h�̃L�[�������ꂽ�u�Ԃ��m�F����
+	/// キーボードのキーが離された瞬間か確認する
 	/// </summary>
-	/// <param name="key_code">���蓖�Ă�ꂽ�L�[</param>
-	/// <returns>�����ꂽ�u�ԂȂ�Atrue</returns>
+	/// <param name="key_code">割り当てられたキー</param>
+	/// <returns>離された瞬間なら、true</returns>
 	bool GetKeyUp(int key_code) const;
 
 	/// <summary>
-	/// �R���g���[���[�̃{�^����������Ă��邩�m�F����
+	/// コントローラーのボタンが押されているか確認する
 	/// </summary>
-	/// <param name="button">���蓖�Ă�ꂽ�{�^��</param>
-	/// <returns>������Ă�����Atrue</returns>
+	/// <param name="button">割り当てられたボタン</param>
+	/// <returns>押されていたら、true</returns>
 	bool GetButton(int button) const;
 	/// <summary>
-	/// �R���g���[���[�̃{�^���������ꂽ�u�Ԃ��m�F����
+	/// コントローラーのボタンが押された瞬間か確認する
 	/// </summary>
-	/// <param name="button">���蓖�Ă�ꂽ�{�^��</param>
-	/// <returns>�����ꂽ�u�ԂȂ�Atrue</returns>
+	/// <param name="button">割り当てられたボタン</param>
+	/// <returns>押された瞬間なら、true</returns>
 	bool GetButtonDown(int button) const;
 	/// <summary>
-	/// �R���g���[���[�̃{�^���������ꂽ�u�Ԃ��m�F����
+	/// コントローラーのボタンが離された瞬間か確認する
 	/// </summary>
-	/// <param name="button">���蓖�Ă�ꂽ�{�^��</param>
-	/// <returns>�����ꂽ�u�ԂȂ�Atrue</returns>
+	/// <param name="button">割り当てられたボタン</param>
+	/// <returns>離された瞬間なら、true</returns>
 	bool GetButtonUp(int button) const;
 
 	/// <summary>
-	/// ���g���K�[���͏�Ԏ擾
+	/// 左トリガー入力状態取得
 	/// </summary>
-	/// <returns>���g���K�[���͏��(0.0f�`1.0f)</returns>
+	/// <returns>左トリガー入力状態(0.0f～1.0f)</returns>
 	float GetLeftTrigger() const;
 
 	/// <summary>
-	/// �E�g���K�[���͏�Ԏ擾
+	/// 右トリガー入力状態取得
 	/// </summary>
-	/// <returns>�E�g���K�[���͏��(0.0f�`1.0f)</returns>
+	/// <returns>右トリガー入力状態(0.0f～1.0f)</returns>
 	float GetRightTrigger() const;
 
 	/// <summary>
-	/// ���X�e�B�b�N���͏�Ԏ擾
+	/// 左スティック入力状態取得
 	/// </summary>
-	/// <returns>���X�e�B�b�N���͏��(-1.0f�`1.0f)</returns>
+	/// <returns>左スティック入力状態(-1.0f～1.0f)</returns>
 	Vector2D GetLeftStick() const;
 
 	/// <summary>
-	/// �E�X�e�B�b�N���͏�Ԏ擾
+	/// 右スティック入力状態取得
 	/// </summary>
-	/// <returns>�E�X�e�B�b�N���͏��(-1.0f�`1.0f)</returns>
+	/// <returns>右スティック入力状態(-1.0f～1.0f)</returns>
 	Vector2D GetRightStick() const;
 
 private:
 	/// <summary>
-	/// �g���K�[���͒l�̐��K��
+	/// トリガー入力値の正規化
 	/// </summary>
-	/// <param name="value">�g���K�[���͒l</param>
-	/// <returns>���͒l�𐳋K�������l</returns>
+	/// <param name="value">トリガー入力値</param>
+	/// <returns>入力値を正規化した値</returns>
 	float TriggerNormalization(unsigned char value);
 
 	/// <summary>
-	/// �X�e�B�b�N���͒l�̐��K��
+	/// スティック入力値の正規化
 	/// </summary>
-	/// <param name="value">�X�e�B�b�N���͒l</param>
-	/// <returns>���͒l�𐳋K�������l</returns>
+	/// <param name="value">スティック入力値</param>
+	/// <returns>入力値を正規化した値</returns>
 	float StickNormalization(short value);
 
 	/// <summary>
-	/// ���蓖�ăL�[�R�[�h�͈͓��`�F�b�N����
+	/// 割り当てキーコード範囲内チェック処理
 	/// </summary>
-	/// <param name="key_code">���蓖�Ă�ꂽ�L�[�R�[�h</param>
-	/// <returns>�͈͓��Ȃ�Atrue</returns>
+	/// <param name="key_code">割り当てられたキーコード</param>
+	/// <returns>範囲内なら、true</returns>
 	bool CheckKeyCodeRange(int key_code) const;
 
 	/// <summary>
-	/// ���蓖�ă{�^���͈͓��`�F�b�N����
+	/// 割り当てボタン範囲内チェック処理
 	/// </summary>
-	/// <param name="buttton">���蓖�Ă�ꂽ�{�^��</param>
-	/// <returns>�͈͓��Ȃ�Atrue</returns>
+	/// <param name="buttton">割り当てられたボタン</param>
+	/// <returns>範囲内なら、true</returns>
 	bool CheckButtonRange(int button) const;
 
 };
