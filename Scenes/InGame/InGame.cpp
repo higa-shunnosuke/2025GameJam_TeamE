@@ -1,48 +1,48 @@
-#include "InGame.h"
+ï»¿#include "InGame.h"
 #include "DxLib.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 InGame::InGame()
 {
 
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 InGame::~InGame()
 {
 
 }
 
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 void InGame::Initialize()
 {
-	// eƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Initialize();
 
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 eSceneType InGame::Update(const float &delta_second)
 {
 
-	// eƒNƒ‰ƒX‚ÌXVˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	return __super::Update(delta_second);
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void InGame::Draw() const
 {
 
 }
 
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 void InGame::Finalize()
 {
-	// eƒNƒ‰ƒX‚ÌI—¹ˆ—‚ğŒÄ‚Ño‚·
+	// è¦ªã‚¯ãƒ©ã‚¹ã®çµ‚äº†æ™‚å‡¦ç†ã‚’å‘¼ã³å‡ºã™
 	__super::Finalize();
 }
 
-// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvæ“¾ˆ—
+// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—å–å¾—å‡¦ç†
 const eSceneType InGame::GetNowSceneType() const
 {
 	return eSceneType::title;

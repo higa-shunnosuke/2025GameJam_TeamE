@@ -1,10 +1,10 @@
-#include "ProjectConfig.h"
+ï»¿#include "ProjectConfig.h"
 #include "DxLib.h"
 
-// ƒGƒ‰[“à—e‚ðo—Í‚·‚é
+// ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’å‡ºåŠ›ã™ã‚‹
 int ErrorThrow(std::string error_log)
 {
-	// Log.txt‚ÉƒGƒ‰[“à—e‚ð’Ç‰Á‚·‚é
+	// Log.txtã«ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’è¿½åŠ ã™ã‚‹
 	ErrorLogFmtAdd(error_log.c_str());
 	return D_FAILURE;
 }

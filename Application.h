@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "DxLib.h"
 
@@ -10,49 +10,49 @@
 class Application : public Singleton<Application>
 {
 private:
-	// ƒOƒ[ƒoƒ‹•Ï”’è‹`
-	LONGLONG old_time;		// ‘O‰ñŒv‘ª’l
-	LONGLONG now_time;		// Œ»ÝŒv‘ª’l
-	float delta_second;		// ‚PƒtƒŒ[ƒ€‚ ‚½‚è‚ÌŽžŠÔ
+	// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°å®šç¾©
+	LONGLONG old_time;		// å‰å›žè¨ˆæ¸¬å€¤
+	LONGLONG now_time;		// ç¾åœ¨è¨ˆæ¸¬å€¤
+	float delta_second;		// ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®æ™‚é–“
 
 public:
 	bool WakeUp()
 	{
-		// ƒEƒBƒ“ƒhƒEƒ‚[ƒh‚Å‹N“®‚·‚é
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ¢ãƒ¼ãƒ‰ã§èµ·å‹•ã™ã‚‹
 		ChangeWindowMode(TRUE);
 
-		// ƒEƒBƒ“ƒhƒEƒTƒCƒY‚ÌÝ’è
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚ºã®è¨­å®š
 		SetGraphMode(D_WIN_MAX_X, D_WIN_MAX_Y, D_COLOR_BIT);
 
-		// ƒEƒBƒ“ƒhƒEƒ^ƒCƒgƒ‹‚ÌÝ’è
+		// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¿ã‚¤ãƒˆãƒ«ã®è¨­å®š
 		SetWindowText("GameJam_2025_TeamE");
 
-		// ‚’¼“¯Šú‚ðs‚í‚È‚¢
+		// åž‚ç›´åŒæœŸã‚’è¡Œã‚ãªã„
 		SetWaitVSyncFlag(FALSE);
 
-		// Log.txtƒtƒ@ƒCƒ‹‚Ì¶¬§ŒäiDebugƒ‚[ƒh‚Ì‚Ý¶¬‚·‚éj
+		// Log.txtãƒ•ã‚¡ã‚¤ãƒ«ã®ç”Ÿæˆåˆ¶å¾¡ï¼ˆDebugãƒ¢ãƒ¼ãƒ‰ã®ã¿ç”Ÿæˆã™ã‚‹ï¼‰
 #if _DEBUG
 		SetOutApplicationLogValidFlag(TRUE);
 #else
 		SetOutApplicationLogValidFlag(FALSE);
 #endif // _DEBUG
 
-		// Dxƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»
+		// Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®åˆæœŸåŒ–
 		if (DxLib_Init() == D_FAILURE)
 		{
-			throw std::string("Dxƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½I\n");
+			throw std::string("Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸï¼\n");
 		}
 
-		// •`‰ææ‚ð•\‰æ–Ê‚É”½‰f‚·‚é
+		// æç”»å…ˆã‚’è¡¨ç”»é¢ã«åæ˜ ã™ã‚‹
 		SetDrawScreen(DX_SCREEN_BACK);
 
-		// ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚ð¶¬‚·‚é
+		// ã‚·ãƒ¼ãƒ³ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 		SceneManager* manager = SceneManager::GetInstance();
 
-		// ‰Šú‰»ˆ—
+		// åˆæœŸåŒ–å‡¦ç†
 		manager->Initialize();
 
-		// ”ñƒAƒNƒeƒBƒuó‘Ô‚Å‚à“®ì‚³‚¹‚é
+		// éžã‚¢ã‚¯ãƒ†ã‚£ãƒ–çŠ¶æ…‹ã§ã‚‚å‹•ä½œã•ã›ã‚‹
 		SetAlwaysRunFlag(TRUE);
 
 		return true;
@@ -60,25 +60,25 @@ public:
 
 	void Run()
 	{
-		// ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚ð¶¬‚·‚é
+		// ã‚·ãƒ¼ãƒ³ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 		SceneManager* manager = SceneManager::GetInstance();
 
-		// “ü—Íî•ñ‚ðŽæ“¾‚·‚é
+		// å…¥åŠ›æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 		InputManager* input = InputManager::GetInstance();
 
-		// ƒƒCƒ“ƒ‹[ƒv
+		// ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 		while (ProcessMessage() == D_SUCCESS)
 		{
-			// “ü—Íî•ñ‚ÌXV
+			// å…¥åŠ›æƒ…å ±ã®æ›´æ–°
 			input->Update();
 
-			// ƒtƒŒ[ƒ€ƒŒ[ƒg‚Ì§Œä
+			// ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¬ãƒ¼ãƒˆã®åˆ¶å¾¡
 			UpdateDeltaTime();
 
-			// ŽÀsˆ—
+			// å®Ÿè¡Œå‡¦ç†
 			manager->Update(delta_second);
 
-			// ƒQ[ƒ€‚ðI—¹‚·‚é‚©Šm”F‚·‚é
+			// ã‚²ãƒ¼ãƒ ã‚’çµ‚äº†ã™ã‚‹ã‹ç¢ºèªã™ã‚‹
 			if (input->GetButtonDown(XINPUT_BUTTON_BACK) == true ||
 				input->GetKeyDown(KEY_INPUT_ESCAPE) == true)
 			{
@@ -89,33 +89,33 @@ public:
 
 	void Shutdown()
 	{
-		// ƒV[ƒ“ƒ}ƒl[ƒWƒƒ[‚ð¶¬‚·‚é
+		// ã‚·ãƒ¼ãƒ³ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 		SceneManager* manager = SceneManager::GetInstance();
 
-		// I—¹Žžˆ—
+		// çµ‚äº†æ™‚å‡¦ç†
 		manager->Finalize();
 
-		// Dxƒ‰ƒCƒuƒ‰ƒŠ‚ÌŽg—p‚ðI—¹‚·‚é
+		// Dxãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ä½¿ç”¨ã‚’çµ‚äº†ã™ã‚‹
 		DxLib_End();
 	}
 
 private:
 	void UpdateDeltaTime()
 	{
-		// Œ»ÝŽžŠÔ‚ÌŽæ“¾iƒÊ•bj
+		// ç¾åœ¨æ™‚é–“ã®å–å¾—ï¼ˆÎ¼ç§’ï¼‰
 		now_time = GetNowHiPerformanceCount();
 
-		// ŠJŽnŽžŠÔ‚©‚çŒ»ÝŽžŠÔ‚Ü‚Å‚ÉŒo‰ß‚µ‚½ŽžŠÔ‚ðŒvŽZ‚·‚éiƒÊ•bj
-		// •ª‰ð”\‚ðƒÊ•b¨•b‚É•ÏŠ·‚·‚é
+		// é–‹å§‹æ™‚é–“ã‹ã‚‰ç¾åœ¨æ™‚é–“ã¾ã§ã«çµŒéŽã—ãŸæ™‚é–“ã‚’è¨ˆç®—ã™ã‚‹ï¼ˆÎ¼ç§’ï¼‰
+		// åˆ†è§£èƒ½ã‚’Î¼ç§’â†’ç§’ã«å¤‰æ›ã™ã‚‹
 		delta_second = (float)(now_time - old_time) * 1.0e-6f;
 
-		// Œv‘ªŠJŽnŽžŠÔ‚ðXV‚·‚é
+		// è¨ˆæ¸¬é–‹å§‹æ™‚é–“ã‚’æ›´æ–°ã™ã‚‹
 		old_time = now_time;
 
-		// ƒfƒBƒXƒvƒŒƒC‚ÌƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg‚ðŽæ“¾‚·‚é
+		// ãƒ‡ã‚£ã‚¹ãƒ—ãƒ¬ã‚¤ã®ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆã‚’å–å¾—ã™ã‚‹
 		float refresh_rate = (float)GetRefreshRate();
 
-		// ‚PƒtƒŒ[ƒ€“–‚½‚è‚ÌŽžŠÔ‚ª1/ƒŠƒtƒŒƒbƒVƒ…ƒŒ[ƒg•b‚ð’´‚¦‚½‚çA®‚¦‚é
+		// ï¼‘ãƒ•ãƒ¬ãƒ¼ãƒ å½“ãŸã‚Šã®æ™‚é–“ãŒ1/ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥ãƒ¬ãƒ¼ãƒˆç§’ã‚’è¶…ãˆãŸã‚‰ã€æ•´ãˆã‚‹
 		if (delta_second > (1.0f / refresh_rate))
 		{
 			delta_second = (1.0f / refresh_rate);

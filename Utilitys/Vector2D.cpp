@@ -1,9 +1,9 @@
-#include "Vector2D.h"
+ï»¿#include "Vector2D.h"
 #include <math.h>
 
 const Vector2D Vector2D::operator/(const float& scalar) const
 {
-	// 0œZ‚Ìl—¶
+	// 0é™¤ç®—ã®è€ƒæ…®
 	if (fabsf(scalar) < 1.0e-6f)
 	{
 		return Vector2D(0.0f);
@@ -14,7 +14,7 @@ const Vector2D Vector2D::operator/(const float& scalar) const
 
 const Vector2D Vector2D::operator/(const Vector2D& v) const
 {
-	// 0œZ‚Ìl—¶
+	// 0é™¤ç®—ã®è€ƒæ…®
 	if (fabsf(v.x) < 1.0e-6f || fabsf(v.y) < 1.0e-6f)
 	{
 		return Vector2D(0.0f);
@@ -25,7 +25,7 @@ const Vector2D Vector2D::operator/(const Vector2D& v) const
 
 Vector2D& Vector2D::operator/=(const float& scalar)
 {
-	// 0œZ‚Ìl—¶
+	// 0é™¤ç®—ã®è€ƒæ…®
 	if (fabsf(scalar) < 1.0e-6f)
 	{
 		this->x = 0.0f;
@@ -42,7 +42,7 @@ Vector2D& Vector2D::operator/=(const float& scalar)
 
 Vector2D& Vector2D::operator/=(const Vector2D& v)
 {
-	// 0œZ‚Ìl—¶
+	// 0é™¤ç®—ã®è€ƒæ…®
 	if (fabsf(v.x) < 1.0e-6f || fabsf(v.y) < 1.0e-6f)
 	{
 		this->x = 0.0f;

@@ -1,24 +1,24 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 
 /**********************************************************
-* ƒ}ƒNƒ’è‹`
+* ãƒžã‚¯ãƒ­å®šç¾©
 ***********************************************************/
-#define	D_SUCCESS		(0)		// ¬Œ÷
-#define	D_FAILURE		(-1)	// Ž¸”s
+#define	D_SUCCESS		(0)		// æˆåŠŸ
+#define	D_FAILURE		(-1)	// å¤±æ•—
 
-#define D_WIN_MAX_X		(640)	// ƒXƒNƒŠ[ƒ“ƒTƒCƒYi•j
-#define D_WIN_MAX_Y		(480)	// ƒXƒNƒŠ[ƒ“ƒTƒCƒYi‚‚³j
-#define D_COLOR_BIT		(32)	// ƒJƒ‰[ƒrƒbƒg
-#define BOX_SIZE		(32)	// ƒJƒ‰[ƒrƒbƒg
-#define STAGE_SIZE_X	(210)	// ƒXƒe[ƒW‚Ì‰¡•iƒuƒƒbƒN”j
-#define STAGE_SIZE_Y	(15)	// ƒXƒe[ƒW‚Ìc•iƒuƒƒbƒN”j
+#define D_WIN_MAX_X		(640)	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºï¼ˆå¹…ï¼‰
+#define D_WIN_MAX_Y		(480)	// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚ºï¼ˆé«˜ã•ï¼‰
+#define D_COLOR_BIT		(32)	// ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆ
+#define BOX_SIZE		(32)	// ã‚«ãƒ©ãƒ¼ãƒ“ãƒƒãƒˆ
+#define STAGE_SIZE_X	(210)	// ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ¨ªå¹…ï¼ˆãƒ–ãƒ­ãƒƒã‚¯æ•°ï¼‰
+#define STAGE_SIZE_Y	(15)	// ã‚¹ãƒ†ãƒ¼ã‚¸ã®ç¸¦å¹…ï¼ˆãƒ–ãƒ­ãƒƒã‚¯æ•°ï¼‰
 
-//#define DEBUG		// ƒfƒoƒbƒNƒtƒ‰ƒO
+//#define DEBUG		// ãƒ‡ãƒãƒƒã‚¯ãƒ•ãƒ©ã‚°
 
 /**********************************************************
-* ƒvƒƒgƒ^ƒCƒvéŒ¾
+* ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 ***********************************************************/
-// ƒGƒ‰[“à—e‚ðo—Í‚·‚é
+// ã‚¨ãƒ©ãƒ¼å†…å®¹ã‚’å‡ºåŠ›ã™ã‚‹
 int ErrorThrow(std::string error_log);

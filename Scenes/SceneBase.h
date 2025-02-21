@@ -1,47 +1,47 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include <string>
 #include "DxLib.h"
 
 /// <summary>
-/// ƒV[ƒ“ƒ^ƒCƒv
+/// ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—
 /// </summary>
 enum class eSceneType
 {
-	title,		// ƒ^ƒCƒgƒ‹
-	help,		// ƒwƒ‹ƒv
-	in_game,	// ƒCƒ“ƒQ[ƒ€
-	re_start,	// ƒŠƒXƒ^[ƒg
-	result,		// ƒŠƒUƒ‹ƒg
-	end,		// I—¹
+	title,		// ã‚¿ã‚¤ãƒˆãƒ«
+	help,		// ãƒ˜ãƒ«ãƒ—
+	in_game,	// ã‚¤ãƒ³ã‚²ãƒ¼ãƒ 
+	re_start,	// ãƒªã‚¹ã‚¿ãƒ¼ãƒˆ
+	result,		// ãƒªã‚¶ãƒ«ãƒˆ
+	end,		// çµ‚äº†
 };
 
 /// <summary>
-/// ƒV[ƒ“Šî’êƒNƒ‰ƒX
+/// ã‚·ãƒ¼ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹
 /// </summary>
 class SceneBase
 {
 protected:
-	// ŠeƒV[ƒ“‚ªŠ—L‚·‚éî•ñ
+	// å„ã‚·ãƒ¼ãƒ³ãŒæ‰€æœ‰ã™ã‚‹æƒ…å ±
 
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SceneBase()
 	{
 
 	}
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~SceneBase()
 	{
-		// ‰ğ•ú–Y‚ê–h~
+		// è§£æ”¾å¿˜ã‚Œé˜²æ­¢
 		Finalize();
 	}
 
 public:
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	virtual void Initialize()
 	{
@@ -49,19 +49,19 @@ public:
 	}
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
-	/// <param name="delta_second">1ƒtƒŒ[ƒ€“–‚½‚è‚ÌŠÔ</param>
-	/// <returns>Ÿ‚ÌƒV[ƒ“ƒ^ƒCƒvî•ñ</returns>
+	/// <param name="delta_second">1ãƒ•ãƒ¬ãƒ¼ãƒ å½“ãŸã‚Šã®æ™‚é–“</param>
+	/// <returns>æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—æƒ…å ±</returns>
 	virtual eSceneType Update(const float& delta_second)
 	{
 		
-		// Œ»İ‚ÌƒV[ƒ“î•ñ‚ğ•Ô‹p‚·‚é
+		// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³æƒ…å ±ã‚’è¿”å´ã™ã‚‹
 		return GetNowSceneType();
 	}
 
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	virtual void Draw() const
 	{
@@ -69,7 +69,7 @@ public:
 	}
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†æ™‚å‡¦ç†
 	/// </summary>
 	virtual void Finalize()
 	{
@@ -77,9 +77,9 @@ public:
 	}
 
 	/// <summary>
-	/// Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvæ“¾ˆ—
+	/// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—å–å¾—å‡¦ç†
 	/// </summary>
-	/// <returns>Œ»İ‚ÌƒV[ƒ“ƒ^ƒCƒvî•ñ</returns>
+	/// <returns>ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—æƒ…å ±</returns>
 	virtual const eSceneType GetNowSceneType() const = 0;
 
 };

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "SceneBase.h"
 #include "Title/Title.h"
@@ -13,13 +13,13 @@ class SceneFactory
 public:
 
 	/// <summary>
-	/// ƒV[ƒ“¶¬ˆ—
+	/// ã‚·ãƒ¼ãƒ³ç”Ÿæˆå‡¦ç†
 	/// </summary>
-	/// <param name="next_type">Ÿ‚ÌƒV[ƒ“ƒ^ƒCƒv</param>
-	/// <returns>¶¬‚µ‚½ƒV[ƒ“î•ñ‚Ìƒ|ƒCƒ“ƒ^</returns>
+	/// <param name="next_type">æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—</param>
+	/// <returns>ç”Ÿæˆã—ãŸã‚·ãƒ¼ãƒ³æƒ…å ±ã®ãƒã‚¤ãƒ³ã‚¿</returns>
 	static SceneBase* CreateScene(eSceneType next_type)
 	{
-		// ƒV[ƒ“ƒ^ƒCƒv‚É‚æ‚Á‚ÄA¶¬‚·‚éƒV[ƒ“‚ğØ‚è‘Ö‚¦‚é
+		// ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—ã«ã‚ˆã£ã¦ã€ç”Ÿæˆã™ã‚‹ã‚·ãƒ¼ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 		switch (next_type)
 		{
 		case eSceneType::title:

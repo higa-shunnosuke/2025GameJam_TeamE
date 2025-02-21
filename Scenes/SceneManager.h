@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "../Utilitys/Singleton.h"
 #include "SceneBase.h"
@@ -6,40 +6,40 @@
 class SceneManager : public Singleton<SceneManager>
 {
 private:
-	SceneBase* current_scene;	// Œ»İ‚ÌƒV[ƒ“î•ñ
+	SceneBase* current_scene;	// ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³æƒ…å ±
 
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SceneManager();
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~SceneManager();
 
 	/// <summary>
-	/// ‰Šú‰»ˆ—
+	/// åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
-	/// <param name="delta_second">1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌŠÔ</param>
+	/// <param name="delta_second">1ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ãŸã‚Šã®æ™‚é–“</param>
 	void Update(float delta_second);
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†æ™‚å‡¦ç†
 	/// </summary>
 	void Finalize();
 
 private:
 	/// <summary>
-	/// •`‰æˆ—
+	/// æç”»å‡¦ç†
 	/// </summary>
 	void Draw() const;
 
 	/// <summary>
-	/// ƒV[ƒ“Ø‚è‘Ö‚¦ˆ—
+	/// ã‚·ãƒ¼ãƒ³åˆ‡ã‚Šæ›¿ãˆå‡¦ç†
 	/// </summary>
-	/// <param name="next_type">Ÿ‚ÌƒV[ƒ“ƒ^ƒCƒv</param>
+	/// <param name="next_type">æ¬¡ã®ã‚·ãƒ¼ãƒ³ã‚¿ã‚¤ãƒ—</param>
 	void ChangeScene(eSceneType next_type);
 
 };

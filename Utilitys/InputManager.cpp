@@ -1,31 +1,31 @@
-#include "InputManager.h"
+ï»¿#include "InputManager.h"
 #include "DxLib.h"
 
-// Ã“Iƒƒ“ƒo•Ï”’è‹`
+// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°å®šç¾©
 InputManager* InputManager::instance = nullptr;
 
 /// <summary>
-/// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾ˆ—
+/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—å‡¦ç†
 /// </summary>
-/// <returns>ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‹p‚·‚é</returns>
+/// <returns>ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”å´ã™ã‚‹</returns>
 InputManager* InputManager::GetInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ª¶¬‚³‚ê‚Ä‚¢‚È‚¢ê‡A¶¬‚·‚é
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒç”Ÿæˆã•ã‚Œã¦ã„ãªã„å ´åˆã€ç”Ÿæˆã™ã‚‹
 	if (instance == nullptr)
 	{
 		instance = new InputManager();
 	}
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‹p‚·‚é
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”å´ã™ã‚‹
 	return instance;
 }
 
 /// <summary>
-/// ƒCƒ“ƒXƒ^ƒ“ƒXíœˆ—
+/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å‰Šé™¤å‡¦ç†
 /// </summary>
 void InputManager::DeleteInstance()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‘¶İ‚µ‚Ä‚¢‚éê‡Aíœ‚·‚é
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã€å‰Šé™¤ã™ã‚‹
 	if (instance != nullptr)
 	{
 		delete instance;
@@ -34,15 +34,15 @@ void InputManager::DeleteInstance()
 }
 
 /// <summary>
-/// XVˆ—
+/// æ›´æ–°å‡¦ç†
 /// </summary>
 void InputManager::Update()
 {
-	// ƒL[“ü—Í’l‚ÌXV
+	// ã‚­ãƒ¼å…¥åŠ›å€¤ã®æ›´æ–°
 	memcpy(old_key, now_key, (sizeof(char) * D_KEYCODE_MAX));
 	GetHitKeyStateAll(now_key);
 
-	// ƒRƒ“ƒgƒ[ƒ‰[“ü—Í’l‚ÌXV
+	// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å…¥åŠ›å€¤ã®æ›´æ–°
 	XINPUT_STATE input = {};
 	GetJoypadXInputState(DX_INPUT_PAD1, &input);
 	for (int i = 0; i < D_BUTTON_MAX; i++)
@@ -59,106 +59,106 @@ void InputManager::Update()
 }
 
 /// <summary>
-/// ƒL[ƒ{[ƒh‚ÌƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©Šm”F‚·‚é
+/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚­ãƒ¼ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="key_code">Š„‚è“–‚Ä‚ç‚ê‚½ƒL[</param>
-/// <returns>‰Ÿ‚³‚ê‚Ä‚¢‚½‚çAtrue</returns>
+/// <param name="key_code">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸã‚­ãƒ¼</param>
+/// <returns>æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã€true</returns>
 bool InputManager::GetKey(int key_code) const
 {
 	return CheckKeyCodeRange(key_code) && (now_key[key_code] == TRUE && old_key[key_code] == TRUE);
 }
 
 /// <summary>
-/// ƒL[ƒ{[ƒh‚ÌƒL[‚ª‰Ÿ‚³‚ê‚½uŠÔ‚©Šm”F‚·‚é
+/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="key_code">Š„‚è“–‚Ä‚ç‚ê‚½ƒL[</param>
-/// <returns>‰Ÿ‚³‚ê‚½uŠÔ‚È‚çAtrue</returns>
+/// <param name="key_code">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸã‚­ãƒ¼</param>
+/// <returns>æŠ¼ã•ã‚ŒãŸç¬é–“ãªã‚‰ã€true</returns>
 bool InputManager::GetKeyDown(int key_code) const
 {
 	return CheckKeyCodeRange(key_code) && (now_key[key_code] == TRUE && old_key[key_code] == FALSE);
 }
 
 /// <summary>
-/// ƒL[ƒ{[ƒh‚ÌƒL[‚ª—£‚³‚ê‚½uŠÔ‚©Šm”F‚·‚é
+/// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ã‚­ãƒ¼ãŒé›¢ã•ã‚ŒãŸç¬é–“ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="key_code">Š„‚è“–‚Ä‚ç‚ê‚½ƒL[</param>
-/// <returns>—£‚³‚ê‚½uŠÔ‚È‚çAtrue</returns>
+/// <param name="key_code">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸã‚­ãƒ¼</param>
+/// <returns>é›¢ã•ã‚ŒãŸç¬é–“ãªã‚‰ã€true</returns>
 bool InputManager::GetKeyUp(int key_code) const
 {
 	return CheckKeyCodeRange(key_code) && (now_key[key_code] == FALSE && old_key[key_code] == TRUE);
 }
 
 /// <summary>
-/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚Ä‚¢‚é‚©Šm”F‚·‚é
+/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="button">Š„‚è“–‚Ä‚ç‚ê‚½ƒ{ƒ^ƒ“</param>
-/// <returns>‰Ÿ‚³‚ê‚Ä‚¢‚½‚çAtrue</returns>
+/// <param name="button">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒœã‚¿ãƒ³</param>
+/// <returns>æŠ¼ã•ã‚Œã¦ã„ãŸã‚‰ã€true</returns>
 bool InputManager::GetButton(int button) const
 {
 	return CheckButtonRange(button) && (now_button[button] && old_button[button]);
 }
 
 /// <summary>
-/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½uŠÔ‚©Šm”F‚·‚é
+/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸç¬é–“ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="button">Š„‚è“–‚Ä‚ç‚ê‚½ƒ{ƒ^ƒ“</param>
-/// <returns>‰Ÿ‚³‚ê‚½uŠÔ‚È‚çAtrue</returns>
+/// <param name="button">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒœã‚¿ãƒ³</param>
+/// <returns>æŠ¼ã•ã‚ŒãŸç¬é–“ãªã‚‰ã€true</returns>
 bool InputManager::GetButtonDown(int button) const
 {
 	return CheckButtonRange(button) && (now_button[button] && !old_button[button]);
 }
 
 /// <summary>
-/// ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒ{ƒ^ƒ“‚ª—£‚³‚ê‚½uŠÔ‚©Šm”F‚·‚é
+/// ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒœã‚¿ãƒ³ãŒé›¢ã•ã‚ŒãŸç¬é–“ã‹ç¢ºèªã™ã‚‹
 /// </summary>
-/// <param name="button">Š„‚è“–‚Ä‚ç‚ê‚½ƒ{ƒ^ƒ“</param>
-/// <returns>—£‚³‚ê‚½uŠÔ‚È‚çAtrue</returns>
+/// <param name="button">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒœã‚¿ãƒ³</param>
+/// <returns>é›¢ã•ã‚ŒãŸç¬é–“ãªã‚‰ã€true</returns>
 bool InputManager::GetButtonUp(int button) const
 {
 	return CheckButtonRange(button) && (!now_button[button] && old_button[button]);
 }
 
 /// <summary>
-/// ¶ƒgƒŠƒK[“ü—Íó‘Ôæ“¾
+/// å·¦ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›çŠ¶æ…‹å–å¾—
 /// </summary>
-/// <returns>¶ƒgƒŠƒK[“ü—Íó‘Ô(0.0f`1.0f)</returns>
+/// <returns>å·¦ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›çŠ¶æ…‹(0.0fï½1.0f)</returns>
 float InputManager::GetLeftTrigger() const
 {
 	return trigger[0];
 }
 
 /// <summary>
-/// ‰EƒgƒŠƒK[“ü—Íó‘Ôæ“¾
+/// å³ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›çŠ¶æ…‹å–å¾—
 /// </summary>
-/// <returns>‰EƒgƒŠƒK[“ü—Íó‘Ô(0.0f`1.0f)</returns>
+/// <returns>å³ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›çŠ¶æ…‹(0.0fï½1.0f)</returns>
 float InputManager::GetRightTrigger() const
 {
 	return trigger[1];
 }
 
 /// <summary>
-/// ¶ƒXƒeƒBƒbƒN“ü—Íó‘Ôæ“¾
+/// å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›çŠ¶æ…‹å–å¾—
 /// </summary>
-/// <returns>¶ƒXƒeƒBƒbƒN“ü—Íó‘Ô(-1.0f`1.0f)</returns>
+/// <returns>å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›çŠ¶æ…‹(-1.0fï½1.0f)</returns>
 Vector2D InputManager::GetLeftStick() const
 {
 	return stick[0];
 }
 
 /// <summary>
-/// ‰EƒXƒeƒBƒbƒN“ü—Íó‘Ôæ“¾
+/// å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›çŠ¶æ…‹å–å¾—
 /// </summary>
-/// <returns>‰EƒXƒeƒBƒbƒN“ü—Íó‘Ô(-1.0f`1.0f)</returns>
+/// <returns>å³ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›çŠ¶æ…‹(-1.0fï½1.0f)</returns>
 Vector2D InputManager::GetRightStick() const
 {
 	return stick[1];
 }
 
 /// <summary>
-/// ƒgƒŠƒK[“ü—Í’l‚Ì³‹K‰»
+/// ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›å€¤ã®æ­£è¦åŒ–
 /// </summary>
-/// <param name="value">ƒgƒŠƒK[“ü—Í’l</param>
-/// <returns>“ü—Í’l‚ğ³‹K‰»‚µ‚½’l</returns>
+/// <param name="value">ãƒˆãƒªã‚¬ãƒ¼å…¥åŠ›å€¤</param>
+/// <returns>å…¥åŠ›å€¤ã‚’æ­£è¦åŒ–ã—ãŸå€¤</returns>
 float InputManager::TriggerNormalization(unsigned char value)
 {
 	float result = 0.0f;
@@ -169,10 +169,10 @@ float InputManager::TriggerNormalization(unsigned char value)
 }
 
 /// <summary>
-/// ƒXƒeƒBƒbƒN“ü—Í’l‚Ì³‹K‰»
+/// ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›å€¤ã®æ­£è¦åŒ–
 /// </summary>
-/// <param name="value">ƒXƒeƒBƒbƒN“ü—Í’l</param>
-/// <returns>“ü—Í’l‚ğ³‹K‰»‚µ‚½’l</returns>
+/// <param name="value">ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›å€¤</param>
+/// <returns>å…¥åŠ›å€¤ã‚’æ­£è¦åŒ–ã—ãŸå€¤</returns>
 float InputManager::StickNormalization(short value)
 {
 	float result = 0.0f;
@@ -190,20 +190,20 @@ float InputManager::StickNormalization(short value)
 }
 
 /// <summary>
-/// Š„‚è“–‚ÄƒL[ƒR[ƒh”ÍˆÍ“àƒ`ƒFƒbƒNˆ—
+/// å‰²ã‚Šå½“ã¦ã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰ç¯„å›²å†…ãƒã‚§ãƒƒã‚¯å‡¦ç†
 /// </summary>
-/// <param name="button">Š„‚è“–‚Ä‚ç‚ê‚½ƒL[ƒR[ƒh</param>
-/// <returns>”ÍˆÍ“à‚È‚çAtrue</returns>
+/// <param name="button">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸã‚­ãƒ¼ã‚³ãƒ¼ãƒ‰</param>
+/// <returns>ç¯„å›²å†…ãªã‚‰ã€true</returns>
 bool InputManager::CheckKeyCodeRange(int key_code) const
 {
 	return (0 <= key_code && key_code < D_KEYCODE_MAX);
 }
 
 /// <summary>
-/// Š„‚è“–‚Äƒ{ƒ^ƒ“”ÍˆÍ“àƒ`ƒFƒbƒNˆ—
+/// å‰²ã‚Šå½“ã¦ãƒœã‚¿ãƒ³ç¯„å›²å†…ãƒã‚§ãƒƒã‚¯å‡¦ç†
 /// </summary>
-/// <param name="buttton">Š„‚è“–‚Ä‚ç‚ê‚½ƒ{ƒ^ƒ“</param>
-/// <returns>”ÍˆÍ“à‚È‚çAtrue</returns>
+/// <param name="buttton">å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒœã‚¿ãƒ³</param>
+/// <returns>ç¯„å›²å†…ãªã‚‰ã€true</returns>
 bool InputManager::CheckButtonRange(int button) const
 {
 	return (0 <= button && button < D_BUTTON_MAX);
