@@ -1,20 +1,26 @@
 #pragma once
 
+#include "SignBase.h"
+
 /// <summary>
 /// 合図の管理クラス
 /// </summary>
 class SignManager
 {
 private:
-	class SignBase* sign;		//合図
+	class SignBase* sign;		//合図のインスタンス
 
 	int fake_count;				//再度フェイクをだすためのカウント
 
 public:
-	//コンストラクタ
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	SignManager();
 
-	//デストラクタ
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~SignManager();
 
 	/// <summary>
@@ -37,5 +43,9 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw() const;
+
+public:
+	//合図のインスタンスを取得
+	class SignBase* GetSignInstance()const { return this->sign; }
 };
 
