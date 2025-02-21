@@ -4,6 +4,8 @@
 #define COLOR_ON 0xff0000	//赤
 #define COLOR_OFF 0xffffff	//白
 
+#define FILE_NAME "Resources/datas/InGame_Data.csv"
+
 // コンストラクタ
 Pause::Pause() :
 	cursor(),
@@ -94,12 +96,15 @@ eSceneType Pause::Update(const float &delta_second)
 	{
 		if (cursor == 0)
 		{
-			//インゲーム画面へ
+			//ポーズ解除
 			return eSceneType::in_game;
 		}
 		else if (cursor == 1)
 		{
-			//インゲーム画面へ
+			//インゲームのデータを初期化
+			DetaInitialize();
+
+			//リスタート
 			return eSceneType::re_start;
 		}
 		else
@@ -138,4 +143,27 @@ void Pause::Finalize()
 const eSceneType Pause::GetNowSceneType() const
 {
 	return eSceneType::pause;
+}
+
+//ファイルデータの初期化
+void Pause::DetaInitialize()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, FILE_NAME, "w");
+
+	if (fp == NULL)
+	{
+		throw("%sファイルを開けませんでした。", FILE_NAME);
+	}
+	else
+	{
+		//ファイルがなければ生成する
+		fprintf_s(fp, "%d,%d\n", 0, 0);
+		fprintf_s(fp, "%d,%d\n", 0, 0);
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
 }
