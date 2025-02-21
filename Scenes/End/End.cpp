@@ -1,5 +1,6 @@
 ﻿#include "End.h"
 #include "DxLib.h"
+#include "../../Application.h"
 
 // コンストラクタ
 End::End()
@@ -24,7 +25,10 @@ void End::Initialize()
 // 更新処理
 eSceneType End::Update(const float &delta_second)
 {
-	
+	//ゲームを終了させる
+	Application* app = Application::GetInstance();
+	app->QuitGame(true);
+
 	// 親クラスの更新処理を呼び出す
 	return __super::Update(delta_second);
 }

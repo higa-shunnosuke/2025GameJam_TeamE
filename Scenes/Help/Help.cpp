@@ -49,13 +49,13 @@ void Help::Draw() const
 	// フォントサイズ変更
 	SetFontSize(16);
 
-	DrawFormatString(10, 10, 0xffffff, "Help");
 	DrawFormatString(10, 100, 0xffffff, STRING_1);
 	DrawFormatString(10, 160, 0xffffff, STRING_2);
 	DrawFormatString(10, 240, 0xffffff, STRING_3);
 
 	// フォントサイズ変更
-	SetFontSize(16);
+	SetFontSize(32);
+	DrawFormatString(10, 10, 0xffffff, "Help");
 	DrawFormatString(10, 450, 0xffffff, "True = A,False = B");
 }
 

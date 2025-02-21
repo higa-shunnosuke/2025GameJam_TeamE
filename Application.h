@@ -14,8 +14,10 @@ private:
 	LONGLONG old_time;		// 前回計測値
 	LONGLONG now_time;		// 現在計測値
 	float delta_second;		// １フレームあたりの時間
+	bool end_flg;			//	ゲーム終了処理
 
 public:
+	//初期化処理
 	bool WakeUp()
 	{
 		// ウィンドウモードで起動する
@@ -55,9 +57,12 @@ public:
 		// 非アクティブ状態でも動作させる
 		SetAlwaysRunFlag(TRUE);
 
+		end_flg = false;
+
 		return true;
 	}
 
+	//更新処理
 	void Run()
 	{
 		// シーンマネージャーのポインタ
@@ -84,9 +89,14 @@ public:
 			{
 				break;
 			}
+			if (end_flg == true)
+			{
+				break;
+			}
 		}
 	}
 
+	//終了時処理
 	void Shutdown()
 	{
 		// シーンマネージャーのポインタ
@@ -97,6 +107,12 @@ public:
 
 		// Dxライブラリの使用を終了する
 		DxLib_End();
+	}
+
+	//ゲーム終了通知処理
+	void QuitGame(bool flg)
+	{
+		this->end_flg = flg;
 	}
 
 private:
