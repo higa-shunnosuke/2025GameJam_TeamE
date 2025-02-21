@@ -1,7 +1,10 @@
 #pragma once
 
+#include "DxLib.h"
+
 #include <random>
 #include <vector>
+#include <string>
 
 //最大待ち時間
 #define MAX_RANDOM_TIME 15
@@ -83,6 +86,13 @@ public:
 
 	}
 
+public:
+	/// <summary>
+	/// 合図の名前を取得
+	/// </summary>
+	/// <returns>合図の名前</returns>
+	virtual std::string GetSignName()const = 0;
+
 protected:
 	/// <summary>
 	/// 指定した範囲のランダムな数字を取得
@@ -90,7 +100,7 @@ protected:
 	/// <param name="min_val">最小値</param>
 	/// <param name="max_val">最大値</param>
 	/// <returns>ランダムな値</returns>
-	int GetRandRange(int min_val, int max_val) 
+	int GetRandRange(int min_val, int max_val)const
 	{
 		//ハードウェア乱数生成器を使用してシードを生成
 		std::random_device rand_device;
@@ -105,11 +115,52 @@ protected:
 		return distribution(generator);
 	}
 
+	/// <summary>
+	/// 押させるボタンを決める
+	/// </summary>
+	/// <returns>押させるボタン</returns>
+	int ChooseButton()const
+	{
+		switch (GetRandRange(0, 3))
+		{
+		case 0:
+			//Aボタンを押させる
+			return XINPUT_BUTTON_A;
+			break;
+
+		case 1:
+			//Bボタンを押させる
+			return XINPUT_BUTTON_B;
+			break;
+
+		case 2:
+			//Xボタンを押させる
+			return XINPUT_BUTTON_X;
+			break;
+
+		case 3:
+			//Yボタンを押させる
+			return XINPUT_BUTTON_Y;
+			break;
+
+		default:
+			break;
+		}
+
+		return NULL;
+	}
+
 public:
-	//押すボタンを取得
+	/// <summary>
+	/// 押すボタンを取得
+	/// </summary>
+	/// <returns>押すボタン</returns>
 	std::vector<int>GetSignButton()const { return sign_button; }
 
-	//待ち時間を取得
+	/// <summary>
+	/// 待ち時間を取得
+	/// </summary>
+	/// <returns>待ち時間</returns>
 	int GetWaitingTime()const { return waiting_time; }
 
 };

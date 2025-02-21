@@ -1,7 +1,10 @@
 #pragma once
 
 #include "SignBase.h"
-#include"RandomQuickPressSign.h"
+#include "RandomQuickPressSign.h"
+#include "MashButtonSign.h"
+#include "QuickPressSign.h"
+#include "RandomSign.h"
 
 /// <summary>
 /// 合図の生成クラス
@@ -13,6 +16,9 @@ private:
 
 private:
 	class RandomQuickPressSign* random_quick_press_sign;		//ランダム早押し合図のインスタンス
+	class MashButtonSign* mash_button_sign;						//連打の合図のインスタンス
+	class QuickPressSign* quick_Press_sign;						//早押し合図のインスタンス
+	class RandomSign* random_sign;								//ランダム合図のインスタンス
 
 private:
 	/// <summary>

@@ -7,13 +7,22 @@ SignFactory* SignFactory::instance = nullptr;
 void SignFactory::Initialize()
 {
 	random_quick_press_sign = new RandomQuickPressSign();
+	mash_button_sign = new MashButtonSign();
+	quick_Press_sign = new QuickPressSign();
+	random_sign = new RandomSign();
 }
 
 void SignFactory::Finalize()
 {
 	instance->random_quick_press_sign->Finalize();
+	instance->mash_button_sign->Finalize();
+	instance->quick_Press_sign->Finalize();
+	instance->random_sign->Finalize();
 
 	delete instance->random_quick_press_sign;
+	delete instance->mash_button_sign;
+	delete instance->quick_Press_sign;
+	delete instance->random_sign;
 	delete instance;
 
 	instance = nullptr;
@@ -38,6 +47,24 @@ SignBase* SignFactory::GetSign(const int max_rand_val)
 	case 0:
 		instance->random_quick_press_sign->Initialize();
 		ret = instance->random_quick_press_sign;
+		break;
+
+		//連打
+	case 1:
+		instance->mash_button_sign->Initialize();
+		ret = instance->mash_button_sign;
+		break;
+
+		//早押し
+	case 2:
+		instance->quick_Press_sign->Initialize();
+		ret = instance->quick_Press_sign;
+		break;
+
+		//ランダム
+	case 3:
+		instance->random_sign->Initialize();
+		ret = instance->random_sign;
 		break;
 
 	default:

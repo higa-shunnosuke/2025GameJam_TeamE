@@ -3,7 +3,7 @@
 #include "SignBase.h"
 
 /// <summary>
-/// ランダム早押しの合図のクラス
+/// ランダム早押し合図のクラス
 /// </summary>
 class RandomQuickPressSign :public SignBase
 {
@@ -39,9 +39,12 @@ public:
 	/// </summary>
 	virtual void Draw() const override;
 
-private:
-	//押させるボタンを決める
-	int ChooseButton();
+public:
+	/// <summary>
+	/// 合図の名前を取得
+	/// </summary>
+	/// <returns>合図の名前</returns>
+	virtual std::string GetSignName()const override;
 
 };
 

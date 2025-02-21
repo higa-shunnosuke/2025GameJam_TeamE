@@ -130,6 +130,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Sign\RandomSign.cpp" />
+    <ClCompile Include="Sign\QuickPressSign.cpp" />
     <ClCompile Include="Sign\MashButtonSign.cpp" />
     <ClCompile Include="Sign\SignManager.cpp" />
     <ClCompile Include="Sign\RandomQuickPressSign.cpp" />
@@ -147,6 +149,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Sign\RandomSign.h" />
+    <ClInclude Include="Sign\QuickPressSign.h" />
     <ClInclude Include="Sign\MashButtonSign.h" />
     <ClInclude Include="Sign\SignManager.h" />
     <ClInclude Include="Sign\RandomQuickPressSign.h" />

@@ -2,6 +2,9 @@
 
 #include "SignBase.h"
 
+/// <summary>
+/// 連打合図のクラス
+/// </summary>
 class MashButtonSign :public SignBase
 {
 public:
@@ -35,4 +38,12 @@ public:
 	/// 描画処理
 	/// </summary>
 	virtual void Draw() const override;
+
+public:
+	/// <summary>
+	/// 合図の名前を取得
+	/// </summary>
+	/// <returns>合図の名前</returns>
+	virtual std::string GetSignName()const override;
+
 };

@@ -1,5 +1,4 @@
 #include "RandomQuickPressSign.h"
-#include "DxLib.h"
 
 RandomQuickPressSign::RandomQuickPressSign()
 {
@@ -42,6 +41,11 @@ void RandomQuickPressSign::Draw() const
 	//合図を出す場合
 	if (is_sign)
 	{
+		//説明
+		SetFontSize(16);
+		DrawFormatString(320, 120, 0xffffff, "QuickPress！");
+		SetFontSize(32);
+
 		switch (sign_button[0])
 		{
 		case XINPUT_BUTTON_A:
@@ -70,33 +74,7 @@ void RandomQuickPressSign::Draw() const
 	}
 }
 
-int RandomQuickPressSign::ChooseButton()
+std::string RandomQuickPressSign::GetSignName() const
 {
-	switch (GetRandRange(0, 3))
-	{
-	case 0:
-		//Aボタンを押させる
-		return XINPUT_BUTTON_A;
-		break;
-
-	case 1:
-		//Bボタンを押させる
-		return XINPUT_BUTTON_B;
-		break;
-
-	case 2:
-		//Xボタンを押させる
-		return XINPUT_BUTTON_X;
-		break;
-
-	case 3:
-		//Yボタンを押させる
-		return XINPUT_BUTTON_Y;
-		break;
-
-	default :
-		break;
-	}
-
-	return NULL;
+	return std::string("RandomQuickPress");
 }
