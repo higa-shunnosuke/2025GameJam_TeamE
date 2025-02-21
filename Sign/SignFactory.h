@@ -46,6 +46,6 @@ private:
 	/// <param name="min_val">最小値</param>
 	/// <param name="max_val">最大値</param>
 	/// <returns>ランダムな値</returns>
-	uint64_t GetRandRange(uint64_t min_val, uint64_t max_val);
+	int GetRandRange(int min_val, int max_val);
 };
 
