@@ -60,7 +60,7 @@ public:
 
 	void Run()
 	{
-		// シーンマネージャーを生成する
+		// シーンマネージャーのポインタ
 		SceneManager* manager = SceneManager::GetInstance();
 
 		// 入力情報を取得する
@@ -89,7 +89,7 @@ public:
 
 	void Shutdown()
 	{
-		// シーンマネージャーを生成する
+		// シーンマネージャーのポインタ
 		SceneManager* manager = SceneManager::GetInstance();
 
 		// 終了時処理

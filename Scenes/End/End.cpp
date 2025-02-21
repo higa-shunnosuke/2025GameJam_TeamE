@@ -32,7 +32,12 @@ eSceneType End::Update(const float &delta_second)
 // 描画処理
 void End::Draw() const
 {
-	
+	// フォントサイズ変更
+	SetFontSize(32);
+
+	DrawFormatString(10, 10, 0xffffff, "End");
+	DrawFormatString(100, 240, 0xffffff, "Thank you for playing");
+
 }
 
 // 終了処理
@@ -45,5 +50,5 @@ void End::Finalize()
 // 現在のシーンタイプ取得処理
 const eSceneType End::GetNowSceneType() const
 {
-	return eSceneType::title;
+	return eSceneType::end;
 }
