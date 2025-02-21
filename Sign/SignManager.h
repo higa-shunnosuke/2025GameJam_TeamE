@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// 合図の管理クラス
+/// </summary>
 class SignManager
 {
 private:

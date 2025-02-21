@@ -1,8 +1,10 @@
 ﻿#include "InGame.h"
 #include "DxLib.h"
+#include "../../Sign/SignManager.h"
 
 // コンストラクタ
-InGame::InGame()
+InGame::InGame() :
+	sign_manager(nullptr)
 {
 
 }
@@ -19,6 +21,9 @@ void InGame::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	sign_manager = new SignManager();
+	sign_manager->Initialize();
+
 }
 
 // 更新処理
@@ -26,6 +31,8 @@ eSceneType InGame::Update(const float &delta_second)
 {
 	//入力管理クラスのポインタ
 	InputManager* input = InputManager::GetInstance();
+
+	sign_manager->Update(delta_second);
 
 	//スタートボタンが押されたら
 	if (input->GetButtonDown(XINPUT_BUTTON_START) == true ||
@@ -54,6 +61,8 @@ void InGame::Draw() const
 	SetFontSize(32);
 
 	DrawFormatString(10, 10, 0xffffff, "InGame");
+
+	sign_manager->Draw();
 }
 
 // 終了処理
@@ -61,6 +70,8 @@ void InGame::Finalize()
 {
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
+
+	sign_manager->Finalize();
 }
 
 // 現在のシーンタイプ取得処理

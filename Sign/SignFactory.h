@@ -3,6 +3,9 @@
 #include "SignBase.h"
 #include"RandomQuickPressSign.h"
 
+/// <summary>
+/// 合図の生成クラス
+/// </summary>
 class SignFactory
 {
 private:

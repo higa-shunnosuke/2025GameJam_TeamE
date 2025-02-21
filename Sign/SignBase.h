@@ -6,6 +6,9 @@
 //最大待ち時間
 #define MAX_RANDOM_TIME 15
 
+/// <summary>
+/// 合図のベースクラス
+/// </summary>
 class SignBase
 {
 protected:

@@ -5,6 +5,7 @@
 class InGame : public SceneBase
 {
 private:
+	class SignManager* sign_manager;
 
 public:
 	// コンストラクタ
