@@ -4,8 +4,9 @@
 
 //データ
 struct Data {
-	int point;	//ポイント数
-	int faul;	//ファウル数
+	int point;				//ポイント数
+	int faul;				//ファウル数
+	float reaction_rate;	//反応速度
 };
 
 class InGame : public SceneBase
@@ -54,4 +55,9 @@ private:
 	/// ファイルデータ書き込み処理
 	/// </summary>
 	void WriteData();
+
+	/// <summary>
+	/// ファイルデータ読み込み処理
+	/// </summary>
+	void ReadData();
 };

@@ -29,10 +29,7 @@ void InGame::Initialize()
 	sign_manager->Initialize();
 
 	//データの初期化
-	player1.faul = 0;
-	player1.point = 0;
-	player2.faul = 0;
-	player2.point = 0;
+	ReadData();
 }
 
 // 更新処理
@@ -70,6 +67,11 @@ void InGame::Draw() const
 	SetFontSize(32);
 
 	DrawFormatString(10, 10, 0xffffff, "InGame");
+	DrawFormatString(10, 40, 0xffffff, "point:%d",player1.point);
+	DrawFormatString(10, 70, 0xffffff, "faul:%d",player1.faul);
+	DrawFormatString(500, 40, 0xffffff, "point:%d",player2.point);
+	DrawFormatString(500, 70, 0xffffff, "faul:%d",player2.faul);
+
 
 	sign_manager->Draw();
 }
@@ -92,6 +94,7 @@ const eSceneType InGame::GetNowSceneType() const
 	return eSceneType::in_game;
 }
 
+// ファイルデータ書き込み処理
 void InGame::WriteData()
 {
 	FILE* fp;
@@ -108,6 +111,29 @@ void InGame::WriteData()
 		//ファイルがなければ生成する
 		fprintf_s(fp, "%d,%d\n", player1.point, player1.faul);
 		fprintf_s(fp, "%d,%d\n", player2.point, player2.faul);
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
+}
+
+// ファイルデータ読み込み処理
+void InGame::ReadData()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, FILE_NAME, "r");
+
+	if (fp == NULL)
+	{
+		throw("%sファイルを開けませんでした。", FILE_NAME);
+	}
+	else
+	{
+		//ファイルがなければ生成する
+		fscanf_s(fp, "%d,%d", &player1.point, &player1.faul);
+		fscanf_s(fp, "%d,%d", &player2.point, &player2.faul);
 
 		//ファイルを閉じる
 		fclose(fp);
