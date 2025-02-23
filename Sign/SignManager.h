@@ -3,14 +3,16 @@
 #include "SignBase.h"
 
 /// <summary>
-/// 合図の管理クラス
+/// 合図管理クラス
 /// </summary>
 class SignManager
 {
 private:
-	class SignBase* sign;		//合図のインスタンス
+	SignBase* sign;					//合図のインスタンス
 
-	int fake_count;				//再度フェイクをだすためのカウント
+	int feint_count;				//再度フェイクをだすためのカウント
+
+	float count_time;				//計測時間
 
 public:
 	/// <summary>
@@ -45,7 +47,10 @@ public:
 	void Draw() const;
 
 public:
-	//合図のインスタンスを取得
-	class SignBase* GetSignInstance()const { return this->sign; }
+	/// <summary>
+	/// 合図のインスタンスを取得
+	/// </summary>
+	/// <returns>合図のインスタンス</returns>
+	SignBase* GetSignInstance()const;
 };
 

@@ -2,10 +2,18 @@
 
 #include "..//SceneBase.h"
 
+//データ
+struct Data {
+	int point;	//ポイント数
+	int faul;	//ファウル数
+};
+
 class InGame : public SceneBase
 {
 private:
 	class SignManager* sign_manager;
+	Data player1;
+	Data player2;
 
 public:
 	// コンストラクタ
@@ -41,4 +49,9 @@ public:
 	/// <returns>現在のシーンタイプ</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
+private:
+	/// <summary>
+	/// ファイルデータ書き込み処理
+	/// </summary>
+	void WriteData();
 };
