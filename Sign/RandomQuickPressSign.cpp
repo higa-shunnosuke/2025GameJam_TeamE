@@ -28,9 +28,6 @@ void RandomQuickPressSign::Finalize()
 {
 	//親クラスの終了処理
 	__super::Finalize();
-
-	//配列を空にする
-	sign_button.clear();
 }
 
 void RandomQuickPressSign::Draw() const
@@ -76,5 +73,5 @@ void RandomQuickPressSign::Draw() const
 
 std::string RandomQuickPressSign::GetSignName() const
 {
-	return std::string("RandomQuickPress");
+	return std::string("RandomQuickPressSign");
 }

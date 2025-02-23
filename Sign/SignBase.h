@@ -18,7 +18,7 @@ protected:
 	std::vector<int>sign_image;		//合図の画像
 	std::vector<int>sign_button;	//押すボタン
 
-	int waiting_time;				//待ち時間
+	int waiting_time;				//合図を出すまでの時間
 
 	float count_time;				//計測時間
 
@@ -50,6 +50,8 @@ public:
 	virtual void Initialize()
 	{
 		waiting_time = GetRandRange(1, MAX_RANDOM_TIME);
+		count_time = 0.f;
+		is_sign = false;
 	}
 
 	/// <summary>
@@ -61,7 +63,7 @@ public:
 		//計測
 		count_time += delta_second;
 
-		//計測時間が待ち時間を超えた場合
+		//計測時間が合図を出すまでの時間を超えた場合
 		if (count_time > waiting_time)
 		{
 			//合図を出す
@@ -75,7 +77,8 @@ public:
 	/// </summary>
 	virtual void Finalize()
 	{
-
+		//配列を空にする
+		sign_button.clear();
 	}
 
 	/// <summary>
@@ -91,9 +94,12 @@ public:
 	/// 合図の名前を取得
 	/// </summary>
 	/// <returns>合図の名前</returns>
-	virtual std::string GetSignName()const = 0;
+	virtual std::string GetSignName()const
+	{
+		return std::string();
+	}
 
-protected:
+public:
 	/// <summary>
 	/// 指定した範囲のランダムな数字を取得
 	/// </summary>
@@ -115,6 +121,7 @@ protected:
 		return distribution(generator);
 	}
 
+protected:
 	/// <summary>
 	/// 押させるボタンを決める
 	/// </summary>
@@ -144,13 +151,18 @@ protected:
 			break;
 
 		default:
+			return NULL;
 			break;
 		}
-
-		return NULL;
 	}
 
 public:
+	/// <summary>
+	/// 合図の画像を取得
+	/// </summary>
+	/// <returns>合図の画像</returns>
+	std::vector<int>GetSignImage()const { return sign_image; }
+
 	/// <summary>
 	/// 押すボタンを取得
 	/// </summary>
@@ -158,9 +170,21 @@ public:
 	std::vector<int>GetSignButton()const { return sign_button; }
 
 	/// <summary>
-	/// 待ち時間を取得
+	/// 合図を出すまでの時間を取得
 	/// </summary>
-	/// <returns>待ち時間</returns>
+	/// <returns>合図を出すまでの時間</returns>
 	int GetWaitingTime()const { return waiting_time; }
+
+	/// <summary>
+	/// 計測時間を取得
+	/// </summary>
+	/// <returns>計測時間</returns>
+	float GetCountTime()const { return count_time; }
+
+	/// <summary>
+	/// 合図を出すフラグの取得
+	/// </summary>
+	/// <returns>合図を出すフラグ</returns>
+	bool GetIsSign()const { return is_sign; }
 
 };

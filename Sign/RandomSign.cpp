@@ -1,5 +1,9 @@
 #include "RandomSign.h"
+#include "../Utilitys/InputManager.h"
 
+#define DEBUG
+
+//押させるボタンの最大数
 #define MAX_RANDOM_BUTTON	4
 
 RandomSign::RandomSign()
@@ -22,12 +26,40 @@ void RandomSign::Initialize()
 		//押すボタンをいれる
 		sign_button.push_back(ChooseButton());
 	}
+
+	//空の場合
+	if (button.empty())
+	{
+		button.push_back(sign_button);
+		button.push_back(sign_button);
+	}
+	//すでに値がある場合
+	else
+	{
+		button[0] = sign_button;
+		button[1] = sign_button;
+	}
 }
 
 void RandomSign::Update(float delta_second)
 {
 	//親クラスの更新処理
 	__super::Update(delta_second);
+
+#ifdef DEBUG
+	InputManager* input = InputManager::GetInstance();
+	if (input->GetKeyDown(KEY_INPUT_F))
+	{
+
+	}
+
+	if (input->GetKeyDown(KEY_INPUT_J))
+	{
+		
+	}
+
+#endif // DEBUG
+
 }
 
 void RandomSign::Finalize()
@@ -88,5 +120,5 @@ void RandomSign::Draw() const
 
 std::string RandomSign::GetSignName() const
 {
-	return std::string("Random");
+	return std::string("RandomSign");
 }

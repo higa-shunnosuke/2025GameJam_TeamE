@@ -7,6 +7,9 @@
 /// </summary>
 class RandomSign :public SignBase
 {
+private:
+	std::vector<std::vector<int>> button;			//ボタン
+
 public:
 	/// <summary>
 	/// コンストラクタ

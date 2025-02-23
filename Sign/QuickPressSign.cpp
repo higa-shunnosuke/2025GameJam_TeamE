@@ -49,5 +49,5 @@ void QuickPressSign::Draw() const
 
 std::string QuickPressSign::GetSignName() const
 {
-	return std::string("QuickPress");
+	return std::string("QuickPressSign");
 }
