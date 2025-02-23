@@ -3,23 +3,20 @@
 #include "SignBase.h"
 
 /// <summary>
-/// 連打合図のクラス
+/// フェイント合図のクラス
 /// </summary>
-class MashButtonSign :public SignBase
+class FeintSign :public SignBase
 {
-private:
-	std::vector<int> score_bar;			//連打時に表示するバー
-
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	MashButtonSign();
+	FeintSign();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~MashButtonSign();
+	~FeintSign();
 
 	/// <summary>
 	/// 初期化処理

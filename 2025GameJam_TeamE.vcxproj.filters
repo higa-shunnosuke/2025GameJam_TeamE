@@ -60,7 +60,13 @@
     <ClCompile Include="Sign\MashButtonSign.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="player\ButtonMatch.cpp">
+    <ClCompile Include="Sign\QuickPressSign.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sign\RandomSign.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Sign\FeintSign.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,7 +128,13 @@
     <ClInclude Include="Sign\MashButtonSign.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="player\ButtonMatch.h">
+    <ClInclude Include="Sign\QuickPressSign.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Sign\RandomSign.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Sign\FeintSign.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

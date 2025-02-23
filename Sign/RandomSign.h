@@ -3,23 +3,23 @@
 #include "SignBase.h"
 
 /// <summary>
-/// 連打合図のクラス
+/// ランダム合図のクラス
 /// </summary>
-class MashButtonSign :public SignBase
+class RandomSign :public SignBase
 {
 private:
-	std::vector<int> score_bar;			//連打時に表示するバー
+	std::vector<std::vector<int>> button;			//ボタン
 
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	MashButtonSign();
+	RandomSign();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~MashButtonSign();
+	~RandomSign();
 
 	/// <summary>
 	/// 初期化処理
@@ -50,3 +50,4 @@ public:
 	virtual std::string GetSignName()const override;
 
 };
+

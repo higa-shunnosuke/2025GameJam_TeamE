@@ -3,23 +3,20 @@
 #include "SignBase.h"
 
 /// <summary>
-/// 連打合図のクラス
+/// 早押し合図のクラス
 /// </summary>
-class MashButtonSign :public SignBase
+class QuickPressSign :public SignBase
 {
-private:
-	std::vector<int> score_bar;			//連打時に表示するバー
-
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	MashButtonSign();
+	QuickPressSign();
 
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~MashButtonSign();
+	~QuickPressSign();
 
 	/// <summary>
 	/// 初期化処理
@@ -50,3 +47,4 @@ public:
 	virtual std::string GetSignName()const override;
 
 };
+
