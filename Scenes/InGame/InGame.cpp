@@ -10,7 +10,8 @@ InGame::InGame() :
 	sign_manager(nullptr),
 	button_match(nullptr),
 	player1(),
-	player2()
+	player2(),
+	bg_image()
 {
 
 }
@@ -26,6 +27,9 @@ void InGame::Initialize()
 {
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
+
+	ResourceManager* rm = ResourceManager::GetInstance();
+	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
 
 	//合図生成クラスの初期化
 	sign_manager = new SignManager();
@@ -59,18 +63,16 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::pause;
 	}
 
-	////決定
-	//if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
-	//	input->GetKeyDown(KEY_INPUT_RETURN))
-	//{
-	//	player1.point++;
-	//}
-
 	//どちらかのポイントが３ポイントになったら
 	if (player1.point >= 3 || player2.point >= 3)
 	{
 		//リザルト画面へ
 		return eSceneType::result;
+	}
+
+	if (button_match->GetPlayer1Result() == CORRECT)
+	{
+		player1.point++;
 	}
 
 	// 親クラスの更新処理を呼び出す
@@ -80,6 +82,9 @@ eSceneType InGame::Update(const float &delta_second)
 // 描画処理
 void InGame::Draw() const
 {
+	//背景描画
+	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
+
 	// フォントサイズ変更
 	SetFontSize(32);
 

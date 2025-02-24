@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
     <ClCompile Include="player\ButtonMatch.cpp" />
+    <ClCompile Include="Utilitys\ResourceManager.cpp" />
     <ClCompile Include="Sign\FeintSign.cpp" />
     <ClCompile Include="Sign\RandomSign.cpp" />
     <ClCompile Include="Sign\QuickPressSign.cpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="player\ButtonMatch.h" />
+    <ClInclude Include="Utilitys\ResourceManager.h" />
     <ClInclude Include="Sign\FeintSign.h" />
     <ClInclude Include="Sign\RandomSign.h" />
     <ClInclude Include="Sign\QuickPressSign.h" />
