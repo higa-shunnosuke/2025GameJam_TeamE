@@ -88,78 +88,111 @@ SignBase* SignManager::GetSignInstance() const
 
 SignResult SignManager::GetSignResult()
 {
+	//プレイヤーの入力インスタンスを取得
 	ButtonMatch* match = ButtonMatch::GetInstance();
 
+	//合図を出していない場合
 	if (!sign->GetIsSign())
 	{
+		//入力のインスタンスを取得
 		InputManager* input = InputManager::GetInstance();
 
+		//プレイヤー1がA,B,X,Yのいずれかを押した場合
 		if (input->GetButtonDown(0, XINPUT_BUTTON_A) ||
 			input->GetButtonDown(0, XINPUT_BUTTON_B) ||
 			input->GetButtonDown(0, XINPUT_BUTTON_X) ||
 			input->GetButtonDown(0, XINPUT_BUTTON_Y))
 		{
+			//プレイヤー1にファールを返す
 			return SignResult::Player1_Faul;
 		}
+
+		//プレイヤー2がA,B,X,Yのいずれかを押した場合
 		if (input->GetButtonDown(1, XINPUT_BUTTON_A) ||
 			input->GetButtonDown(1, XINPUT_BUTTON_B) ||
 			input->GetButtonDown(1, XINPUT_BUTTON_X) ||
 			input->GetButtonDown(1, XINPUT_BUTTON_Y))
 		{
+			//プレイヤー2にファールを返す
 			return SignResult::Player2_Faul;
 		}
 	}
+	//合図を出した場合
 	else
 	{
+		//連打合図とランダム合図ではない場合
 		if (sign->GetSignName() != "MashButtonSign" && sign->GetSignName() != "RandomSign")
 		{
+			//プレイヤー1の判定結果が正解の場合
 			if (match->GetPlayer1Result() == CORRECT)
 			{
+				//プレイヤー1にポイントを返す
 				return SignResult::Player1_Point;
 			}
+			//プレイヤー2の判定結果が正解の場合
 			else if (match->GetPlayer2Result() == CORRECT)
 			{
+				//プレイヤー2にポイントを返す
 				return SignResult::Player2_Point;
 			}
 
+			//プレイヤー1の判定結果が不正解の場合
 			if (match->GetPlayer1Result() == INCORRECT)
 			{
+				//プレイヤー1にファールを返す
 				return SignResult::Player1_Faul;
 			}
+			//プレイヤー2の判定結果が不正解の場合
 			else if (match->GetPlayer2Result() == INCORRECT)
 			{
+				//プレイヤー2にファールを返す
 				return SignResult::Player2_Faul;
 			}
 		}
+		//連打合図とランダム合図の場合
 		else
 		{
+			//連打合図の場合
 			if (sign->GetSignName() == "MashButtonSign")
 			{
+				//MashButtonSign型にキャスト
 				MashButtonSign* mbs_sign = dynamic_cast<MashButtonSign*>(sign);
 
+				//プレイヤー1のバーが最大の場合
 				if (mbs_sign->IsMaximum(0))
 				{
+					//プレイヤー1にポイントを返す
 					return SignResult::Player1_Point;
 				}
+				//プレイヤー2のバーが最大の場合
 				else if (mbs_sign->IsMaximum(1))
 				{
+					//プレイヤー2のにポイントを返す
 					return SignResult::Player2_Point;
 				}
 			}
+			//ランダム合図の場合
 			else if (sign->GetSignName() == "RandomSign")
 			{
+				//RandomSign型にキャスト
 				RandomSign* rs_sign = dynamic_cast<RandomSign*>(sign);
+
+				//プレイヤー1の押すボタンがない場合
 				if (rs_sign->GetButton(0).empty())
 				{
+					//プレイヤー1にポイントを返す
 					return SignResult::Player1_Point;
 				}
+				//プレイヤーの2の押すボタンがない場合
 				else if (rs_sign->GetButton(1).empty())
 				{
+					//プレイヤー2にポイントを返す
 					return SignResult::Player2_Point;
 				}
 			}
 		}
 	}
 
+	//何もしない
 	return SignResult::None;
 }

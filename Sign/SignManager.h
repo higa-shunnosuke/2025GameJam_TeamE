@@ -2,13 +2,16 @@
 
 #include "SignBase.h"
 
+/// <summary>
+/// 合図の結果
+/// </summary>
 enum class SignResult
 {
-	None = 0,
-	Player1_Point,
-	Player1_Faul,
-	Player2_Point,
-	Player2_Faul
+	None = 0,			//なし
+	Player1_Point,		//プレイヤー1にポイント
+	Player1_Faul,		//プレイヤー1にファール
+	Player2_Point,		//プレイヤー2にポイント
+	Player2_Faul		//プレイヤー2にファール
 };
 
 /// <summary>
@@ -62,6 +65,9 @@ public:
 	/// <returns>合図のインスタンス</returns>
 	SignBase* GetSignInstance()const;
 
+	/// <summary>
+	/// 合図の結果を取得
+	/// </summary>
 	SignResult GetSignResult();
 };
 

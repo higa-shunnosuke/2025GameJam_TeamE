@@ -2,8 +2,6 @@
 #include "../Utilitys/InputManager.h"
 #include "../player/ButtonMatch.h"
 
-#define DEBUG
-
 //押させるボタンの最大数
 #define MAX_RANDOM_BUTTON	4
 
@@ -50,36 +48,26 @@ void RandomSign::Update(float delta_second)
 	//親クラスの更新処理
 	__super::Update(delta_second);
 
+	//合図を出す場合
 	if (is_sign)
 	{
+		//プレイヤーの入力インスタンスを取得
 		ButtonMatch* match = ButtonMatch::GetInstance();
 
+		//プレイヤー1の判定結果が正解の場合
 		if (match->GetPlayer1Result() == CORRECT)
 		{
+			//最初の要素を削除する
 			button[0].erase(button[0].begin());
 		}
 
+		//プレイヤー2の判定結果が正解の場合
 		if (match->GetPlayer2Result() == CORRECT)
 		{
+			//最初の要素を削除する
 			button[1].erase(button[1].begin());
 		}
 	}
-
-
-#ifdef DEBUG
-	InputManager* input = InputManager::GetInstance();
-	if (input->GetKeyDown(KEY_INPUT_F))
-	{
-		button[0].erase(button[0].begin());
-	}
-
-	if (input->GetKeyDown(KEY_INPUT_J))
-	{
-		button[1].erase(button[1].begin());
-	}
-
-#endif // DEBUG
-
 }
 
 void RandomSign::Finalize()

@@ -2,8 +2,6 @@
 #include "../Utilitys/InputManager.h"
 #include "../player/ButtonMatch.h"
 
-#define DEBUG
-
 MashButtonSign::MashButtonSign()
 {
 
@@ -41,35 +39,28 @@ void MashButtonSign::Update(float delta_second)
 	//親クラスの更新処理
 	__super::Update(delta_second);
 
+	//合図を出す場合
 	if (is_sign)
 	{
+		//プレイヤーの入力インスタンスを取得
 		ButtonMatch* match = ButtonMatch::GetInstance();
 
+		//プレイヤー1の判定結果が正解の場合
 		if (match->GetPlayer1Result() == CORRECT)
 		{
+			//スコアを加算する
 			score_bar[0] += 10;
 		}
 
+		//プレイヤー2の判定結果が正解の場合
 		if (match->GetPlayer2Result() == CORRECT)
 		{
+			//スコアを加算する
 			score_bar[1] += 10;
 		}
 	}
 
-#ifdef DEBUG
-	InputManager* input = InputManager::GetInstance();
-	if (input->GetKeyDown(KEY_INPUT_F))
-	{
-		score_bar[0] += 10;
-	}
-
-	if (input->GetKeyDown(KEY_INPUT_J))
-	{
-		score_bar[1] += 10;
-	}
-
-#endif // DEBUG
-
+	//100を超えないようにする
 	if (score_bar[0] > 100)score_bar[0] = 100;
 	if (score_bar[1] > 100)score_bar[1] = 100;
 }
