@@ -50,12 +50,12 @@ void RandomSign::Update(float delta_second)
 	InputManager* input = InputManager::GetInstance();
 	if (input->GetKeyDown(KEY_INPUT_F))
 	{
-
+		button[0].erase(button[0].begin());
 	}
 
 	if (input->GetKeyDown(KEY_INPUT_J))
 	{
-		
+		button[1].erase(button[1].begin());
 	}
 
 #endif // DEBUG
@@ -81,40 +81,64 @@ void RandomSign::Draw() const
 		DrawFormatString(320, 120, 0xffffff, "Press in Order！");
 		SetFontSize(32);
 
-		//ボタンの合図を描画
-		for (int i = 0; i < MAX_RANDOM_BUTTON; i++)
+		//プレイヤー1のボタンの合図を描画
+		for (int i = 0; i < button[0].size(); i++)
 		{
-			switch (sign_button[i])
+			switch (button[0][i])
 			{
 			case XINPUT_BUTTON_A:
 				//Aボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "A");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "A");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "A");
 				break;
 
 			case XINPUT_BUTTON_B:
 				//Bボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "B");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "B");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "B");
 				break;
 
 			case XINPUT_BUTTON_X:
 				//Xボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "X");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "X");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "X");
 				break;
 
 			case XINPUT_BUTTON_Y:
 				//Yボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "Y");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "Y");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "Y");
 				break;
 
 			default:
 				break;
 			}
 		}
+		//プレイヤー2のボタンの合図を描画
+		for (int i = 0; i < button[1].size(); i++)
+		{
+			switch (button[1][i])
+			{
+			case XINPUT_BUTTON_A:
+				//Aボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "A");
+				break;
 
+			case XINPUT_BUTTON_B:
+				//Bボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "B");
+				break;
+
+			case XINPUT_BUTTON_X:
+				//Xボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "X");
+				break;
+
+			case XINPUT_BUTTON_Y:
+				//Yボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "Y");
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 }
 
