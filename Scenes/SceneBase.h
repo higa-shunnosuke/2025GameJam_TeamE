@@ -4,6 +4,7 @@
 #include <string>
 #include "DxLib.h"
 #include "../Utilitys/InputManager.h"
+#include "../Utilitys/ResourceManager.h"
 
 //データ
 struct Data {
