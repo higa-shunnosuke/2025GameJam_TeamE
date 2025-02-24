@@ -52,6 +52,12 @@ eSceneType InGame::Update(const float &delta_second)
 	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
+		player1.point++;
+	}
+
+	//どちらかのポイントが３ポイントになったら
+	if (player1.point >= 3 || player2.point >= 3)
+	{
 		//リザルト画面へ
 		return eSceneType::result;
 	}

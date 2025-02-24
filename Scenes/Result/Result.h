@@ -5,6 +5,8 @@
 class Result : public SceneBase
 {
 private:
+	Data player1;
+	Data player2;
 
 public:
 	// コンストラクタ
@@ -40,4 +42,14 @@ public:
 	/// <returns>現在のシーンタイプ</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
+private:
+	/// <summary>
+	/// ファイルデータ読み込み処理
+	/// </summary>
+	void ReadData();
+
+	/// <summary>
+	/// ファイルデータを初期化する
+	/// </summary>
+	void DetaInitialize();
 };

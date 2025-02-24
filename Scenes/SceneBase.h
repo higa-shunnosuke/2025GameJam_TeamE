@@ -5,6 +5,13 @@
 #include "DxLib.h"
 #include "../Utilitys/InputManager.h"
 
+//データ
+struct Data {
+	int point;				//ポイント数
+	int faul;				//ファウル数
+	float reaction_rate;	//反応速度
+};
+
 /// <summary>
 /// シーンタイプ
 /// </summary>
