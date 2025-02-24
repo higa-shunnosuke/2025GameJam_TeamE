@@ -1,4 +1,4 @@
-#include <DxLib.h>
+ï»¿#include <DxLib.h>
 #include <cstring> 
 #include "ButtonMatch.h"
 
@@ -48,14 +48,14 @@ void ButtonMatch::Activate(const SignBase* sign)
 {
     if (!sign) return;
 
-    // ‡}”­“®ƒtƒ‰ƒO‚ğ—§‚ÄA”»’è‚Ìó‘Ô‚ğƒŠƒZƒbƒg
+    // åˆå›³ç™ºå‹•ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã€åˆ¤å®šã®çŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ
     activated = true;
     player1Judged = false;
     player2Judged = false;
     player1Result = UNJUDGED;
     player2Result = UNJUDGED;
 
-    // GetSignButton() ‚©‚ç‡}‚Ìƒ{ƒ^ƒ“‚ğæ“¾
+    // GetSignButton() ã‹ã‚‰åˆå›³ã®ãƒœã‚¿ãƒ³ã‚’å–å¾—
     std::vector<int> signButtons = sign->GetSignButton();
     if (!signButtons.empty())
     {
@@ -66,7 +66,7 @@ void ButtonMatch::Activate(const SignBase* sign)
         expectedButton = -1;
     }
 
-    // ƒvƒŒƒCƒ„[‚Q‚ÌŒ»İ‚Ìƒ{ƒ^ƒ“ó‘Ô‚ğŠî€‚Æ‚µ‚Ä‹L˜^
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼’ã®ç¾åœ¨ã®ãƒœã‚¿ãƒ³çŠ¶æ…‹ã‚’åŸºæº–ã¨ã—ã¦è¨˜éŒ²
     XINPUT_STATE state2 = {};
     GetJoypadXInputState(DX_INPUT_PAD2, &state2);
     for (int i = 0; i < D_BUTTON_MAX; i++)
@@ -74,7 +74,7 @@ void ButtonMatch::Activate(const SignBase* sign)
         baseline2[i] = (state2.Buttons[i] != 0);
     }
 
-    // ‡}”­“®‚ğ‹L˜^iƒ~ƒŠ•b’PˆÊj
+    // åˆå›³ç™ºå‹•æ™‚åˆ»ã‚’è¨˜éŒ²ï¼ˆãƒŸãƒªç§’å˜ä½ï¼‰
     activationTime = GetNowCount();
 }
 
@@ -82,10 +82,10 @@ void ButtonMatch::ButtonMatchUpdate()
 {
     if (!activated) return;
 
-    // --- ƒvƒŒƒCƒ„[‚P‚Ì”»’è ---
+    // --- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼‘ã®åˆ¤å®š ---
     if (!player1Judged)
     {
-        // Šú‘Ò‚·‚éƒ{ƒ^ƒ“‚ªV‚½‚É‰Ÿ‚³‚ê‚½ê‡
+        // æœŸå¾…ã™ã‚‹ãƒœã‚¿ãƒ³ãŒæ–°ãŸã«æŠ¼ã•ã‚ŒãŸå ´åˆ
         if (IsAllowedButton(expectedButton) && InputManager::GetInstance()->GetButtonDown(expectedButton))
         {
             player1Result = CORRECT;
@@ -94,7 +94,7 @@ void ButtonMatch::ButtonMatchUpdate()
         }
         else
         {
-            // Šú‘Òƒ{ƒ^ƒ“ˆÈŠO‚Ì‘ÎÛƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½ê‡‚Í•s³‰ğ
+            // æœŸå¾…ãƒœã‚¿ãƒ³ä»¥å¤–ã®å¯¾è±¡ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ä¸æ­£è§£
             if ((expectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_A)) ||
                 (expectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_B)) ||
                 (expectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_X)) ||
@@ -107,8 +107,8 @@ void ButtonMatch::ButtonMatchUpdate()
         }
     }
 
-    // --- ƒvƒŒƒCƒ„[‚Q‚Ì”»’è ---
-    // Œ»İ‚Ìó‘Ô‚ğæ“¾‚µA‡}”­“®‚ÌŠî€ibaseline2j‚Æ‚Ì·•ª‚ÅV‚½‚È“ü—Í‚ğŒŸo‚µ‚Ü‚·
+    // --- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼’ã®åˆ¤å®š ---
+    // ç¾åœ¨ã®çŠ¶æ…‹ã‚’å–å¾—ã—ã€åˆå›³ç™ºå‹•æ™‚ã®åŸºæº–ï¼ˆbaseline2ï¼‰ã¨ã®å·®åˆ†ã§æ–°ãŸãªå…¥åŠ›ã‚’æ¤œå‡ºã—ã¾ã™
     XINPUT_STATE state2 = {};
     GetJoypadXInputState(DX_INPUT_PAD2, &state2);
     if (!player2Judged)
@@ -118,7 +118,7 @@ void ButtonMatch::ButtonMatchUpdate()
         {
             int btn = allowedButtons[i];
             bool currentPressed = (state2.Buttons[btn] != 0);
-            // Šî€ó‘Ô‚Å–¢‰Ÿ‰º‚¾‚Á‚½‚Ì‚ÉAŒ»İV‚½‚É‰Ÿ‚³‚ê‚½ê‡‚ğŒŸo
+            // åŸºæº–çŠ¶æ…‹ã§æœªæŠ¼ä¸‹ã ã£ãŸã®ã«ã€ç¾åœ¨æ–°ãŸã«æŠ¼ã•ã‚ŒãŸå ´åˆã‚’æ¤œå‡º
             if (currentPressed && !baseline2[btn])
             {
                 if (btn == expectedButton)
