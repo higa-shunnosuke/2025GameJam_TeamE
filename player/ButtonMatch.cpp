@@ -140,10 +140,10 @@ void ButtonMatch::ButtonMatchUpdate()
         else
         {
             if (player1ExpectedButton == 0 &&
-                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A) ||
-                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B) ||
-                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X) ||
-                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y))
+                (InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
             {
                 player1Result = CORRECT;
                 player1ReactionTime = GetNowCount() - activationTime;
@@ -178,10 +178,10 @@ void ButtonMatch::ButtonMatchUpdate()
         else
         {
             if (player2ExpectedButton == 0 &&
-                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A) ||
-                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B) ||
-                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X) ||
-                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y))
+                (InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
             {
                 player2Result = CORRECT;
                 player2ReactionTime = GetNowCount() - activationTime;
