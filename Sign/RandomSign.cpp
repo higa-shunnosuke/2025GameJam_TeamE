@@ -1,5 +1,6 @@
 #include "RandomSign.h"
 #include "../Utilitys/InputManager.h"
+#include "../player/ButtonMatch.h"
 
 #define DEBUG
 
@@ -20,6 +21,9 @@ void RandomSign::Initialize()
 {
 	//親クラスの初期化処理
 	__super::Initialize();
+
+	//空にしておく
+	sign_button.clear();
 
 	for (int i = 0; i < MAX_RANDOM_BUTTON; i++)
 	{
@@ -45,6 +49,22 @@ void RandomSign::Update(float delta_second)
 {
 	//親クラスの更新処理
 	__super::Update(delta_second);
+
+	if (is_sign)
+	{
+		ButtonMatch* match = ButtonMatch::GetInstance();
+
+		if (match->GetPlayer1Result() == CORRECT)
+		{
+			button[0].erase(button[0].begin());
+		}
+
+		if (match->GetPlayer2Result() == CORRECT)
+		{
+			button[1].erase(button[1].begin());
+		}
+	}
+
 
 #ifdef DEBUG
 	InputManager* input = InputManager::GetInstance();

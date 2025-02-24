@@ -2,6 +2,15 @@
 
 #include "SignBase.h"
 
+enum class SignResult
+{
+	None = 0,
+	Player1_Point,
+	Player1_Faul,
+	Player2_Point,
+	Player2_Faul
+};
+
 /// <summary>
 /// 合図管理クラス
 /// </summary>
@@ -52,5 +61,7 @@ public:
 	/// </summary>
 	/// <returns>合図のインスタンス</returns>
 	SignBase* GetSignInstance()const;
+
+	SignResult GetSignResult();
 };
 

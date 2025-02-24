@@ -1,7 +1,7 @@
 ﻿#include <DxLib.h>
 #include <cstring> 
 #include "ButtonMatch.h"
-
+#include "../Sign/RandomSign.h"
 
 ButtonMatch::ButtonMatch()
     : activated(false),
@@ -9,7 +9,8 @@ ButtonMatch::ButtonMatch()
     player2Judged(false),
     player1Result(UNJUDGED),
     player2Result(UNJUDGED),
-    expectedButton(-1),
+    player1ExpectedButton(-1),
+    player2ExpectedButton(-1),
     activationTime(0),
     player1ReactionTime(0),
     player2ReactionTime(0)
@@ -29,7 +30,8 @@ void ButtonMatch::ButtonReset()
     player2Judged = false;
     player1Result = UNJUDGED;
     player2Result = UNJUDGED;
-    expectedButton = -1;
+    player1ExpectedButton = -1;
+    player2ExpectedButton = -1;
     activationTime = 0;
     player1ReactionTime = 0;
     player2ReactionTime = 0;
@@ -44,7 +46,7 @@ bool ButtonMatch::IsAllowedButton(int button) const
         button == XINPUT_BUTTON_Y);
 }
 
-void ButtonMatch::Activate(const SignBase* sign)
+void ButtonMatch::Activate(SignBase* sign)
 {
     if (!sign) return;
 
@@ -56,14 +58,57 @@ void ButtonMatch::Activate(const SignBase* sign)
     player2Result = UNJUDGED;
 
     // GetSignButton() から合図のボタンを取得
-    std::vector<int> signButtons = sign->GetSignButton();
-    if (!signButtons.empty())
+    std::vector<int> Player1SignButtons = sign->GetSignButton();
+    if (sign->GetSignName() == "RandomSign")
     {
-        expectedButton = signButtons[0];
+        RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        Player1SignButtons = r_s->GetButton(0);
+    }
+    else if (sign->GetSignName() == "QuickPressSign")
+    {
+        if (Player1SignButtons.empty())
+        {
+            Player1SignButtons.push_back(0);
+        }
+        else
+        {
+            Player1SignButtons[0] = 0;
+        }
+    }
+    if (!Player1SignButtons.empty())
+    {
+        player1ExpectedButton = Player1SignButtons[0];
     }
     else
     {
-        expectedButton = -1;
+        player1ExpectedButton = -1;
+    }
+
+    // GetSignButton() から合図のボタンを取得
+    std::vector<int> Player2SignButtons = sign->GetSignButton();
+    if (sign->GetSignName() == "RandomSign")
+    {
+        RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        Player2SignButtons = r_s->GetButton(1);
+    }
+    else if (sign->GetSignName() == "QuickPressSign")
+    {
+        if (Player2SignButtons.empty())
+        {
+            Player2SignButtons.push_back(0);
+        }
+        else
+        {
+            Player2SignButtons[0] = 0;
+        }
+    }
+    if (!Player2SignButtons.empty())
+    {
+        player2ExpectedButton = Player2SignButtons[0];
+    }
+    else
+    {
+        player2ExpectedButton = -1;
     }
 
     // プレイヤー２の現在のボタン状態を基準として記録
@@ -86,7 +131,7 @@ void ButtonMatch::ButtonMatchUpdate()
     if (!player1Judged)
     {
         // 期待するボタンが新たに押された場合
-        if (IsAllowedButton(expectedButton) && InputManager::GetInstance()->GetButtonDown(0, expectedButton))
+        if (IsAllowedButton(player1ExpectedButton) && InputManager::GetInstance()->GetButtonDown(0, player1ExpectedButton))
         {
             player1Result = CORRECT;
             player1ReactionTime = GetNowCount() - activationTime;
@@ -94,43 +139,66 @@ void ButtonMatch::ButtonMatchUpdate()
         }
         else
         {
-            // 期待ボタン以外の対象ボタンが押された場合は不正解
-            if ((expectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A)) ||
-                (expectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B)) ||
-                (expectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X)) ||
-                (expectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
+            if (player1ExpectedButton == 0 &&
+                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A) ||
+                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B) ||
+                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X) ||
+                InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y))
             {
-                player1Result = INCORRECT;
+                player1Result = CORRECT;
                 player1ReactionTime = GetNowCount() - activationTime;
                 player1Judged = true;
+            }
+            else
+            {
+                // 期待ボタン以外の対象ボタンが押された場合は不正解
+                if ((player1ExpectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
+                {
+                    player1Result = INCORRECT;
+                    player1ReactionTime = GetNowCount() - activationTime;
+                    player1Judged = true;
+                }
             }
         }
     }
 
     // --- プレイヤー２の判定 ---
-    // 現在の状態を取得し、合図発動時の基準（baseline2）との差分で新たな入力を検出します
-    XINPUT_STATE state2 = {};
-    GetJoypadXInputState(DX_INPUT_PAD2, &state2);
     if (!player2Judged)
     {
-        int allowedButtons[4] = { XINPUT_BUTTON_A, XINPUT_BUTTON_B, XINPUT_BUTTON_X, XINPUT_BUTTON_Y };
-        for (int i = 0; i < 4; i++)
+        // 期待するボタンが新たに押された場合
+        if (IsAllowedButton(player2ExpectedButton) && InputManager::GetInstance()->GetButtonDown(1, player2ExpectedButton))
         {
-            int btn = allowedButtons[i];
-            bool currentPressed = (state2.Buttons[btn] != 0);
-            // 基準状態で未押下だったのに、現在新たに押された場合を検出
-            if (currentPressed && !baseline2[btn])
+            player2Result = CORRECT;
+            player2ReactionTime = GetNowCount() - activationTime;
+            player2Judged = true;
+        }
+        else
+        {
+            if (player2ExpectedButton == 0 &&
+                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A) ||
+                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B) ||
+                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X) ||
+                InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y))
             {
-                if (btn == expectedButton)
-                {
-                    player2Result = CORRECT;
-                }
-                else
+                player2Result = CORRECT;
+                player2ReactionTime = GetNowCount() - activationTime;
+                player2Judged = true;
+            }
+            else
+            {
+                // 期待ボタン以外の対象ボタンが押された場合は不正解
+                if ((player2ExpectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
                 {
                     player2Result = INCORRECT;
+                    player2ReactionTime = GetNowCount() - activationTime;
+                    player2Judged = true;
                 }
-                player2Judged = true;
-                break;
             }
         }
     }

@@ -7,7 +7,7 @@
 #include <string>
 
 //最大待ち時間
-#define MAX_RANDOM_TIME 15
+#define MAX_RANDOM_TIME 7
 
 /// <summary>
 /// 合図のベースクラス

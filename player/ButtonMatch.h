@@ -32,7 +32,7 @@ public:
 	/// 合図発動時刻も記録する
 	/// </summary>
 	/// <param name="sign">SignBaseクラスのオブジェクトのポインタ</param>
-	void Activate(const SignBase* sign);
+	void Activate(SignBase* sign);
 
 	/// <summary>
 	/// 合図発動後、毎フレーム呼び出して入力を更新し判定してください。
@@ -79,7 +79,8 @@ private:
 	bool player2Judged;   // プレイヤー2はすでに判定済みか
 	JudgeResult player1Result;	//プレイヤー1の判定受け渡し用の変数
 	JudgeResult player2Result;	//プレイヤー2の判定受け渡し用の変数
-	int expectedButton;   // 合図側から取得した、期待されるボタン
+	int player1ExpectedButton;   // 合図側から取得した、期待されるプレイヤー1のボタン
+	int player2ExpectedButton;   // 合図側から取得した、期待されるプレイヤー2のボタン
 
 	// プレイヤー2の、合図発動時点のボタン基準状態を保持（DX_INPUT_PAD2のボタン）
 	bool baseline2[D_BUTTON_MAX];

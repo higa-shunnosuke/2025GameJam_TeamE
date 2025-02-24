@@ -1,5 +1,9 @@
 #include "SignManager.h"
 #include "SignFactory.h"
+#include "MashButtonSign.h"
+#include "RandomSign.h"
+#include "../player/ButtonMatch.h"
+#include "../Utilitys/InputManager.h"
 
 //再度フェイントを発動させるまでのターン
 #define FEINTSIGN_COOLTIME	5
@@ -51,7 +55,7 @@ void SignManager::Update(float delta_second)
 	if (sign->GetIsSign())
 	{
 		//計測
-		//count_time += delta_second;
+		if (sign->GetSignName() == "FeintSign")count_time += delta_second;
 
 		//計測時間がリセットするまでの時間を超えた場合
 		if (count_time > RESET_TIME)
@@ -80,4 +84,82 @@ void SignManager::Draw() const
 SignBase* SignManager::GetSignInstance() const
 {
 	return this->sign;
+}
+
+SignResult SignManager::GetSignResult()
+{
+	ButtonMatch* match = ButtonMatch::GetInstance();
+
+	if (!sign->GetIsSign())
+	{
+		InputManager* input = InputManager::GetInstance();
+
+		if (input->GetButtonDown(0, XINPUT_BUTTON_A) ||
+			input->GetButtonDown(0, XINPUT_BUTTON_B) ||
+			input->GetButtonDown(0, XINPUT_BUTTON_X) ||
+			input->GetButtonDown(0, XINPUT_BUTTON_Y))
+		{
+			return SignResult::Player1_Faul;
+		}
+		if (input->GetButtonDown(1, XINPUT_BUTTON_A) ||
+			input->GetButtonDown(1, XINPUT_BUTTON_B) ||
+			input->GetButtonDown(1, XINPUT_BUTTON_X) ||
+			input->GetButtonDown(1, XINPUT_BUTTON_Y))
+		{
+			return SignResult::Player2_Faul;
+		}
+	}
+	else
+	{
+		if (sign->GetSignName() != "MashButtonSign" && sign->GetSignName() != "RandomSign")
+		{
+			if (match->GetPlayer1Result() == CORRECT)
+			{
+				return SignResult::Player1_Point;
+			}
+			else if (match->GetPlayer2Result() == CORRECT)
+			{
+				return SignResult::Player2_Point;
+			}
+
+			if (match->GetPlayer1Result() == INCORRECT)
+			{
+				return SignResult::Player1_Faul;
+			}
+			else if (match->GetPlayer2Result() == INCORRECT)
+			{
+				return SignResult::Player2_Faul;
+			}
+		}
+		else
+		{
+			if (sign->GetSignName() == "MashButtonSign")
+			{
+				MashButtonSign* mbs_sign = dynamic_cast<MashButtonSign*>(sign);
+
+				if (mbs_sign->IsMaximum(0))
+				{
+					return SignResult::Player1_Point;
+				}
+				else if (mbs_sign->IsMaximum(1))
+				{
+					return SignResult::Player2_Point;
+				}
+			}
+			else if (sign->GetSignName() == "RandomSign")
+			{
+				RandomSign* rs_sign = dynamic_cast<RandomSign*>(sign);
+				if (rs_sign->GetButton(0).empty())
+				{
+					return SignResult::Player1_Point;
+				}
+				else if (rs_sign->GetButton(1).empty())
+				{
+					return SignResult::Player2_Point;
+				}
+			}
+		}
+	}
+
+	return SignResult::None;
 }

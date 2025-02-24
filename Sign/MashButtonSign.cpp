@@ -1,5 +1,6 @@
 #include "MashButtonSign.h"
 #include "../Utilitys/InputManager.h"
+#include "../player/ButtonMatch.h"
 
 #define DEBUG
 
@@ -39,6 +40,21 @@ void MashButtonSign::Update(float delta_second)
 {
 	//親クラスの更新処理
 	__super::Update(delta_second);
+
+	if (is_sign)
+	{
+		ButtonMatch* match = ButtonMatch::GetInstance();
+
+		if (match->GetPlayer1Result() == CORRECT)
+		{
+			score_bar[0] += 10;
+		}
+
+		if (match->GetPlayer2Result() == CORRECT)
+		{
+			score_bar[1] += 10;
+		}
+	}
 
 #ifdef DEBUG
 	InputManager* input = InputManager::GetInstance();
@@ -94,4 +110,16 @@ void MashButtonSign::Draw() const
 std::string MashButtonSign::GetSignName() const
 {
 	return std::string("MashButtonSign");
+}
+
+bool MashButtonSign::IsMaximum(const int element)
+{
+	if (score_bar[element] >= 100)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

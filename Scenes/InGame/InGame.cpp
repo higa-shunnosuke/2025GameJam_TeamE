@@ -32,7 +32,7 @@ void InGame::Initialize()
 	sign_manager->Initialize();
 
 	//ボタン判定クラスの初期化
-	button_match = new ButtonMatch();
+	button_match = ButtonMatch::GetInstance();
 	button_match->ButtonReset();
 
 	//データの初期化
@@ -48,6 +48,8 @@ eSceneType InGame::Update(const float &delta_second)
 	//合図生成クラスの更新
 	sign_manager->Update(delta_second);
 
+	if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
+
 	//ボタン判定クラスの更新
 	button_match->ButtonMatchUpdate();
 
@@ -59,6 +61,32 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::pause;
 	}
 
+	switch (sign_manager->GetSignResult())
+	{
+	case SignResult::Player1_Point:
+		player1.point++;
+		sign_manager->Initialize();
+		button_match->ButtonReset();
+		break;
+	case SignResult::Player1_Faul:
+		player1.faul++;
+		sign_manager->Initialize();
+		button_match->ButtonReset();
+		break;
+	case SignResult::Player2_Point:
+		player2.point++;
+		sign_manager->Initialize();
+		button_match->ButtonReset();
+		break;
+	case SignResult::Player2_Faul:
+		player2.faul++;
+		sign_manager->Initialize();
+		button_match->ButtonReset();
+		break;
+	default:
+		break;
+	}
+
 	////決定
 	//if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
 	//	input->GetKeyDown(KEY_INPUT_RETURN))
@@ -68,6 +96,13 @@ eSceneType InGame::Update(const float &delta_second)
 
 	//どちらかのポイントが３ポイントになったら
 	if (player1.point >= 3 || player2.point >= 3)
+	{
+		//リザルト画面へ
+		return eSceneType::result;
+	}
+
+	//どちらかのファールが３ポイントになったら
+	if (player1.faul >= 2 || player2.faul >= 2)
 	{
 		//リザルト画面へ
 		return eSceneType::result;
