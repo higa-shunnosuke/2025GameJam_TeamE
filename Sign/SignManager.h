@@ -3,7 +3,7 @@
 #include "SignBase.h"
 
 /// <summary>
-/// 合図の結果
+/// 合図の結果状態
 /// </summary>
 enum class SignResult
 {

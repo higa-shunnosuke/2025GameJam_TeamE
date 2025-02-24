@@ -105,12 +105,15 @@ std::string MashButtonSign::GetSignName() const
 
 bool MashButtonSign::IsMaximum(const int element)
 {
+	//値が100以上の場合
 	if (score_bar[element] >= 100)
 	{
+		//最大
 		return true;
 	}
 	else
 	{
+		//最大ではない
 		return false;
 	}
 }

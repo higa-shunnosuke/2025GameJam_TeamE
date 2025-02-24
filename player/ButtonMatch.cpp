@@ -59,19 +59,27 @@ void ButtonMatch::Activate(SignBase* sign)
 
     // GetSignButton() から合図のボタンを取得
     std::vector<int> Player1SignButtons = sign->GetSignButton();
+    //合図がランダム合図の場合
     if (sign->GetSignName() == "RandomSign")
     {
+        //ランダム合図の型にキャストする
         RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        //最初のボタンを取得
         Player1SignButtons = r_s->GetButton(0);
     }
+    //早押し合図の場合
     else if (sign->GetSignName() == "QuickPressSign")
     {
+        //空の場合
         if (Player1SignButtons.empty())
         {
+            //0を追加
             Player1SignButtons.push_back(0);
         }
+        //すでに値がある場合
         else
         {
+            //0を代入
             Player1SignButtons[0] = 0;
         }
     }
@@ -86,19 +94,27 @@ void ButtonMatch::Activate(SignBase* sign)
 
     // GetSignButton() から合図のボタンを取得
     std::vector<int> Player2SignButtons = sign->GetSignButton();
+    //合図がランダム合図の場合
     if (sign->GetSignName() == "RandomSign")
     {
+        //ランダム合図の型にキャストする
         RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        //最初のボタンを取得
         Player2SignButtons = r_s->GetButton(1);
     }
+    //早押し合図の場合
     else if (sign->GetSignName() == "QuickPressSign")
     {
+        //空の場合
         if (Player2SignButtons.empty())
         {
+            //0を追加
             Player2SignButtons.push_back(0);
         }
+        //すでに値がある場合
         else
         {
+            //0を代入
             Player2SignButtons[0] = 0;
         }
     }
@@ -139,6 +155,7 @@ void ButtonMatch::ButtonMatchUpdate()
         }
         else
         {
+            //早押し合図のときA,B,X,Yが押された場合
             if (player1ExpectedButton == 0 &&
                 (InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A) ||
                     InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B) ||
@@ -177,6 +194,7 @@ void ButtonMatch::ButtonMatchUpdate()
         }
         else
         {
+            //早押し合図のときA,B,X,Yが押された場合
             if (player2ExpectedButton == 0 &&
                 (InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A) ||
                     InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B) ||
