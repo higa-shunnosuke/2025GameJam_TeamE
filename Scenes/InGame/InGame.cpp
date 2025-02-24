@@ -1,12 +1,14 @@
 ﻿#include "InGame.h"
 #include "DxLib.h"
 #include "../../Sign/SignManager.h"
+#include "../../player/ButtonMatch.h"
 
 #define FILE_NAME "Resources/datas/InGame_Data.csv"
 
 // コンストラクタ
 InGame::InGame() :
 	sign_manager(nullptr),
+	button_match(nullptr),
 	player1(),
 	player2()
 {
@@ -25,8 +27,13 @@ void InGame::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	//合図生成クラスの初期化
 	sign_manager = new SignManager();
 	sign_manager->Initialize();
+
+	//ボタン判定クラスの初期化
+	button_match = new ButtonMatch();
+	button_match->ButtonReset();
 
 	//データの初期化
 	ReadData();
@@ -38,7 +45,11 @@ eSceneType InGame::Update(const float &delta_second)
 	//入力管理クラスのポインタ
 	InputManager* input = InputManager::GetInstance();
 
+	//合図生成クラスの更新
 	sign_manager->Update(delta_second);
+
+	//ボタン判定クラスの更新
+	button_match->ButtonMatchUpdate();
 
 	//スタートボタンが押されたら
 	if (input->GetButtonDown(XINPUT_BUTTON_START) == true ||
@@ -48,12 +59,12 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::pause;
 	}
 
-	//決定
-	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
-		input->GetKeyDown(KEY_INPUT_RETURN))
-	{
-		player1.point++;
-	}
+	////決定
+	//if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+	//	input->GetKeyDown(KEY_INPUT_RETURN))
+	//{
+	//	player1.point++;
+	//}
 
 	//どちらかのポイントが３ポイントになったら
 	if (player1.point >= 3 || player2.point >= 3)

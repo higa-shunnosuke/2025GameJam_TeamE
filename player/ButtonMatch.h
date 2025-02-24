@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Sign/SignBase.h"
 #include "../Utilitys/InputManager.h"
+#include "../Utilitys/Singleton.h"
 #include <DxLib.h>
 #include <vector>
 #include <cstring>
@@ -12,7 +13,7 @@ enum JudgeResult {
 	INCORRECT   // 不正解
 };
 
-class ButtonMatch
+class ButtonMatch : public Singleton<ButtonMatch>
 {
 public:
 	/// <summary>

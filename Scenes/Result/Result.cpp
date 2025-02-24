@@ -4,7 +4,9 @@
 #define FILE_NAME "Resources/datas/InGame_Data.csv"
 
 // コンストラクタ
-Result::Result()
+Result::Result():
+	player1(),
+	player2()
 {
 
 }

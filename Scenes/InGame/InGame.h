@@ -6,6 +6,7 @@ class InGame : public SceneBase
 {
 private:
 	class SignManager* sign_manager;
+	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
 
