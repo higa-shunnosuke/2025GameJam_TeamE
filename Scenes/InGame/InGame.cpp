@@ -52,7 +52,7 @@ eSceneType InGame::Update(const float &delta_second)
 	button_match->ButtonMatchUpdate();
 
 	//スタートボタンが押されたら
-	if (input->GetButtonDown(XINPUT_BUTTON_START) == true ||
+	if (input->GetButtonDown(0, XINPUT_BUTTON_START) == true ||
 		input->GetKeyDown(KEY_INPUT_TAB))
 	{
 		//ポーズ画面へ
@@ -89,6 +89,16 @@ void InGame::Draw() const
 	DrawFormatString(500, 40, 0xffffff, "point:%d",player2.point);
 	DrawFormatString(500, 70, 0xffffff, "faul:%d",player2.faul);
 
+	//入力管理クラスのポインタ
+	InputManager* input = InputManager::GetInstance();
+	if (input->GetButton(0,XINPUT_BUTTON_A) == true)
+	{
+		DrawFormatString(100, 100, 0xffffff, "A");
+	}
+	if (input->GetButton(1, XINPUT_BUTTON_A) == true)
+	{
+		DrawFormatString(400, 100, 0xffffff, "A");
+	}
 
 	sign_manager->Draw();
 }

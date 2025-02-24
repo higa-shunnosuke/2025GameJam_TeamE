@@ -33,7 +33,7 @@ eSceneType Result::Update(const float &delta_second)
 	InputManager* input = InputManager::GetInstance();
 
 	//決定
-	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+	if (input->GetButtonDown(0, XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
 		//タイトル画面へ

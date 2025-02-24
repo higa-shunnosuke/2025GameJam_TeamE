@@ -86,7 +86,7 @@ void ButtonMatch::ButtonMatchUpdate()
     if (!player1Judged)
     {
         // 期待するボタンが新たに押された場合
-        if (IsAllowedButton(expectedButton) && InputManager::GetInstance()->GetButtonDown(expectedButton))
+        if (IsAllowedButton(expectedButton) && InputManager::GetInstance()->GetButtonDown(0, expectedButton))
         {
             player1Result = CORRECT;
             player1ReactionTime = GetNowCount() - activationTime;
@@ -95,10 +95,10 @@ void ButtonMatch::ButtonMatchUpdate()
         else
         {
             // 期待ボタン以外の対象ボタンが押された場合は不正解
-            if ((expectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_A)) ||
-                (expectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_B)) ||
-                (expectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_X)) ||
-                (expectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_Y)))
+            if ((expectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A)) ||
+                (expectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B)) ||
+                (expectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X)) ||
+                (expectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
             {
                 player1Result = INCORRECT;
                 player1ReactionTime = GetNowCount() - activationTime;

@@ -13,41 +13,18 @@
 class InputManager : public Singleton<InputManager>
 {
 private:
-	// 自クラスのポインタ（実体をアドレスの先で保有）
-	static InputManager* instance;
-
 	// キー入力情報
 	char now_key[D_KEYCODE_MAX];		// 現在の入力値
 	char old_key[D_KEYCODE_MAX];		// 前回の入力値
 
 	// コントローラー入力情報
-	bool now_button[D_BUTTON_MAX];		// 現在のボタン入力値
-	bool old_button[D_BUTTON_MAX];		// 前回のボタン入力値
-	float trigger[2];					// トリガー入力値（0.0f～1.0f）
-	Vector2D stick[2];					// スティック入力値（-1.0f～1.0f）
-
-private:
-	// クラスの実体をメンバ関数内でしか生成できないようにする
-	InputManager() = default;
-	// コピーガード
-	InputManager(const InputManager& v) = delete;
-	InputManager& operator = (const InputManager& v) = delete;
-	// ~コピーガード
+	bool now_button[2][D_BUTTON_MAX];		// 現在のボタン入力値
+	bool old_button[2][D_BUTTON_MAX];		// 前回のボタン入力値
+	float trigger[2][2];					// トリガー入力値（0.0f～1.0f）
+	Vector2D stick[2][2];					// スティック入力値（-1.0f～1.0f）
 
 public:
 	~InputManager() = default;
-
-public:
-	/// <summary>
-	/// インスタンス取得処理
-	/// </summary>
-	/// <returns>インスタンスのポインタを返却する</returns>
-	static InputManager* GetInstance();
-
-	/// <summary>
-	/// インスタンス削除処理
-	/// </summary>
-	static void DeleteInstance();
 
 public:
 	/// <summary>
@@ -84,43 +61,43 @@ public:
 	/// </summary>
 	/// <param name="button">割り当てられたボタン</param>
 	/// <returns>押されていたら、true</returns>
-	bool GetButton(int button) const;
+	bool GetButton(int i, int button) const;
 	/// <summary>
 	/// コントローラーのボタンが押された瞬間か確認する
 	/// </summary>
 	/// <param name="button">割り当てられたボタン</param>
 	/// <returns>押された瞬間なら、true</returns>
-	bool GetButtonDown(int button) const;
+	bool GetButtonDown(int i, int button) const;
 	/// <summary>
 	/// コントローラーのボタンが離された瞬間か確認する
 	/// </summary>
 	/// <param name="button">割り当てられたボタン</param>
 	/// <returns>離された瞬間なら、true</returns>
-	bool GetButtonUp(int button) const;
+	bool GetButtonUp(int i, int button) const;
 
 	/// <summary>
 	/// 左トリガー入力状態取得
 	/// </summary>
 	/// <returns>左トリガー入力状態(0.0f～1.0f)</returns>
-	float GetLeftTrigger() const;
+	float GetLeftTrigger(int i) const;
 
 	/// <summary>
 	/// 右トリガー入力状態取得
 	/// </summary>
 	/// <returns>右トリガー入力状態(0.0f～1.0f)</returns>
-	float GetRightTrigger() const;
+	float GetRightTrigger(int i) const;
 
 	/// <summary>
 	/// 左スティック入力状態取得
 	/// </summary>
 	/// <returns>左スティック入力状態(-1.0f～1.0f)</returns>
-	Vector2D GetLeftStick() const;
+	Vector2D GetLeftStick(int i) const;
 
 	/// <summary>
 	/// 右スティック入力状態取得
 	/// </summary>
 	/// <returns>右スティック入力状態(-1.0f～1.0f)</returns>
-	Vector2D GetRightStick() const;
+	Vector2D GetRightStick(int i) const;
 
 private:
 	/// <summary>
