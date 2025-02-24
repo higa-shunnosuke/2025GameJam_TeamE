@@ -1,7 +1,7 @@
-#include <DxLib.h>
+ï»¿#include <DxLib.h>
 #include <cstring> 
 #include "ButtonMatch.h"
-
+#include "../Sign/RandomSign.h"
 
 ButtonMatch::ButtonMatch()
     : activated(false),
@@ -9,7 +9,8 @@ ButtonMatch::ButtonMatch()
     player2Judged(false),
     player1Result(UNJUDGED),
     player2Result(UNJUDGED),
-    expectedButton(-1),
+    player1ExpectedButton(-1),
+    player2ExpectedButton(-1),
     activationTime(0),
     player1ReactionTime(0),
     player2ReactionTime(0)
@@ -29,7 +30,8 @@ void ButtonMatch::ButtonReset()
     player2Judged = false;
     player1Result = UNJUDGED;
     player2Result = UNJUDGED;
-    expectedButton = -1;
+    player1ExpectedButton = -1;
+    player2ExpectedButton = -1;
     activationTime = 0;
     player1ReactionTime = 0;
     player2ReactionTime = 0;
@@ -44,29 +46,88 @@ bool ButtonMatch::IsAllowedButton(int button) const
         button == XINPUT_BUTTON_Y);
 }
 
-void ButtonMatch::Activate(const SignBase* sign)
+void ButtonMatch::Activate(SignBase* sign)
 {
     if (!sign) return;
 
-    // ‡}”­“®ƒtƒ‰ƒO‚ğ—§‚ÄA”»’è‚Ìó‘Ô‚ğƒŠƒZƒbƒg
+    // åˆå›³ç™ºå‹•ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã€åˆ¤å®šã®çŠ¶æ…‹ã‚’ãƒªã‚»ãƒƒãƒˆ
     activated = true;
     player1Judged = false;
     player2Judged = false;
     player1Result = UNJUDGED;
     player2Result = UNJUDGED;
 
-    // GetSignButton() ‚©‚ç‡}‚Ìƒ{ƒ^ƒ“‚ğæ“¾
-    std::vector<int> signButtons = sign->GetSignButton();
-    if (!signButtons.empty())
+    // GetSignButton() ã‹ã‚‰åˆå›³ã®ãƒœã‚¿ãƒ³ã‚’å–å¾—
+    std::vector<int> Player1SignButtons = sign->GetSignButton();
+    //åˆå›³ãŒãƒ©ãƒ³ãƒ€ãƒ åˆå›³ã®å ´åˆ
+    if (sign->GetSignName() == "RandomSign")
     {
-        expectedButton = signButtons[0];
+        //ãƒ©ãƒ³ãƒ€ãƒ åˆå›³ã®å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹
+        RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        //æœ€åˆã®ãƒœã‚¿ãƒ³ã‚’å–å¾—
+        Player1SignButtons = r_s->GetButton(0);
+    }
+    //æ—©æŠ¼ã—åˆå›³ã®å ´åˆ
+    else if (sign->GetSignName() == "QuickPressSign")
+    {
+        //ç©ºã®å ´åˆ
+        if (Player1SignButtons.empty())
+        {
+            //0ã‚’è¿½åŠ 
+            Player1SignButtons.push_back(0);
+        }
+        //ã™ã§ã«å€¤ãŒã‚ã‚‹å ´åˆ
+        else
+        {
+            //0ã‚’ä»£å…¥
+            Player1SignButtons[0] = 0;
+        }
+    }
+    if (!Player1SignButtons.empty())
+    {
+        player1ExpectedButton = Player1SignButtons[0];
     }
     else
     {
-        expectedButton = -1;
+        player1ExpectedButton = -1;
     }
 
-    // ƒvƒŒƒCƒ„[‚Q‚ÌŒ»İ‚Ìƒ{ƒ^ƒ“ó‘Ô‚ğŠî€‚Æ‚µ‚Ä‹L˜^
+    // GetSignButton() ã‹ã‚‰åˆå›³ã®ãƒœã‚¿ãƒ³ã‚’å–å¾—
+    std::vector<int> Player2SignButtons = sign->GetSignButton();
+    //åˆå›³ãŒãƒ©ãƒ³ãƒ€ãƒ åˆå›³ã®å ´åˆ
+    if (sign->GetSignName() == "RandomSign")
+    {
+        //ãƒ©ãƒ³ãƒ€ãƒ åˆå›³ã®å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã™ã‚‹
+        RandomSign* r_s = dynamic_cast<RandomSign*>(sign);
+        //æœ€åˆã®ãƒœã‚¿ãƒ³ã‚’å–å¾—
+        Player2SignButtons = r_s->GetButton(1);
+    }
+    //æ—©æŠ¼ã—åˆå›³ã®å ´åˆ
+    else if (sign->GetSignName() == "QuickPressSign")
+    {
+        //ç©ºã®å ´åˆ
+        if (Player2SignButtons.empty())
+        {
+            //0ã‚’è¿½åŠ 
+            Player2SignButtons.push_back(0);
+        }
+        //ã™ã§ã«å€¤ãŒã‚ã‚‹å ´åˆ
+        else
+        {
+            //0ã‚’ä»£å…¥
+            Player2SignButtons[0] = 0;
+        }
+    }
+    if (!Player2SignButtons.empty())
+    {
+        player2ExpectedButton = Player2SignButtons[0];
+    }
+    else
+    {
+        player2ExpectedButton = -1;
+    }
+
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼’ã®ç¾åœ¨ã®ãƒœã‚¿ãƒ³çŠ¶æ…‹ã‚’åŸºæº–ã¨ã—ã¦è¨˜éŒ²
     XINPUT_STATE state2 = {};
     GetJoypadXInputState(DX_INPUT_PAD2, &state2);
     for (int i = 0; i < D_BUTTON_MAX; i++)
@@ -74,7 +135,7 @@ void ButtonMatch::Activate(const SignBase* sign)
         baseline2[i] = (state2.Buttons[i] != 0);
     }
 
-    // ‡}”­“®‚ğ‹L˜^iƒ~ƒŠ•b’PˆÊj
+    // åˆå›³ç™ºå‹•æ™‚åˆ»ã‚’è¨˜éŒ²ï¼ˆãƒŸãƒªç§’å˜ä½ï¼‰
     activationTime = GetNowCount();
 }
 
@@ -82,11 +143,11 @@ void ButtonMatch::ButtonMatchUpdate()
 {
     if (!activated) return;
 
-    // --- ƒvƒŒƒCƒ„[‚P‚Ì”»’è ---
+    // --- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼‘ã®åˆ¤å®š ---
     if (!player1Judged)
     {
-        // Šú‘Ò‚·‚éƒ{ƒ^ƒ“‚ªV‚½‚É‰Ÿ‚³‚ê‚½ê‡
-        if (IsAllowedButton(expectedButton) && InputManager::GetInstance()->GetButtonDown(expectedButton))
+        // æœŸå¾…ã™ã‚‹ãƒœã‚¿ãƒ³ãŒæ–°ãŸã«æŠ¼ã•ã‚ŒãŸå ´åˆ
+        if (IsAllowedButton(player1ExpectedButton) && InputManager::GetInstance()->GetButtonDown(0, player1ExpectedButton))
         {
             player1Result = CORRECT;
             player1ReactionTime = GetNowCount() - activationTime;
@@ -94,43 +155,68 @@ void ButtonMatch::ButtonMatchUpdate()
         }
         else
         {
-            // Šú‘Òƒ{ƒ^ƒ“ˆÈŠO‚Ì‘ÎÛƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½ê‡‚Í•s³‰ğ
-            if ((expectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_A)) ||
-                (expectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_B)) ||
-                (expectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_X)) ||
-                (expectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(XINPUT_BUTTON_Y)))
+            //æ—©æŠ¼ã—åˆå›³ã®ã¨ãA,B,X,YãŒæŠ¼ã•ã‚ŒãŸå ´åˆ
+            if (player1ExpectedButton == 0 &&
+                (InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X) ||
+                    InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
             {
-                player1Result = INCORRECT;
+                player1Result = CORRECT;
                 player1ReactionTime = GetNowCount() - activationTime;
                 player1Judged = true;
+            }
+            else
+            {
+                // æœŸå¾…ãƒœã‚¿ãƒ³ä»¥å¤–ã®å¯¾è±¡ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ä¸æ­£è§£
+                if ((player1ExpectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_A)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_B)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_X)) ||
+                    (player1ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
+                {
+                    player1Result = INCORRECT;
+                    player1ReactionTime = GetNowCount() - activationTime;
+                    player1Judged = true;
+                }
             }
         }
     }
 
-    // --- ƒvƒŒƒCƒ„[‚Q‚Ì”»’è ---
-    // Œ»İ‚Ìó‘Ô‚ğæ“¾‚µA‡}”­“®‚ÌŠî€ibaseline2j‚Æ‚Ì·•ª‚ÅV‚½‚È“ü—Í‚ğŒŸo‚µ‚Ü‚·
-    XINPUT_STATE state2 = {};
-    GetJoypadXInputState(DX_INPUT_PAD2, &state2);
+    // --- ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ï¼’ã®åˆ¤å®š ---
     if (!player2Judged)
     {
-        int allowedButtons[4] = { XINPUT_BUTTON_A, XINPUT_BUTTON_B, XINPUT_BUTTON_X, XINPUT_BUTTON_Y };
-        for (int i = 0; i < 4; i++)
+        // æœŸå¾…ã™ã‚‹ãƒœã‚¿ãƒ³ãŒæ–°ãŸã«æŠ¼ã•ã‚ŒãŸå ´åˆ
+        if (IsAllowedButton(player2ExpectedButton) && InputManager::GetInstance()->GetButtonDown(1, player2ExpectedButton))
         {
-            int btn = allowedButtons[i];
-            bool currentPressed = (state2.Buttons[btn] != 0);
-            // Šî€ó‘Ô‚Å–¢‰Ÿ‰º‚¾‚Á‚½‚Ì‚ÉAŒ»İV‚½‚É‰Ÿ‚³‚ê‚½ê‡‚ğŒŸo
-            if (currentPressed && !baseline2[btn])
+            player2Result = CORRECT;
+            player2ReactionTime = GetNowCount() - activationTime;
+            player2Judged = true;
+        }
+        else
+        {
+            //æ—©æŠ¼ã—åˆå›³ã®ã¨ãA,B,X,YãŒæŠ¼ã•ã‚ŒãŸå ´åˆ
+            if (player2ExpectedButton == 0 &&
+                (InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X) ||
+                    InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
             {
-                if (btn == expectedButton)
-                {
-                    player2Result = CORRECT;
-                }
-                else
+                player2Result = CORRECT;
+                player2ReactionTime = GetNowCount() - activationTime;
+                player2Judged = true;
+            }
+            else
+            {
+                // æœŸå¾…ãƒœã‚¿ãƒ³ä»¥å¤–ã®å¯¾è±¡ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸå ´åˆã¯ä¸æ­£è§£
+                if ((player2ExpectedButton != XINPUT_BUTTON_A && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_A)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_B && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_B)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_X && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_X)) ||
+                    (player2ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
                 {
                     player2Result = INCORRECT;
+                    player2ReactionTime = GetNowCount() - activationTime;
+                    player2Judged = true;
                 }
-                player2Judged = true;
-                break;
             }
         }
     }

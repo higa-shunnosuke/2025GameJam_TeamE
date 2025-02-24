@@ -63,7 +63,7 @@ eSceneType Pause::Update(const float &delta_second)
 	}
 
 	//カーソルを下へ動かす
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_DOWN) == true ||
+	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_DOWN) == true ||
 		input->GetKeyDown(KEY_INPUT_DOWN))
 	{
 		if (cursor > 1)
@@ -77,7 +77,7 @@ eSceneType Pause::Update(const float &delta_second)
 	}
 
 	//カーソルを上に動かす
-	if (input->GetButtonDown(XINPUT_BUTTON_DPAD_UP) == true ||
+	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_UP) == true ||
 		input->GetKeyDown(KEY_INPUT_UP))
 	{
 		if (cursor < 0)
@@ -91,7 +91,7 @@ eSceneType Pause::Update(const float &delta_second)
 	}
 
 	//決定
-	if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
+	if (input->GetButtonDown(0, XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
 		if (cursor == 0)

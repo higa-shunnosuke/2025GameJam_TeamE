@@ -49,4 +49,12 @@ public:
 	/// <returns>合図の名前</returns>
 	virtual std::string GetSignName()const override;
 
+public:
+	/// <summary>
+	///	バーが最大かどうか取得する
+	/// </summary>
+	/// <param name="element">配列番号</param>
+	/// <returns>true :最大	false : 最大ではない</returns>
+	bool IsMaximum(const int element);
+
 };

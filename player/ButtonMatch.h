@@ -1,99 +1,101 @@
-#pragma once
+﻿#pragma once
 #include "../Sign/SignBase.h"
 #include "../Utilitys/InputManager.h"
+#include "../Utilitys/Singleton.h"
 #include <DxLib.h>
 #include <vector>
 #include <cstring>
 
-//���茋��
+//判定結果
 enum JudgeResult {
-	UNJUDGED,   // ������
-	CORRECT,    // ����
-	INCORRECT   // �s����
+	UNJUDGED,   // 未判定
+	CORRECT,    // 正解
+	INCORRECT   // 不正解
 };
 
-class ButtonMatch
+class ButtonMatch : public Singleton<ButtonMatch>
 {
 public:
 	/// <summary>
-	/// �R���X�g���N�^
+	/// コンストラクタ
 	/// </summary>
 	ButtonMatch();
 	
 	/// <summary>
-	/// �f�X�g���N�^
+	/// デストラクタ
 	/// </summary>
 	~ButtonMatch();
 
 	/// <summary>
-	/// ���}�����������ۂɊO������Ăяo���ƁA
-	/// sign���獇�}���擾���ăv���C���[2�̏�Ԃ��L�^����
-	/// ���}�����������L�^����
+	/// 合図が発動した際に外部から呼び出すと、
+	/// signから合図を取得してプレイヤー2の状態を記録する
+	/// 合図発動時刻も記録する
 	/// </summary>
-	/// <param name="sign">SignBase�N���X�̃I�u�W�F�N�g�̃|�C���^</param>
-	void Activate(const SignBase* sign);
+	/// <param name="sign">SignBaseクラスのオブジェクトのポインタ</param>
+	void Activate(SignBase* sign);
 
 	/// <summary>
-	/// ���}������A���t���[���Ăяo���ē��͂��X�V�����肵�Ă��������B
+	/// 合図発動後、毎フレーム呼び出して入力を更新し判定してください。
 	/// </summary>
 	void ButtonMatchUpdate();
 
 	/// <summary>
-	/// �v���C���[1�̔��茋��
+	/// プレイヤー1の判定結果
 	/// </summary>
-	/// <returns>UNJUDGED:������
-	///  CORRECT:����
-	/// INCORRECT:�s����</returns>
+	/// <returns>UNJUDGED:未判定
+	///  CORRECT:正解
+	/// INCORRECT:不正解</returns>
 	JudgeResult GetPlayer1Result() const;
 
 	/// <summary>
-	/// �v���C���[2�̔��茋��
+	/// プレイヤー2の判定結果
 	/// </summary>
-	/// <returns>UNJUDGED:������
-	///  CORRECT:����
-	/// INCORRECT:�s����</returns>
+	/// <returns>UNJUDGED:未判定
+	///  CORRECT:正解
+	/// INCORRECT:不正解</returns>
 	JudgeResult GetPlayer2Result() const;
 
 	/// <summary>
-	/// �v���C���[1�̔������Ԏ擾
+	/// プレイヤー1の反応時間取得
 	/// </summary>
-	/// <returns>�v���C���[1�̔������ԁi�~���b�j</returns>
+	/// <returns>プレイヤー1の反応時間（ミリ秒）</returns>
 	unsigned int GetPlayer1ReactionTime() const;
 
 	/// <summary>
-	/// �v���C���[2�̔������Ԏ擾
+	/// プレイヤー2の反応時間取得
 	/// </summary>
-	/// <returns>�v���C���[2�̔������ԁi�~���b�j</returns>
+	/// <returns>プレイヤー2の反応時間（ミリ秒）</returns>
 	unsigned int GetPlayer2ReactionTime() const;
 
 	/// <summary>
-	/// ������Ԃ̃��Z�b�g�i�V�������E���h�J�n���Ɏg���Ă��������j
+	/// 内部状態のリセット（新しいラウンド開始時に使ってください）
 	/// </summary>
 	void ButtonReset();
 
 private:
 
-	bool activated;       // ���}�����ς݂��ǂ���
-	bool player1Judged;   // �v���C���[1�͂��łɔ���ς݂�
-	bool player2Judged;   // �v���C���[2�͂��łɔ���ς݂�
-	JudgeResult player1Result;	//�v���C���[1�̔���󂯓n���p�̕ϐ�
-	JudgeResult player2Result;	//�v���C���[2�̔���󂯓n���p�̕ϐ�
-	int expectedButton;   // ���}������擾�����A���҂����{�^��
+	bool activated;       // 合図発動済みかどうか
+	bool player1Judged;   // プレイヤー1はすでに判定済みか
+	bool player2Judged;   // プレイヤー2はすでに判定済みか
+	JudgeResult player1Result;	//プレイヤー1の判定受け渡し用の変数
+	JudgeResult player2Result;	//プレイヤー2の判定受け渡し用の変数
+	int player1ExpectedButton;   // 合図側から取得した、期待されるプレイヤー1のボタン
+	int player2ExpectedButton;   // 合図側から取得した、期待されるプレイヤー2のボタン
 
-	// �v���C���[2�́A���}�������_�̃{�^�����Ԃ�ێ��iDX_INPUT_PAD2�̃{�^���j
+	// プレイヤー2の、合図発動時点のボタン基準状態を保持（DX_INPUT_PAD2のボタン）
 	bool baseline2[D_BUTTON_MAX];
 
-	// ���}���������i�~���b�j��ێ����܂��BDxLib��GetNowCount() �̖߂�l���g�p�B
+	// 合図発動時刻（ミリ秒）を保持します。DxLibのGetNowCount() の戻り値を使用。
 	unsigned int activationTime;
-	// �e�v���C���[�̔������ԁi���}����������͌��o�܂ł̌o�ߎ��ԁA�~���b�j
+	// 各プレイヤーの反応時間（合図発動から入力検出までの経過時間、ミリ秒）
 	unsigned int player1ReactionTime;
 	unsigned int player2ReactionTime;
 
 	/// <summary>
-	/// 4�̃{�^���iA, B, X, Y�j�̓��͂��ǂ������肵�܂��B
+	/// 4つのボタン（A, B, X, Y）の入力かどうか判定します。
 	/// </summary>
-	/// <param name="button">����Ώۂ̃{�^���̃R�[�h</param>
-	/// <returns>True:4�̃{�^���iA, B, X, Y)�̂����ꂩ False:����ȊO</returns>
+	/// <param name="button">判定対象のボタンのコード</param>
+	/// <returns>True:4つのボタン（A, B, X, Y)のいずれか False:それ以外</returns>
 	bool IsAllowedButton(int button) const;
 };
 

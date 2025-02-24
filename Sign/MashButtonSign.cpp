@@ -1,7 +1,6 @@
 #include "MashButtonSign.h"
 #include "../Utilitys/InputManager.h"
-
-#define DEBUG
+#include "../player/ButtonMatch.h"
 
 MashButtonSign::MashButtonSign()
 {
@@ -40,20 +39,28 @@ void MashButtonSign::Update(float delta_second)
 	//親クラスの更新処理
 	__super::Update(delta_second);
 
-#ifdef DEBUG
-	InputManager* input = InputManager::GetInstance();
-	if (input->GetKeyDown(KEY_INPUT_F))
+	//合図を出す場合
+	if (is_sign)
 	{
-		score_bar[0] += 10;
+		//プレイヤーの入力インスタンスを取得
+		ButtonMatch* match = ButtonMatch::GetInstance();
+
+		//プレイヤー1の判定結果が正解の場合
+		if (match->GetPlayer1Result() == CORRECT)
+		{
+			//スコアを加算する
+			score_bar[0] += 10;
+		}
+
+		//プレイヤー2の判定結果が正解の場合
+		if (match->GetPlayer2Result() == CORRECT)
+		{
+			//スコアを加算する
+			score_bar[1] += 10;
+		}
 	}
 
-	if (input->GetKeyDown(KEY_INPUT_J))
-	{
-		score_bar[1] += 10;
-	}
-
-#endif // DEBUG
-
+	//100を超えないようにする
 	if (score_bar[0] > 100)score_bar[0] = 100;
 	if (score_bar[1] > 100)score_bar[1] = 100;
 }
@@ -94,4 +101,19 @@ void MashButtonSign::Draw() const
 std::string MashButtonSign::GetSignName() const
 {
 	return std::string("MashButtonSign");
+}
+
+bool MashButtonSign::IsMaximum(const int element)
+{
+	//値が100以上の場合
+	if (score_bar[element] >= 100)
+	{
+		//最大
+		return true;
+	}
+	else
+	{
+		//最大ではない
+		return false;
+	}
 }

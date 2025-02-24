@@ -2,18 +2,14 @@
 
 #include "..//SceneBase.h"
 
-//データ
-struct Data {
-	int point;	//ポイント数
-	int faul;	//ファウル数
-};
-
 class InGame : public SceneBase
 {
 private:
 	class SignManager* sign_manager;
+	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
+	int bg_image;	//背景画像
 
 public:
 	// コンストラクタ
@@ -54,4 +50,9 @@ private:
 	/// ファイルデータ書き込み処理
 	/// </summary>
 	void WriteData();
+
+	/// <summary>
+	/// ファイルデータ読み込み処理
+	/// </summary>
+	void ReadData();
 };

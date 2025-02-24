@@ -1,7 +1,6 @@
 #include "RandomSign.h"
 #include "../Utilitys/InputManager.h"
-
-#define DEBUG
+#include "../player/ButtonMatch.h"
 
 //押させるボタンの最大数
 #define MAX_RANDOM_BUTTON	4
@@ -20,6 +19,9 @@ void RandomSign::Initialize()
 {
 	//親クラスの初期化処理
 	__super::Initialize();
+
+	//空にしておく
+	sign_button.clear();
 
 	for (int i = 0; i < MAX_RANDOM_BUTTON; i++)
 	{
@@ -46,20 +48,26 @@ void RandomSign::Update(float delta_second)
 	//親クラスの更新処理
 	__super::Update(delta_second);
 
-#ifdef DEBUG
-	InputManager* input = InputManager::GetInstance();
-	if (input->GetKeyDown(KEY_INPUT_F))
+	//合図を出す場合
+	if (is_sign)
 	{
+		//プレイヤーの入力インスタンスを取得
+		ButtonMatch* match = ButtonMatch::GetInstance();
 
+		//プレイヤー1の判定結果が正解の場合
+		if (match->GetPlayer1Result() == CORRECT)
+		{
+			//最初の要素を削除する
+			button[0].erase(button[0].begin());
+		}
+
+		//プレイヤー2の判定結果が正解の場合
+		if (match->GetPlayer2Result() == CORRECT)
+		{
+			//最初の要素を削除する
+			button[1].erase(button[1].begin());
+		}
 	}
-
-	if (input->GetKeyDown(KEY_INPUT_J))
-	{
-		
-	}
-
-#endif // DEBUG
-
 }
 
 void RandomSign::Finalize()
@@ -81,40 +89,64 @@ void RandomSign::Draw() const
 		DrawFormatString(320, 120, 0xffffff, "Press in Order！");
 		SetFontSize(32);
 
-		//ボタンの合図を描画
-		for (int i = 0; i < MAX_RANDOM_BUTTON; i++)
+		//プレイヤー1のボタンの合図を描画
+		for (int i = 0; i < button[0].size(); i++)
 		{
-			switch (sign_button[i])
+			switch (button[0][i])
 			{
 			case XINPUT_BUTTON_A:
 				//Aボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "A");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "A");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "A");
 				break;
 
 			case XINPUT_BUTTON_B:
 				//Bボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "B");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "B");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "B");
 				break;
 
 			case XINPUT_BUTTON_X:
 				//Xボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "X");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "X");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "X");
 				break;
 
 			case XINPUT_BUTTON_Y:
 				//Yボタンの合図を描画
-				DrawFormatString(120, 140 + (i * 40), 0xffffff, "Y");
-				DrawFormatString(420, 140 + (i * 40), 0xffffff, "Y");
+				DrawFormatString(120, 260 - (i * 40), 0xffffff, "Y");
 				break;
 
 			default:
 				break;
 			}
 		}
+		//プレイヤー2のボタンの合図を描画
+		for (int i = 0; i < button[1].size(); i++)
+		{
+			switch (button[1][i])
+			{
+			case XINPUT_BUTTON_A:
+				//Aボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "A");
+				break;
 
+			case XINPUT_BUTTON_B:
+				//Bボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "B");
+				break;
+
+			case XINPUT_BUTTON_X:
+				//Xボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "X");
+				break;
+
+			case XINPUT_BUTTON_Y:
+				//Yボタンの合図を描画
+				DrawFormatString(420, 260 - (i * 40), 0xffffff, "Y");
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 }
 

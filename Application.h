@@ -84,7 +84,7 @@ public:
 			manager->Update(delta_second);
 
 			// ゲームを終了するか確認する
-			if (input->GetButtonDown(XINPUT_BUTTON_BACK) == true ||
+			if (input->GetButtonDown(0,XINPUT_BUTTON_BACK) == true ||
 				input->GetKeyDown(KEY_INPUT_ESCAPE) == true)
 			{
 				break;

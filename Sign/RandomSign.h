@@ -49,5 +49,13 @@ public:
 	/// <returns>合図の名前</returns>
 	virtual std::string GetSignName()const override;
 
+public:
+	/// <summary>
+	/// ボタンを取得
+	/// </summary>
+	/// <param name="element">配列番号</param>
+	/// <returns>ボタン</returns>
+	std::vector<int> GetButton(const int element) { return button[element]; }
+
 };
 
