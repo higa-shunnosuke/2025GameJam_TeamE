@@ -128,7 +128,7 @@ eSceneType InGame::Update(const float &delta_second)
 	}
 
 	//どちらかのファールが３ポイントになったら
-	if (player1.foul >= 3 || player2.foul >= 2)
+	if (player1.foul >= 2 || player2.foul >= 2)
 	{
 		//リザルト画面へ
 		return eSceneType::result;
