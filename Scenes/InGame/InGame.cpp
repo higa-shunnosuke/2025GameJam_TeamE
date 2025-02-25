@@ -78,7 +78,7 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::cut;
 		break;
 	case SignResult::Player1_Foul:
-		player1.faul++;
+		player1.foul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
 		break;
@@ -89,7 +89,7 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::cut;
 		break;
 	case SignResult::Player2_Foul:
-		player2.faul++;
+		player2.foul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
 		break;
@@ -105,7 +105,7 @@ eSceneType InGame::Update(const float &delta_second)
 	}
 
 	//どちらかのファールが３ポイントになったら
-	if (player1.faul >= 3 || player2.faul >= 2)
+	if (player1.foul >= 3 || player2.foul >= 2)
 	{
 		//リザルト画面へ
 		return eSceneType::result;
@@ -126,9 +126,9 @@ void InGame::Draw() const
 
 	DrawFormatString(10, 10, 0xffffff, "InGame");
 	DrawFormatString(10, 40, 0xffffff, "point:%d",player1.point);
-	DrawFormatString(10, 70, 0xffffff, "faul:%d",player1.faul);
+	DrawFormatString(10, 70, 0xffffff, "foul:%d",player1.foul);
 	DrawFormatString(500, 40, 0xffffff, "point:%d",player2.point);
-	DrawFormatString(500, 70, 0xffffff, "faul:%d",player2.faul);
+	DrawFormatString(500, 70, 0xffffff, "foul:%d",player2.foul);
 
 	sign_manager->Draw();
 }
@@ -166,8 +166,8 @@ void InGame::WriteData()
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d\n", player1.point, player1.faul);
-		fprintf_s(fp, "%d,%d\n", player2.point, player2.faul);
+		fprintf_s(fp, "%d,%d\n", player1.point, player1.foul);
+		fprintf_s(fp, "%d,%d\n", player2.point, player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);
@@ -189,8 +189,8 @@ void InGame::ReadData()
 	else
 	{
 		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.faul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.faul);
+		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
+		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);

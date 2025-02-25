@@ -59,12 +59,12 @@ void Result::Draw() const
 	DrawFormatString(10, 10, 0xffffff, "Result");
 
 	//プレイヤー１の勝利条件
-	if (player1.point > player2.point || player1.faul < player2.faul)
+	if (player1.point > player2.point || player1.foul < player2.foul)
 	{
 		DrawFormatString(250, 240, 0xffffff, "Player1 Win");
 	}
 	//プレイヤー２の勝利条件
-	else if (player1.point < player2.point || player1.faul > player2.faul)
+	else if (player1.point < player2.point || player1.foul > player2.foul)
 	{
 		DrawFormatString(250, 240, 0xffffff, "Player2 Win");
 	}
@@ -100,8 +100,8 @@ void Result::ReadData()
 	else
 	{
 		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.faul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.faul);
+		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
+		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);

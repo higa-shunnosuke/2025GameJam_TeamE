@@ -140,8 +140,8 @@ void CutScene::ReadData()
 	else
 	{
 		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.faul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.faul);
+		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
+		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);
