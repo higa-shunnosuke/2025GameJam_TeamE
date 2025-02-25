@@ -12,8 +12,8 @@ CutScene::CutScene() :
 	now_t(),
 	old_t(),
 	t(),
-	old_score1(),
-	old_score2()
+	old_player1(),
+	old_player2()
 {
 
 }
@@ -40,16 +40,26 @@ void CutScene::Initialize()
 		cut_scene = LoadGraph("Resources/CatScene/Start.mp4");
 		break;
 	case eSceneType::in_game:
-		
-		if (old_score1 < player1.point)
+		//表示するカットシーンを設定する
+		if (old_player1.point < player1.point)
 		{
 			cut_scene = LoadGraph("Resources/CatScene/1P_WIN.mp4");
-			old_score1 = player1.point;
+			old_player1.point = player1.point;
 		}
-		if (old_score2 < player2.point)
+		else if (old_player2.point < player2.point)
 		{
 			cut_scene = LoadGraph("Resources/CatScene/2P_WIN.mp4");
-			old_score2 = player1.point;
+			old_player2.point = player1.point;
+		}
+		else if (old_player1.foul < player1.foul)
+		{
+			cut_scene = LoadGraph("Resources/CatScene/1P_FOUL.mp4");
+			old_player1.foul = player1.foul;
+		}
+		else if (old_player2.foul < player2.foul)
+		{
+			cut_scene = LoadGraph("Resources/CatScene/2P_FOUL.mp4");
+			old_player2.foul = player2.foul;
 		}
 		break;
 	case eSceneType::pause:
@@ -81,8 +91,17 @@ eSceneType CutScene::Update(const float& delta_second)
 	//３秒経過したら
 	if (t > 2.4f)
 	{
-		//インゲーム画面へ
-		return eSceneType::in_game;
+		//どちらかのポイントが３ポイントになったら
+		if (player1.point >= 3 || player2.point >= 3)
+		{
+			//リザルト画面へ
+			return eSceneType::result;
+		}
+		else
+		{
+			//インゲーム画面へ
+			return eSceneType::in_game;
+		}
 	}
 
 	// 親クラスの更新処理を呼び出す
@@ -140,8 +159,8 @@ void CutScene::ReadData()
 	else
 	{
 		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
+		fscanf_s(fp, "%d,%d,%d,%d", &old_player1.point, &old_player1.foul, &player1.point, &player1.foul);
+		fscanf_s(fp, "%d,%d,%d,%d", &old_player2.point, &old_player2.foul, &player2.point, &player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);

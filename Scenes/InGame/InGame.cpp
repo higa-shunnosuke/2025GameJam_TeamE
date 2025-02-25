@@ -11,7 +11,8 @@ sign_manager(nullptr),
 button_match(nullptr),
 player1(),
 player2(),
-old_type()
+old_player1(),
+old_player2()
 {
 
 }
@@ -42,6 +43,10 @@ void InGame::Initialize()
 	//データの初期化
 	ReadData();
 
+	player1.point = old_player1.point;
+	player1.foul = old_player1.foul;
+	player2.point = old_player2.point;
+	player2.foul = old_player2.foul;
 }
 
 // 更新処理
@@ -81,6 +86,7 @@ eSceneType InGame::Update(const float &delta_second)
 		player1.foul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
+		return eSceneType::cut;
 		break;
 	case SignResult::Player2_Point:
 		player2.point++;
@@ -92,16 +98,10 @@ eSceneType InGame::Update(const float &delta_second)
 		player2.foul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
+		return eSceneType::cut;
 		break;
 	default:
 		break;
-	}
-
-	//どちらかのポイントが３ポイントになったら
-	if (player1.point >= 3 || player2.point >= 3)
-	{
-		//リザルト画面へ
-		return eSceneType::result;
 	}
 
 	//どちらかのファールが３ポイントになったら
@@ -166,8 +166,8 @@ void InGame::WriteData()
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d\n", player1.point, player1.foul);
-		fprintf_s(fp, "%d,%d\n", player2.point, player2.foul);
+		fprintf_s(fp, "%d,%d,%d,%d\n", old_player1.point, old_player1.foul, player1.point, player1.foul);
+		fprintf_s(fp, "%d,%d,%d,%d\n", old_player2.point, old_player2.foul, player2.point, player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);
@@ -189,8 +189,8 @@ void InGame::ReadData()
 	else
 	{
 		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
+		fscanf_s(fp, "%d,%d,%d,%d", &old_player1.point, &old_player1.foul, &old_player1.point, &old_player1.foul);
+		fscanf_s(fp, "%d,%d,%d,%d", &old_player2.point, &old_player2.foul, &old_player2.point, &old_player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);

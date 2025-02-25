@@ -9,7 +9,8 @@ private:
 	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
-	eSceneType old_type;
+	Data old_player1;
+	Data old_player2;
 
 public:
 	// コンストラクタ
