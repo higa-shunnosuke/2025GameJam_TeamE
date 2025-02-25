@@ -126,27 +126,43 @@ SignResult SignManager::GetSignResult()
 		//連打合図とランダム合図ではない場合
 		if (sign->GetSignName() != "MashButtonSign" && sign->GetSignName() != "RandomSign")
 		{
-			//プレイヤー1の判定結果が正解の場合でプレイヤー2よりも反応速度が速い場合
-			if (match->GetPlayer1Result() == CORRECT &&
-				match->GetPlayer1ReactionTime() < match->GetPlayer2ReactionTime())
+			//プレイヤー1の判定結果が正解の場合
+			if (match->GetPlayer1Result() == CORRECT)
 			{
 				//プレイヤー1にポイントを返す
 				ret = SignResult::Player1_Point;
 			}
-			//プレイヤー2の判定結果が正解の場合でプレイヤー1よりも反応速度が速い場合
-			if (match->GetPlayer2Result() == CORRECT &&
-				match->GetPlayer1ReactionTime() > match->GetPlayer2ReactionTime())
+
+			//プレイヤー2の判定結果が正解の場合
+			if (match->GetPlayer2Result() == CORRECT)
 			{
 				//プレイヤー2にポイントを返す
 				ret = SignResult::Player2_Point;
 			}
-			//両者正解で反応時間も同じ場合
+
+			//両者正解の場合
 			if (match->GetPlayer1Result() == CORRECT &&
-				match->GetPlayer2Result() == CORRECT &&
-				match->GetPlayer1ReactionTime() == match->GetPlayer2ReactionTime())
+				match->GetPlayer2Result() == CORRECT)
 			{
-				//引き分けを返す
-				ret = SignResult::Draw;
+				//プレイヤー2のほうが反応速度が速い場合
+				if (match->GetPlayer1ReactionTime() > match->GetPlayer2ReactionTime())
+				{
+					//プレイヤー2にポイントを返す
+					ret = SignResult::Player2_Point;
+				}
+				//プレイヤー1のほうが反応速度が速い場合
+				else if (match->GetPlayer1ReactionTime() < match->GetPlayer2ReactionTime())
+				{
+					//プレイヤー1にポイントを返す
+					ret = SignResult::Player1_Point;
+
+				}
+				//反応速度が同じ場合
+				else if (match->GetPlayer1ReactionTime() == match->GetPlayer2ReactionTime())
+				{
+					//引き分けを返す
+					ret = SignResult::Draw;
+				}
 			}
 		}
 		//連打合図とランダム合図の場合
