@@ -109,15 +109,6 @@ void MashButtonSign::Draw() const
 
 		//Aボタンの合図を描画
 		DrawGraph(sign_image_x, sign_image_y, sign_image[MashButtonSignImage::A], TRUE);
-
-		//バーの枠
-		DrawBox(20, 80, 80, 180, 0xffffff, FALSE);
-		DrawBox(560, 80, 620, 180, 0xffffff, FALSE);
-
-		//バー
-		DrawBox(20, 180 - score_bar[0], 80, 180, 0xffffff, TRUE);
-		DrawBox(560, 180 - score_bar[1], 620, 180, 0xffffff, TRUE);
-
 	}
 }
 
