@@ -1,4 +1,14 @@
 #include "QuickPressSign.h"
+#include "../Utilitys/ResourceManager.h"
+
+/// <summary>
+/// 早押し合図の画像番号用
+/// </summary>
+enum QuickPressSignImage
+{
+	Quick = 0,
+	QuickPress
+};
 
 QuickPressSign::QuickPressSign()
 {
@@ -14,6 +24,16 @@ void QuickPressSign::Initialize()
 {
 	//親クラスの初期化処理
 	__super::Initialize();
+
+	//合図の画像が入っていない場合
+	if (sign_image.empty())
+	{
+		//リソースマネージャーのインスタンスを取得
+		ResourceManager* r_m = ResourceManager::GetInstance();
+		//分割読み込みする画像ではないので配列の0番目だけを取得
+		sign_image.push_back(r_m->GetImages("Resources/images/sign/Sign_Quick.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/sign/Quick_Press.png").at(0));
+	}
 }
 
 void QuickPressSign::Update(float delta_second)
@@ -37,12 +57,15 @@ void QuickPressSign::Draw() const
 	if (is_sign)
 	{
 		//説明
-		SetFontSize(16);
-		DrawFormatString(320, 120, 0xffffff, "QuickPress！");
-		SetFontSize(32);
+		DrawGraph(210, 90, sign_image[QuickPressSignImage::QuickPress], TRUE);
+
+		//合図の座標x
+		const int sign_image_x = 275;
+		//合図の座標y
+		const int sign_image_y = 160;
 
 		//合図を描画
-		DrawFormatString(320, 140, 0xffffff, "!");
+		DrawGraph(sign_image_x, sign_image_y, sign_image[QuickPressSignImage::Quick], TRUE);
 
 	}
 }

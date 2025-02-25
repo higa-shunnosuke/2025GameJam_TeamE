@@ -78,6 +78,7 @@ public:
 	virtual void Finalize()
 	{
 		//配列を空にする
+		sign_image.clear();
 		sign_button.clear();
 	}
 
