@@ -4,7 +4,10 @@
 
 
 // コンストラクタ
-Help::Help()
+Help::Help():
+	cursor(),
+	image1(),
+	image2()
 {
 
 }
@@ -25,6 +28,7 @@ void Help::Initialize()
 	image1 = rm->GetImages("Resources/images/Rule explanation1.png")[0];
 	image2 = rm->GetImages("Resources/images/Rule explanation2.png")[0];
 	bg_image = image1;
+	cursor = 0;
 }
 
 // 更新処理
