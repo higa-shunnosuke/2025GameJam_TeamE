@@ -87,8 +87,8 @@ public:
 	/// </summary>
 	virtual void Draw() const
 	{
-		DrawLineAA(0, 480 / 2, 640, 480 / 2, 0xffffff);
-		DrawLineAA(640 / 2, 0,640 / 2, 480, 0xffffff);
+		//DrawLineAA(0, 480 / 2, 640, 480 / 2, 0xffffff);
+		//DrawLineAA(640 / 2, 0,640 / 2, 480, 0xffffff);
 	}
 
 public:

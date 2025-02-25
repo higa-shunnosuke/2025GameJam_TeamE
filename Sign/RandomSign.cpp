@@ -118,9 +118,9 @@ void RandomSign::Draw() const
 		for (int i = 0; i < button[0].size(); i++)
 		{		
 			//合図の座標x
-			const int sign_image_x = 80;
+			const int sign_image_x = 60;
 			//合図の座標y
-			const int sign_image_y = 132;
+			const int sign_image_y = 22;
 
 			switch (button[0][i])
 			{
@@ -152,9 +152,9 @@ void RandomSign::Draw() const
 		for (int i = 0; i < button[1].size(); i++)
 		{
 			//合図の座標x
-			const int sign_image_x = 480;
+			const int sign_image_x = 500;
 			//合図の座標y
-			const int sign_image_y = 132;
+			const int sign_image_y = 22;
 
 			switch (button[1][i])
 			{
