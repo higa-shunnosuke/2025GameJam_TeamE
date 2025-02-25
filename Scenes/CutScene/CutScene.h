@@ -8,7 +8,7 @@ private:
 	Data player2;
 	eSceneType old_type;	//前のシーンタイプ
 	int cut_scene;			//カットシーン
-	int t;					//経過時間
+	float t;					//経過時間
 	time_t old_t;			//前回の時刻
 	time_t now_t;			//現在の時刻
 	int old_score1;			//前回のプレイヤー１のポイント
