@@ -1,10 +1,7 @@
 ﻿#include "Help.h"
 #include "DxLib.h"
 
-//テキスト
-#define STRING_1 "ゲーム内容\n合図が出たら相手より先にボタンを押してください。"
-#define STRING_2 "勝利条件\n３ポイント先取（最高５回戦）\n早撃ちに勝つごとに１ポイント取得\n同時に押した場合はどちらのポイントにもなりません。"
-#define STRING_3 "ファール\n条件１：合図が出るより先にボタンを押す\n条件２：間違ったボタンを押す\n２回ファールをすると負けとなります。"
+
 
 // コンストラクタ
 Help::Help()
@@ -25,7 +22,9 @@ void Help::Initialize()
 	__super::Initialize();
 
 	ResourceManager* rm = ResourceManager::GetInstance();
-	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
+	image1 = rm->GetImages("Resources/images/Rule explanation1.png")[0];
+	image2 = rm->GetImages("Resources/images/Rule explanation2.png")[0];
+	bg_image = image1;
 }
 
 // 更新処理
@@ -42,6 +41,28 @@ eSceneType Help::Update(const float &delta_second)
 		return eSceneType::title;
 	}
 
+	//カーソルを右へ動かす
+	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_RIGHT) == true ||
+		input->GetKeyDown(KEY_INPUT_RIGHT))
+	{
+		if (cursor == 0)
+		{
+			cursor = 1;
+			bg_image = image2;
+		}
+	}
+
+	//カーソルを左へ動かす
+	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_LEFT) == true ||
+		input->GetKeyDown(KEY_INPUT_LEFT))
+	{
+		if (cursor == 1)
+		{
+			cursor = 0;
+			bg_image = image1;
+		}
+	}
+
 	// 親クラスの更新処理を呼び出す
 	return __super::Update(delta_second);
 }
@@ -54,10 +75,6 @@ void Help::Draw() const
 
 	// フォントサイズ変更
 	SetFontSize(16);
-
-	DrawFormatString(10, 100, 0xffffff, STRING_1);
-	DrawFormatString(10, 160, 0xffffff, STRING_2);
-	DrawFormatString(10, 240, 0xffffff, STRING_3);
 
 	// フォントサイズ変更
 	SetFontSize(32);
