@@ -132,12 +132,24 @@ SignResult SignManager::GetSignResult()
 				//プレイヤー1にポイントを返す
 				ret = SignResult::Player1_Point;
 			}
+			//プレイヤー1の判定結果が不正解の場合
+			else if (match->GetPlayer1Result() == INCORRECT)
+			{
+				//プレイヤー1にポイントを返す
+				ret = SignResult::Player1_Foul;
+			}
 
 			//プレイヤー2の判定結果が正解の場合
 			if (match->GetPlayer2Result() == CORRECT)
 			{
 				//プレイヤー2にポイントを返す
 				ret = SignResult::Player2_Point;
+			}
+			//プレイヤー2の判定結果が不正解の場合
+			else if (match->GetPlayer2Result() == INCORRECT)
+			{
+				//プレイヤー2にポイントを返す
+				ret = SignResult::Player2_Foul;
 			}
 
 			//両者正解の場合
