@@ -1,9 +1,22 @@
 #include "RandomSign.h"
 #include "../Utilitys/InputManager.h"
+#include "../Utilitys/ResourceManager.h"
 #include "../player/ButtonMatch.h"
 
 //押させるボタンの最大数
 #define MAX_RANDOM_BUTTON	4
+
+/// <summary>
+/// ランダム合図の画像番号用
+/// </summary>
+enum RandomSignImage
+{
+	A = 0,
+	B,
+	X,
+	Y,
+	Quick
+};
 
 RandomSign::RandomSign()
 {
@@ -19,6 +32,19 @@ void RandomSign::Initialize()
 {
 	//親クラスの初期化処理
 	__super::Initialize();
+
+	//合図の画像が入っていない場合
+	if (sign_image.empty())
+	{
+		//リソースマネージャーのインスタンスを取得
+		ResourceManager* r_m = ResourceManager::GetInstance();
+		//分割読み込みする画像ではないので配列の0番目だけを取得
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Sign_A.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Sign_B.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Sign_X.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Sign_Y.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Quick_Press.png").at(0));
+	}
 
 	//空にしておく
 	sign_button.clear();
@@ -85,33 +111,37 @@ void RandomSign::Draw() const
 	if (is_sign)
 	{
 		//説明
-		SetFontSize(16);
-		DrawFormatString(320, 120, 0xffffff, "Press in Order！");
-		SetFontSize(32);
+		DrawGraph(210, 90, sign_image[RandomSignImage::Quick], TRUE);
+
 
 		//プレイヤー1のボタンの合図を描画
 		for (int i = 0; i < button[0].size(); i++)
-		{
+		{		
+			//合図の座標x
+			const int sign_image_x = 80;
+			//合図の座標y
+			const int sign_image_y = 132;
+
 			switch (button[0][i])
 			{
 			case XINPUT_BUTTON_A:
 				//Aボタンの合図を描画
-				DrawFormatString(120, 260 - (i * 40), 0xffffff, "A");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
 				break;
 
 			case XINPUT_BUTTON_B:
 				//Bボタンの合図を描画
-				DrawFormatString(120, 260 - (i * 40), 0xffffff, "B");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
 				break;
 
 			case XINPUT_BUTTON_X:
 				//Xボタンの合図を描画
-				DrawFormatString(120, 260 - (i * 40), 0xffffff, "X");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
 				break;
 
 			case XINPUT_BUTTON_Y:
 				//Yボタンの合図を描画
-				DrawFormatString(120, 260 - (i * 40), 0xffffff, "Y");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
 				break;
 
 			default:
@@ -121,26 +151,31 @@ void RandomSign::Draw() const
 		//プレイヤー2のボタンの合図を描画
 		for (int i = 0; i < button[1].size(); i++)
 		{
+			//合図の座標x
+			const int sign_image_x = 480;
+			//合図の座標y
+			const int sign_image_y = 132;
+
 			switch (button[1][i])
 			{
 			case XINPUT_BUTTON_A:
 				//Aボタンの合図を描画
-				DrawFormatString(420, 260 - (i * 40), 0xffffff, "A");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
 				break;
 
 			case XINPUT_BUTTON_B:
 				//Bボタンの合図を描画
-				DrawFormatString(420, 260 - (i * 40), 0xffffff, "B");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
 				break;
 
 			case XINPUT_BUTTON_X:
 				//Xボタンの合図を描画
-				DrawFormatString(420, 260 - (i * 40), 0xffffff, "X");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
 				break;
 
 			case XINPUT_BUTTON_Y:
 				//Yボタンの合図を描画
-				DrawFormatString(420, 260 - (i * 40), 0xffffff, "Y");
+				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
 				break;
 
 			default:

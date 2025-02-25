@@ -1,6 +1,16 @@
 #include "MashButtonSign.h"
 #include "../Utilitys/InputManager.h"
+#include "../Utilitys/ResourceManager.h"
 #include "../player/ButtonMatch.h"
+
+/// <summary>
+/// 連打合図の画像番号用
+/// </summary>
+enum MashButtonSignImage
+{
+	A = 0,
+	MashButton
+};
 
 MashButtonSign::MashButtonSign()
 {
@@ -16,6 +26,16 @@ void MashButtonSign::Initialize()
 {
 	//親クラスの初期化処理
 	__super::Initialize();
+
+	//合図の画像が入っていない場合
+	if (sign_image.empty())
+	{
+		//リソースマネージャーのインスタンスを取得
+		ResourceManager* r_m = ResourceManager::GetInstance();
+		//分割読み込みする画像ではないので配列の0番目だけを取得
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Sign_A.png").at(0));
+		sign_image.push_back(r_m->GetImages("Resources/images/Sign/Mash_Button.png").at(0));
+	}
 
 	//押すボタンをいれる
 	sign_button.push_back(XINPUT_BUTTON_A);
@@ -80,12 +100,15 @@ void MashButtonSign::Draw() const
 	if (is_sign)
 	{
 		//説明
-		SetFontSize(16);
-		DrawFormatString(320, 120, 0xffffff, "MashButton！");
-		SetFontSize(32);
+		DrawGraph(210, 80, sign_image[MashButtonSignImage::MashButton], TRUE);
+
+		//合図の座標x
+		const int sign_image_x = 275;
+		//合図の座標y
+		const int sign_image_y = 160;
 
 		//Aボタンの合図を描画
-		DrawFormatString(320, 140, 0xffffff, "A");
+		DrawGraph(sign_image_x, sign_image_y, sign_image[MashButtonSignImage::A], TRUE);
 
 		//バーの枠
 		DrawBox(20, 80, 80, 180, 0xffffff, FALSE);
