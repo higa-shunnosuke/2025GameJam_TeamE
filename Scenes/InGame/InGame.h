@@ -11,6 +11,8 @@ private:
 	Data player2;
 	eSceneType old_type;
 
+	std::vector<int> ui_image;
+
 public:
 	// コンストラクタ
 	InGame();

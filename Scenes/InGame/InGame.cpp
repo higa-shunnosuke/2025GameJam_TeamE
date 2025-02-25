@@ -58,6 +58,13 @@ void InGame::Initialize()
 	//プレイヤー2のファウル数を文字に変換
 	str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
 	player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+
+	//画像が入っていない場合
+	if (ui_image.empty())
+	{
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Point/Point.png").at(0));
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
+	}
 }
 
 // 更新処理
@@ -141,12 +148,14 @@ void InGame::Draw() const
 	SetFontSize(32);
 
 	//ポイント数の描画
-	DrawRotaGraph(225, 15, 1, 0, player1.point_image, TRUE);
-	DrawRotaGraph(425, 15, 1, 0, player2.point_image, TRUE, TRUE);
+	DrawGraph(272, 0, ui_image.at(0), TRUE);
+	DrawRotaGraph(225, 15, 1, 0, player1.point_image, TRUE, TRUE);
+	DrawRotaGraph(425, 15, 1, 0, player2.point_image, TRUE);
 
 	//ファウル数の描画
-	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE);
-	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE, TRUE);
+	DrawGraph(275, 40, ui_image.at(1), TRUE);
+	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
+	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
 	//合図の描画
 	sign_manager->Draw();
