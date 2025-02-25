@@ -27,7 +27,7 @@ void Title::Initialize()
 	__super::Initialize();
 
 	ResourceManager* rm = ResourceManager::GetInstance();
-	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
+	bg_image = rm->GetImages("Resources/images/BackGround.png")[0];
 
 	//ボタンの色を初期化
 	start_color = COLOR_OFF;
