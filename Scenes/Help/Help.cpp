@@ -30,7 +30,20 @@ void Help::Initialize()
 	image2 = rm->GetImages("Resources/images/Rule explanation2.png")[0];
 	image3 = rm->GetImages("Resources/images/Rule explanation3.png")[0];
 	bg_image = image1;
-	cursor = 0;
+
+	cursor = 0;	
+	
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		//サウンドを追加
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Cancel.wav"));
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Cursor.wav"));
+
+		//音量を設定
+		ChangeVolumeSoundMem(200, sound.at(0));
+	}
+
 }
 
 // 更新処理
@@ -43,6 +56,9 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_B) == true ||
 		input->GetKeyDown(KEY_INPUT_BACK))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(0), DX_PLAYTYPE_BACK);
+
 		//タイトル画面へ
 		return eSceneType::title;
 	}
@@ -51,6 +67,9 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_RIGHT) == true ||
 		input->GetKeyDown(KEY_INPUT_RIGHT))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 		if (cursor == 0)
 		{
 			cursor = 1;
@@ -67,6 +86,9 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_LEFT) == true ||
 		input->GetKeyDown(KEY_INPUT_LEFT))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 		if (cursor == 1)
 		{
 			cursor = 0;

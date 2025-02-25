@@ -31,6 +31,20 @@ void Title::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	bg_image = rm->GetImages("Resources/images/BackGround.png")[0];
 
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		//サウンドを追加
+		sound.push_back(rm->GetSounds("Resources/sounds/bgm/Title.wav"));
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Cursor.wav"));
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Select.wav"));
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Cancel.wav"));
+
+		//音量を設定
+		ChangeVolumeSoundMem(200, sound.at(0));
+		ChangeVolumeSoundMem(190, sound.at(1));
+	}
+
 	//ボタンの色を初期化
 	start_color = COLOR_OFF;
 	help_color = COLOR_OFF;
@@ -43,6 +57,9 @@ void Title::Initialize()
 // 更新処理
 eSceneType Title::Update(const float &delta_second)
 {
+	//サウンドが再生されていない場合サウンドを再生する
+	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
+
 	//入力管理クラスのポインタ
 	InputManager* input = InputManager::GetInstance();
 
@@ -72,6 +89,9 @@ eSceneType Title::Update(const float &delta_second)
 	if (input->GetButtonDown(0,XINPUT_BUTTON_DPAD_DOWN) == true ||
 		input->GetKeyDown(KEY_INPUT_DOWN))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 		if (cursor > 1)
 		{
 			cursor = 0;
@@ -86,6 +106,9 @@ eSceneType Title::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_UP) == true ||
 		input->GetKeyDown(KEY_INPUT_UP))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 		if (cursor < 0)
 		{
 			cursor = 1;
@@ -100,9 +123,14 @@ eSceneType Title::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
+		//決定音を再生
+		PlaySoundMem(sound.at(2), DX_PLAYTYPE_BACK);
+
 		if (cursor == 0)
 		{
 			//インゲーム画面へ
+			//BGMを止める
+			//StopSoundMem(sound.at(0));
 			return eSceneType::cut;
 		}
 		else if (cursor == 1)

@@ -29,8 +29,15 @@ void InGame::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	//リソースマネージャーのインスタンスを取得
 	ResourceManager* rm = ResourceManager::GetInstance();
 	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
+
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		sound.push_back(rm->GetSounds("Resources/sounds/bgm/InGame.wav"));
+	}
 
 	//合図生成クラスの初期化
 	sign_manager = new SignManager();
@@ -75,6 +82,9 @@ void InGame::Initialize()
 // 更新処理
 eSceneType InGame::Update(const float &delta_second)
 {
+	//サウンドが再生されていない場合サウンドを再生する
+	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
+
 	//入力管理クラスのポインタ
 	InputManager* input = InputManager::GetInstance();
 

@@ -30,6 +30,15 @@ void CutScene::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	//リソースマネージャーのインスタンスを取得
+	ResourceManager* rm = ResourceManager::GetInstance();
+
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		sound.push_back(rm->GetSounds("Resources/sounds/bgm/InGame.wav"));
+	}
+
 	//データの初期化
 	ReadData();
 
@@ -78,6 +87,9 @@ void CutScene::Initialize()
 // 更新処理
 eSceneType CutScene::Update(const float& delta_second)
 {
+	//サウンドが再生されていない場合サウンドを再生する
+	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
+
 	//現在時刻と前回の時刻の更新
 	time(&now_t);
 

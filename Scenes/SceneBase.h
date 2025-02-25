@@ -37,7 +37,8 @@ class SceneBase
 {
 protected:
 	// 各シーンが所有する情報
-	int bg_image;	//背景画像
+	int bg_image;				//背景画像
+	std::vector<int> sound;		//サウンド
 
 public:
 	// コンストラクタ
