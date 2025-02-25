@@ -43,6 +43,10 @@ void InGame::Initialize()
 	//データの初期化
 	ReadData();
 
+	player1.point = old_player1.point;
+	player1.foul = old_player1.foul;
+	player2.point = old_player2.point;
+	player2.foul = old_player2.foul;
 	//数字に変換するための文字を格納する変数
 	std::string str;
 
@@ -66,10 +70,6 @@ void InGame::Initialize()
 		ui_image.push_back(rm->GetImages("Resources/images/UI/Point/Point.png").at(0));
 		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
 	}
-	player1.point = old_player1.point;
-	player1.foul = old_player1.foul;
-	player2.point = old_player2.point;
-	player2.foul = old_player2.foul;
 }
 
 // 更新処理

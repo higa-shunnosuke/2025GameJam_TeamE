@@ -44,4 +44,9 @@ public:
 	/// <returns>現在のシーンタイプ</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
+private:
+	/// <summary>
+	/// ファイルデータを初期化する
+	/// </summary>
+	void DetaInitialize();
 };

@@ -4,6 +4,8 @@
 #define COLOR_ON 0xff0000	//赤
 #define COLOR_OFF 0xffffff	//白
 
+#define FILE_NAME "Resources/datas/InGame_Data.csv"
+
 // コンストラクタ
 Title::Title():
 	cursor(),
@@ -33,6 +35,9 @@ void Title::Initialize()
 	start_color = COLOR_OFF;
 	help_color = COLOR_OFF;
 	quit_color = COLOR_OFF;
+
+	//データの初期化
+	DetaInitialize();
 }
 
 // 更新処理
@@ -145,4 +150,27 @@ void Title::Finalize()
 const eSceneType Title::GetNowSceneType() const
 {
 	return eSceneType::title;
+}
+
+//ファイルデータの初期化
+void Title::DetaInitialize()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, FILE_NAME, "w");
+
+	if (fp == NULL)
+	{
+		throw("%sファイルを開けませんでした。", FILE_NAME);
+	}
+	else
+	{
+		//ファイルがなければ生成する
+		fprintf_s(fp, "%d,%d,%d,%d\n", 0, 0, 0, 0);
+		fprintf_s(fp, "%d,%d,%d,%d\n", 0, 0, 0, 0);
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
 }
