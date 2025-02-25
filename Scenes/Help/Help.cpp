@@ -7,7 +7,8 @@
 Help::Help():
 	cursor(),
 	image1(),
-	image2()
+	image2(),
+	image3()
 {
 
 }
@@ -27,6 +28,7 @@ void Help::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	image1 = rm->GetImages("Resources/images/Rule explanation1.png")[0];
 	image2 = rm->GetImages("Resources/images/Rule explanation2.png")[0];
+	image3 = rm->GetImages("Resources/images/Rule explanation3.png")[0];
 	bg_image = image1;
 	cursor = 0;
 }
@@ -54,6 +56,11 @@ eSceneType Help::Update(const float &delta_second)
 			cursor = 1;
 			bg_image = image2;
 		}
+		else if (cursor == 1)
+		{
+			cursor = 2;
+			bg_image = image3;
+		}
 	}
 
 	//カーソルを左へ動かす
@@ -64,6 +71,11 @@ eSceneType Help::Update(const float &delta_second)
 		{
 			cursor = 0;
 			bg_image = image1;
+		}
+		else if (cursor == 2)
+		{
+			cursor = 1;
+			bg_image = image2;
 		}
 	}
 

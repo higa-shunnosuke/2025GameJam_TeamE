@@ -6,7 +6,7 @@ class Help : public SceneBase
 {
 private:
 	int cursor;			//カーソルカウンタ
-	int image1, image2;
+	int image1, image2, image3;
 public:
 	// コンストラクタ
 	Help();
