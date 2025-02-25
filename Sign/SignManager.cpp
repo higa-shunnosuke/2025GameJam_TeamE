@@ -186,6 +186,12 @@ SignResult SignManager::GetSignResult()
 					//プレイヤー2のにポイントを返す
 					ret = SignResult::Player2_Point;
 				}
+				//両者最大の場合
+				else if (mbs_sign->IsMaximum(0) && mbs_sign->IsMaximum(1))
+				{
+					//引き分けを返す
+					ret = SignResult::Draw;
+				}
 			}
 			//ランダム合図の場合
 			else if (sign->GetSignName() == "RandomSign")
@@ -204,6 +210,12 @@ SignResult SignManager::GetSignResult()
 				{
 					//プレイヤー2にポイントを返す
 					ret = SignResult::Player2_Point;
+				}
+				//両者押すボタンがない場合
+				else if (rs_sign->GetButton(0).empty() && rs_sign->GetButton(1).empty())
+				{
+					//引き分けを返す
+					ret = SignResult::Draw;
 				}
 			}
 		}
