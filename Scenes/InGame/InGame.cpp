@@ -123,6 +123,8 @@ eSceneType InGame::Update(const float &delta_second)
 		button_match->ButtonReset();
 		return eSceneType::cut;
 		break;
+	case SignResult::Draw:
+		return eSceneType::cut;
 	default:
 		break;
 	}
