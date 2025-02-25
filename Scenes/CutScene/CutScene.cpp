@@ -73,13 +73,13 @@ eSceneType CutScene::Update(const float& delta_second)
 
 	if (old_t < now_t)
 	{
-		t++;
+		t += 0.8f;
 	}
 
 	old_t = now_t;
 
 	//３秒経過したら
-	if (t > 3)
+	if (t > 2.4f)
 	{
 		//インゲーム画面へ
 		return eSceneType::in_game;
