@@ -36,7 +36,11 @@ void CutScene::Initialize()
 	//サウンドが入っていない場合
 	if (sound.empty())
 	{
+		//サウンドを追加
 		sound.push_back(rm->GetSounds("Resources/sounds/bgm/InGame.wav"));
+
+		//音量を設定
+		ChangeVolumeSoundMem(140, sound.at(0));
 	}
 
 	//データの初期化
@@ -106,6 +110,9 @@ eSceneType CutScene::Update(const float& delta_second)
 		//どちらかのポイントが３ポイントになったら
 		if (player1.point >= 3 || player2.point >= 3)
 		{
+			//BGMを止める
+			StopSoundMem(sound.at(0));
+
 			//リザルト画面へ
 			return eSceneType::result;
 		}
@@ -126,12 +133,6 @@ void CutScene::Draw() const
 	//カットシーン再生
 	// ムービー映像を画面いっぱいに描画します
 	DrawExtendGraph(0, 0, 640, 480, cut_scene, FALSE);
-
-	// フォントサイズ変更
-	SetFontSize(32);
-
-	DrawFormatString(10, 10, 0xffffff, "CutScene");
-
 }
 
 // 終了処理

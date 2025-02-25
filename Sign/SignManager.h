@@ -21,6 +21,8 @@ enum class SignResult
 class SignManager
 {
 private:
+	std::vector<int> sound_effect;	//se
+
 	SignBase* sign;					//合図のインスタンス
 
 	int feint_count;				//再度フェイクをだすためのカウント

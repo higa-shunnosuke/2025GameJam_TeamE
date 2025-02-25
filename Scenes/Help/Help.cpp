@@ -4,11 +4,14 @@
 
 
 // コンストラクタ
-Help::Help():
+Help::Help() :
 	cursor(),
 	image1(),
 	image2(),
-	image3()
+	image3(),
+	image4(),
+	image5(),
+	image6()
 {
 
 }
@@ -26,9 +29,12 @@ void Help::Initialize()
 	__super::Initialize();
 
 	ResourceManager* rm = ResourceManager::GetInstance();
-	image1 = rm->GetImages("Resources/images/Rule explanation1.png")[0];
-	image2 = rm->GetImages("Resources/images/Rule explanation2.png")[0];
-	image3 = rm->GetImages("Resources/images/Rule explanation3.png")[0];
+	image1 = rm->GetImages("Resources/images/Help/Rule explanation1.png")[0];
+	image2 = rm->GetImages("Resources/images/Help/Rule explanation2.png")[0];
+	image3 = rm->GetImages("Resources/images/Help/Rule explanation3.png")[0];
+	image4 = rm->GetImages("Resources/images/Help/Rule_Back.png")[0];
+	image5 = rm->GetImages("Resources/images/Help/Cursor_Right.png")[0];
+	image6 = rm->GetImages("Resources/images/Help/Cursor_Left.png")[0];
 	bg_image = image1;
 
 	cursor = 0;	
@@ -56,7 +62,7 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_B) == true ||
 		input->GetKeyDown(KEY_INPUT_BACK))
 	{
-		//カーソル音を再生
+		//戻る音を再生
 		PlaySoundMem(sound.at(0), DX_PLAYTYPE_BACK);
 
 		//タイトル画面へ
@@ -67,16 +73,19 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_RIGHT) == true ||
 		input->GetKeyDown(KEY_INPUT_RIGHT))
 	{
-		//カーソル音を再生
-		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
-
 		if (cursor == 0)
 		{
+			//カーソル音を再生
+			PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 			cursor = 1;
 			bg_image = image2;
 		}
 		else if (cursor == 1)
 		{
+			//カーソル音を再生
+			PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 			cursor = 2;
 			bg_image = image3;
 		}
@@ -86,16 +95,19 @@ eSceneType Help::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_LEFT) == true ||
 		input->GetKeyDown(KEY_INPUT_LEFT))
 	{
-		//カーソル音を再生
-		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
-
 		if (cursor == 1)
 		{
+			//カーソル音を再生
+			PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 			cursor = 0;
 			bg_image = image1;
 		}
 		else if (cursor == 2)
 		{
+			//カーソル音を再生
+			PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 			cursor = 1;
 			bg_image = image2;
 		}
@@ -111,13 +123,31 @@ void Help::Draw() const
 	//背景描画
 	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
 
-	// フォントサイズ変更
-	SetFontSize(16);
+	//Bで戻るを描画
+	DrawGraph(550, 450, image4, TRUE);
 
-	// フォントサイズ変更
-	SetFontSize(32);
-	DrawFormatString(10, 10, 0xffffff, "Help");
-	DrawFormatString(10, 450, 0xffffff, "True = A,False = B");
+	switch (cursor)
+	{
+	case 0:
+		//→を描画
+		DrawGraph(598, -10, image5, TRUE);
+		break;
+
+	case 1:
+		//→を描画
+		DrawGraph(598, -10, image5, TRUE);
+		//←を描画
+		DrawGraph(0, -10, image6, TRUE);
+		break;
+
+	case 2:
+		//←を描画
+		DrawGraph(0, -10, image6, TRUE);
+		break;
+
+	default:
+		break;
+	}
 }
 
 // 終了処理

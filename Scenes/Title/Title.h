@@ -5,10 +5,12 @@
 class Title : public SceneBase
 {
 private:
-	int cursor;			//カーソルカウンタ
-	int start_color;	//スタートボタンの色
-	int help_color;		//ヘルプボタンの色
-	int quit_color;		//ゲーム終了ボタンの色
+	std::vector<int> image;		//画像
+
+	int cursor;					//カーソルカウンタ
+	int start_color;			//スタートボタンの色
+	int help_color;				//ヘルプボタンの色
+	int quit_color;				//ゲーム終了ボタンの色
 
 public:
 	// コンストラクタ

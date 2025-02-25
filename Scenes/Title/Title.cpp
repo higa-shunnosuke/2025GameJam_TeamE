@@ -1,5 +1,4 @@
 ﻿#include "Title.h"
-#include "DxLib.h"
 
 #define COLOR_ON 0xff0000	//赤
 #define COLOR_OFF 0xffffff	//白
@@ -41,8 +40,19 @@ void Title::Initialize()
 		sound.push_back(rm->GetSounds("Resources/sounds/se/Cancel.wav"));
 
 		//音量を設定
-		ChangeVolumeSoundMem(200, sound.at(0));
+		ChangeVolumeSoundMem(110, sound.at(0));
 		ChangeVolumeSoundMem(190, sound.at(1));
+	}
+
+	//画像が入っていない場合
+	if (image.empty())
+	{
+		//画像を追加
+		image.push_back(rm->GetImages("Resources/images/Title/TitleName.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Title/Start.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Title/Help.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Title/End.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Title/Cursor.png").at(0));
 	}
 
 	//ボタンの色を初期化
@@ -128,9 +138,10 @@ eSceneType Title::Update(const float &delta_second)
 
 		if (cursor == 0)
 		{
-			//インゲーム画面へ
 			//BGMを止める
-			//StopSoundMem(sound.at(0));
+			StopSoundMem(sound.at(0));
+
+			//インゲーム画面へ
 			return eSceneType::cut;
 		}
 		else if (cursor == 1)
@@ -155,16 +166,20 @@ void Title::Draw() const
 	//背景描画
 	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
 
-	// フォントサイズ変更
-	SetFontSize(32);
+	//タイトル名
+	DrawGraph(100, 100, image.at(0), TRUE);
 
-	DrawFormatString(10, 10, 0xffffff, "Title");
-	DrawFormatString(10, 40, 0xffffff, "cursor:%d",cursor);
-	DrawFormatString(280, 240, start_color, "Start");
-	DrawFormatString(280, 270, help_color, "Help");
-	DrawFormatString(280, 300, quit_color, "Quit");
-	DrawFormatString(10, 450, 0xffffff, "True = A,False = B");
+	//スタート
+	DrawGraph(230, 240, image.at(1), TRUE);
 
+	//ヘルプ
+	DrawGraph(250, 290, image.at(2), TRUE);
+
+	//エンド
+	DrawGraph(250, 350, image.at(3), TRUE);
+
+	//カーソル
+	DrawGraph(170, 240 + (cursor * 55), image.at(4), TRUE);
 }
 
 // 終了処理

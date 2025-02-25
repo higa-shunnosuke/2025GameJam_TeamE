@@ -2,6 +2,7 @@
 #include <cstring> 
 #include "ButtonMatch.h"
 #include "../Sign/RandomSign.h"
+#include "../Utilitys/ResourceManager.h"
 
 ButtonMatch::ButtonMatch()
     : activated(false),
@@ -12,10 +13,9 @@ ButtonMatch::ButtonMatch()
     player1ExpectedButton(-1),
     player2ExpectedButton(-1),
     activationTime(0),
-    player1ReactionTime(0),
-    player2ReactionTime(0)
+    player1ReactionTime(0.f),
+    player2ReactionTime(0.f)
 {
-    memset(baseline2, 0, sizeof(baseline2));
 }
 
 ButtonMatch::~ButtonMatch()
@@ -33,9 +33,8 @@ void ButtonMatch::ButtonReset()
     player1ExpectedButton = -1;
     player2ExpectedButton = -1;
     activationTime = 0;
-    player1ReactionTime = 0;
-    player2ReactionTime = 0;
-    memset(baseline2, 0, sizeof(baseline2));
+    player1ReactionTime = 0.f;
+    player2ReactionTime = 0.f;
 }
 
 bool ButtonMatch::IsAllowedButton(int button) const
@@ -127,21 +126,16 @@ void ButtonMatch::Activate(SignBase* sign)
         player2ExpectedButton = -1;
     }
 
-    // プレイヤー２の現在のボタン状態を基準として記録
-    XINPUT_STATE state2 = {};
-    GetJoypadXInputState(DX_INPUT_PAD2, &state2);
-    for (int i = 0; i < D_BUTTON_MAX; i++)
-    {
-        baseline2[i] = (state2.Buttons[i] != 0);
-    }
-
     // 合図発動時刻を記録（ミリ秒単位）
     activationTime = GetNowCount();
 }
 
-void ButtonMatch::ButtonMatchUpdate()
+void ButtonMatch::ButtonMatchUpdate(const float& delta_second)
 {
     if (!activated) return;
+
+    player1ReactionTime += delta_second;
+    player2ReactionTime += delta_second;
 
     // --- プレイヤー１の判定 ---
     if (!player1Judged)
@@ -150,7 +144,6 @@ void ButtonMatch::ButtonMatchUpdate()
         if (IsAllowedButton(player1ExpectedButton) && InputManager::GetInstance()->GetButtonDown(0, player1ExpectedButton))
         {
             player1Result = CORRECT;
-            player1ReactionTime = GetNowCount() - activationTime;
             player1Judged = true;
         }
         else
@@ -163,7 +156,6 @@ void ButtonMatch::ButtonMatchUpdate()
                     InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
             {
                 player1Result = CORRECT;
-                player1ReactionTime = GetNowCount() - activationTime;
                 player1Judged = true;
             }
             else
@@ -175,7 +167,6 @@ void ButtonMatch::ButtonMatchUpdate()
                     (player1ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(0, XINPUT_BUTTON_Y)))
                 {
                     player1Result = INCORRECT;
-                    player1ReactionTime = GetNowCount() - activationTime;
                     player1Judged = true;
                 }
             }
@@ -189,7 +180,6 @@ void ButtonMatch::ButtonMatchUpdate()
         if (IsAllowedButton(player2ExpectedButton) && InputManager::GetInstance()->GetButtonDown(1, player2ExpectedButton))
         {
             player2Result = CORRECT;
-            player2ReactionTime = GetNowCount() - activationTime;
             player2Judged = true;
         }
         else
@@ -202,7 +192,6 @@ void ButtonMatch::ButtonMatchUpdate()
                     InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
             {
                 player2Result = CORRECT;
-                player2ReactionTime = GetNowCount() - activationTime;
                 player2Judged = true;
             }
             else
@@ -214,7 +203,6 @@ void ButtonMatch::ButtonMatchUpdate()
                     (player2ExpectedButton != XINPUT_BUTTON_Y && InputManager::GetInstance()->GetButtonDown(1, XINPUT_BUTTON_Y)))
                 {
                     player2Result = INCORRECT;
-                    player2ReactionTime = GetNowCount() - activationTime;
                     player2Judged = true;
                 }
             }
@@ -232,12 +220,12 @@ JudgeResult ButtonMatch::GetPlayer2Result() const
     return player2Result;
 }
 
-unsigned int ButtonMatch::GetPlayer1ReactionTime() const
+float ButtonMatch::GetPlayer1ReactionTime() const
 {
     return player1ReactionTime;
 }
 
-unsigned int ButtonMatch::GetPlayer2ReactionTime() const
+float ButtonMatch::GetPlayer2ReactionTime() const
 {
     return player2ReactionTime;
 }

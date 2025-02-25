@@ -37,7 +37,8 @@ public:
 	/// <summary>
 	/// 合図発動後、毎フレーム呼び出して入力を更新し判定してください。
 	/// </summary>
-	void ButtonMatchUpdate();
+	/// <param name="delta_second">1フレーム当たりの時間</param>
+	void ButtonMatchUpdate(const float& delta_second);
 
 	/// <summary>
 	/// プレイヤー1の判定結果
@@ -58,14 +59,14 @@ public:
 	/// <summary>
 	/// プレイヤー1の反応時間取得
 	/// </summary>
-	/// <returns>プレイヤー1の反応時間（ミリ秒）</returns>
-	unsigned int GetPlayer1ReactionTime() const;
+	/// <returns>プレイヤー1の反応時間</returns>
+	float GetPlayer1ReactionTime() const;
 
 	/// <summary>
 	/// プレイヤー2の反応時間取得
 	/// </summary>
-	/// <returns>プレイヤー2の反応時間（ミリ秒）</returns>
-	unsigned int GetPlayer2ReactionTime() const;
+	/// <returns>プレイヤー2の反応時間</returns>
+	float GetPlayer2ReactionTime() const;
 
 	/// <summary>
 	/// 内部状態のリセット（新しいラウンド開始時に使ってください）
@@ -79,17 +80,14 @@ private:
 	bool player2Judged;   // プレイヤー2はすでに判定済みか
 	JudgeResult player1Result;	//プレイヤー1の判定受け渡し用の変数
 	JudgeResult player2Result;	//プレイヤー2の判定受け渡し用の変数
-	int player1ExpectedButton;   // 合図側から取得した、期待されるプレイヤー1のボタン
-	int player2ExpectedButton;   // 合図側から取得した、期待されるプレイヤー2のボタン
-
-	// プレイヤー2の、合図発動時点のボタン基準状態を保持（DX_INPUT_PAD2のボタン）
-	bool baseline2[D_BUTTON_MAX];
+	int player1ExpectedButton;  // 合図側から取得した、期待されるプレイヤー1のボタン
+	int player2ExpectedButton;	// 合図側から取得した、期待されるプレイヤー2のボタン
 
 	// 合図発動時刻（ミリ秒）を保持します。DxLibのGetNowCount() の戻り値を使用。
 	unsigned int activationTime;
-	// 各プレイヤーの反応時間（合図発動から入力検出までの経過時間、ミリ秒）
-	unsigned int player1ReactionTime;
-	unsigned int player2ReactionTime;
+	// 各プレイヤーの反応時間
+	float player1ReactionTime;
+	float player2ReactionTime;
 
 	/// <summary>
 	/// 4つのボタン（A, B, X, Y）の入力かどうか判定します。

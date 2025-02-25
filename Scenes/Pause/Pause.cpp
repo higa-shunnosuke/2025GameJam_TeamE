@@ -32,6 +32,28 @@ void Pause::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
 
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		//サウンドを追加
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Cursor.wav"));
+		sound.push_back(rm->GetSounds("Resources/sounds/se/Select.wav"));
+
+		//音量を設定
+		ChangeVolumeSoundMem(190, sound.at(0));
+	}
+
+	//画像が入っていない場合
+	if (image.empty())
+	{
+		//画像を追加
+		image.push_back(rm->GetImages("Resources/images/Pause/Start.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Pause/Re_Start.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Pause/End.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Title/Cursor.png").at(0));
+		image.push_back(rm->GetImages("Resources/images/Pause/Pause.png").at(0));
+	}
+
 	//ボタンの色を初期化
 	start_color = COLOR_OFF;
 	restart_color = COLOR_OFF;
@@ -70,6 +92,9 @@ eSceneType Pause::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_DOWN) == true ||
 		input->GetKeyDown(KEY_INPUT_DOWN))
 	{
+		//カーソル音を再生
+		PlaySoundMem(sound.at(0), DX_PLAYTYPE_BACK);
+
 		if (cursor > 1)
 		{
 			cursor = 0;
@@ -84,9 +109,12 @@ eSceneType Pause::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_DPAD_UP) == true ||
 		input->GetKeyDown(KEY_INPUT_UP))
 	{
-		if (cursor < 0)
+		//カーソル音を再生
+		PlaySoundMem(sound.at(0), DX_PLAYTYPE_BACK);
+
+		if (cursor < 1)
 		{
-			cursor = 1;
+			cursor = 2;
 		}
 		else
 		{
@@ -98,6 +126,9 @@ eSceneType Pause::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
+		//決定音を再生
+		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
+
 		if (cursor == 0)
 		{
 			//ポーズ解除
@@ -129,15 +160,20 @@ void Pause::Draw() const
 	//背景描画
 	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
 
-	// フォントサイズ変更
-	SetFontSize(32);
+	//スタート
+	DrawGraph(230, 240, image.at(0), TRUE);
 
-	DrawFormatString(10, 10, 0xffffff, "Pause");
-	DrawFormatString(10, 40, 0xffffff, "cursor:%d", cursor);
-	DrawFormatString(280, 240, start_color, "Start");
-	DrawFormatString(280, 270, restart_color, "ReStart");
-	DrawFormatString(280, 300, quit_color, "Quit");
-	DrawFormatString(10, 450, 0xffffff, "True = A,False = B");
+	//リスタート
+	DrawGraph(235, 290, image.at(1), TRUE);
+
+	//エンド
+	DrawGraph(233, 340, image.at(2), TRUE);
+
+	//カーソル
+	DrawGraph(170, 240 + (cursor * 50), image.at(3), TRUE);
+
+	//ポーズ
+	DrawGraph(220, 100, image.at(4), TRUE);
 
 }
 

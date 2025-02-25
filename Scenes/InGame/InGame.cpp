@@ -94,7 +94,7 @@ eSceneType InGame::Update(const float &delta_second)
 	if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
 
 	//ボタン判定クラスの更新
-	button_match->ButtonMatchUpdate();
+	button_match->ButtonMatchUpdate(delta_second);
 
 	//スタートボタンが押されたら
 	if (input->GetButtonDown(0, XINPUT_BUTTON_START) == true ||
@@ -104,34 +104,22 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::pause;
 	}
 
+	player1.reaction_rate = button_match->GetPlayer1ReactionTime();
+	player2.reaction_rate = button_match->GetPlayer1ReactionTime();
+
 	switch (sign_manager->GetSignResult())
 	{
-		player1.reaction_rate = button_match->GetPlayer1ReactionTime();
-		player2.reaction_rate = button_match->GetPlayer1ReactionTime();
-
 	case SignResult::Player1_Point:
 		player1.point++;
-		sign_manager->Initialize();
-		button_match->ButtonReset();
-		return eSceneType::cut;
 		break;
 	case SignResult::Player1_Foul:
 		player1.foul++;
-		sign_manager->Initialize();
-		button_match->ButtonReset();
-		return eSceneType::cut;
 		break;
 	case SignResult::Player2_Point:
 		player2.point++;
-		sign_manager->Initialize();
-		button_match->ButtonReset();
-		return eSceneType::cut;
 		break;
 	case SignResult::Player2_Foul:
 		player2.foul++;
-		sign_manager->Initialize();
-		button_match->ButtonReset();
-		return eSceneType::cut;
 		break;
 	case SignResult::Draw:
 		return eSceneType::cut;
@@ -139,9 +127,20 @@ eSceneType InGame::Update(const float &delta_second)
 		break;
 	}
 
+	if (sign_manager->GetSignResult() != SignResult::None)
+	{
+
+		sign_manager->Initialize();
+		button_match->ButtonReset();
+		return eSceneType::cut;
+	}
+
 	//どちらかのファールが３ポイントになったら
 	if (player1.foul >= 2 || player2.foul >= 2)
 	{
+		//BGMを止める
+		StopSoundMem(sound.at(0));
+
 		//リザルト画面へ
 		return eSceneType::result;
 	}
@@ -169,6 +168,9 @@ void InGame::Draw() const
 	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
+
+	DrawFormatString(0, 0, 0xffffff, "P1:%f", player1.reaction_rate);
+	DrawFormatString(0, 20, 0xffffff, "P2:%f", player2.reaction_rate);
 	//合図の描画
 	sign_manager->Draw();
 }

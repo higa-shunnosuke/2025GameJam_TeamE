@@ -26,12 +26,25 @@ void Result::Initialize()
 	ResourceManager* rm = ResourceManager::GetInstance();
 	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
 
+	//サウンドが入っていない場合
+	if (sound.empty())
+	{
+		//サウンドを追加
+		sound.push_back(rm->GetSounds("Resources/sounds/bgm/Result.wav"));
+
+		//音量を設定
+		ChangeVolumeSoundMem(110, sound.at(0));
+	}
+
 	ReadData();
 }
 
 // 更新処理
 eSceneType Result::Update(const float &delta_second)
 {
+	//サウンドが再生されていない場合サウンドを再生する
+	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
+
 	//入力管理クラスのポインタ
 	InputManager* input = InputManager::GetInstance();
 
@@ -39,6 +52,9 @@ eSceneType Result::Update(const float &delta_second)
 	if (input->GetButtonDown(0, XINPUT_BUTTON_A) == true ||
 		input->GetKeyDown(KEY_INPUT_RETURN))
 	{
+		//BGMを止める
+		StopSoundMem(sound.at(0));
+
 		//タイトル画面へ
 		return eSceneType::title;
 	}
