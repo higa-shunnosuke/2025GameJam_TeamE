@@ -12,6 +12,8 @@ private:
 	Data old_player1;
 	Data old_player2;
 
+	std::vector<int> ui_image;
+
 public:
 	// コンストラクタ
 	InGame();

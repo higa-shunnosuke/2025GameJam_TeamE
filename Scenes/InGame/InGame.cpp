@@ -43,6 +43,29 @@ void InGame::Initialize()
 	//データの初期化
 	ReadData();
 
+	//数字に変換するための文字を格納する変数
+	std::string str;
+
+	//プレイヤー1のポイント数を文字に変換
+	str = std::to_string(player1.point > 2 ? 2 : player1.point);
+	player1.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+	//プレイヤー2のポイント数を文字に変換
+	str = std::to_string(player2.point > 2 ? 2 : player2.point);
+	player2.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+
+	//プレイヤー1のファウル数を文字に変換
+	str = std::to_string(player1.foul > 1 ? 1 : player1.foul);
+	player1.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+	//プレイヤー2のファウル数を文字に変換
+	str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
+	player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+
+	//画像が入っていない場合
+	if (ui_image.empty())
+	{
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Point/Point.png").at(0));
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
+	}
 	player1.point = old_player1.point;
 	player1.foul = old_player1.foul;
 	player2.point = old_player2.point;
@@ -124,12 +147,17 @@ void InGame::Draw() const
 	// フォントサイズ変更
 	SetFontSize(32);
 
-	DrawFormatString(10, 10, 0xffffff, "InGame");
-	DrawFormatString(10, 40, 0xffffff, "point:%d",player1.point);
-	DrawFormatString(10, 70, 0xffffff, "foul:%d",player1.foul);
-	DrawFormatString(500, 40, 0xffffff, "point:%d",player2.point);
-	DrawFormatString(500, 70, 0xffffff, "foul:%d",player2.foul);
+	//ポイント数の描画
+	DrawGraph(272, 0, ui_image.at(0), TRUE);
+	DrawRotaGraph(225, 15, 1, 0, player1.point_image, TRUE, TRUE);
+	DrawRotaGraph(425, 15, 1, 0, player2.point_image, TRUE);
 
+	//ファウル数の描画
+	DrawGraph(275, 40, ui_image.at(1), TRUE);
+	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
+	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
+
+	//合図の描画
 	sign_manager->Draw();
 }
 
