@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Scenes\CutScene\CutScene.cpp" />
     <ClCompile Include="player\ButtonMatch.cpp" />
     <ClCompile Include="Utilitys\ResourceManager.cpp" />
     <ClCompile Include="Sign\FeintSign.cpp" />
@@ -152,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Scenes\CutScene\CutScene.h" />
     <ClInclude Include="player\ButtonMatch.h" />
     <ClInclude Include="Utilitys\ResourceManager.h" />
     <ClInclude Include="Sign\FeintSign.h" />

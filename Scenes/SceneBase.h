@@ -20,6 +20,7 @@ enum class eSceneType
 {
 	title,		// タイトル
 	help,		// ヘルプ
+	cut,		// カットシーン
 	in_game,	// インゲーム
 	pause,		// ポーズ
 	re_start,	// リスタート
