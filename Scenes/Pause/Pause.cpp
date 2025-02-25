@@ -11,7 +11,8 @@ Pause::Pause() :
 	cursor(),
 	start_color(),
 	restart_color(),
-	quit_color()
+	quit_color(),
+	is_restart(false)
 {
 
 }
@@ -104,6 +105,8 @@ eSceneType Pause::Update(const float &delta_second)
 		}
 		else if (cursor == 1)
 		{
+			is_restart = true;
+
 			//インゲームのデータを初期化
 			DetaInitialize();
 

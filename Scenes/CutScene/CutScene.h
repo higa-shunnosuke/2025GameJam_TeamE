@@ -1,21 +1,24 @@
-﻿#pragma once
-
 #include "..//SceneBase.h"
+#include <time.h>
 
-class Pause : public SceneBase
+class CutScene : public SceneBase
 {
 private:
-	int cursor;			//カーソルカウンタ
-	int start_color;	//ポーズ解除ボタンの色
-	int restart_color;	//リスタートボタンの色
-	int quit_color;		//ゲーム終了ボタンの色
-	bool is_restart;	//リスタートフラグ
+	Data player1;
+	Data player2;
+	eSceneType old_type;	//前のシーンタイプ
+	int cut_scene;			//カットシーン
+	int t;					//経過時間
+	time_t old_t;			//前回の時刻
+	time_t now_t;			//現在の時刻
+	int old_score1;			//前回のプレイヤー１のポイント
+	int old_score2;			//前回のプレイヤー２のポイント
 
 public:
 	// コンストラクタ
-	Pause();
+	CutScene();
 	// デストラクタ
-	virtual ~Pause();
+	virtual ~CutScene();
 
 	/// <summary>
 	/// 初期化処理
@@ -45,9 +48,16 @@ public:
 	/// <returns>現在のシーンタイプ</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
+	/// <summary>
+	/// 前のシーンタイプを設定する
+	/// </summary>
+	/// <param name="old_type">前のシーンタイプ</param>
+	void SetOldSceneType(eSceneType old_type);
+
 private:
 	/// <summary>
-	/// ファイルデータを初期化する
+	/// ファイルデータ読み込み処理
 	/// </summary>
-	void DetaInitialize();
+	void ReadData();
+
 };

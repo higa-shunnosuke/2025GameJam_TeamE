@@ -98,7 +98,7 @@ eSceneType Title::Update(const float &delta_second)
 		if (cursor == 0)
 		{
 			//インゲーム画面へ
-			return eSceneType::in_game;
+			return eSceneType::cut;
 		}
 		else if (cursor == 1)
 		{

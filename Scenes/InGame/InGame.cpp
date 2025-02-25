@@ -41,6 +41,7 @@ void InGame::Initialize()
 
 	//データの初期化
 	ReadData();
+
 }
 
 // 更新処理
@@ -67,10 +68,14 @@ eSceneType InGame::Update(const float &delta_second)
 
 	switch (sign_manager->GetSignResult())
 	{
+		player1.reaction_rate = button_match->GetPlayer1ReactionTime();
+		player2.reaction_rate = button_match->GetPlayer1ReactionTime();
+
 	case SignResult::Player1_Point:
 		player1.point++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
+		return eSceneType::cut;
 		break;
 	case SignResult::Player1_Faul:
 		player1.faul++;
@@ -81,10 +86,10 @@ eSceneType InGame::Update(const float &delta_second)
 		player2.point++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
+		return eSceneType::cut;
 		break;
 	case SignResult::Player2_Faul:
 		player2.faul++;
-
 		sign_manager->Initialize();
 		button_match->ButtonReset();
 		break;
@@ -100,7 +105,7 @@ eSceneType InGame::Update(const float &delta_second)
 	}
 
 	//どちらかのファールが３ポイントになったら
-	if (player1.faul >= 2 || player2.faul >= 2)
+	if (player1.faul >= 3 || player2.faul >= 2)
 	{
 		//リザルト画面へ
 		return eSceneType::result;
@@ -128,24 +133,6 @@ void InGame::Draw() const
 	sign_manager->Draw();
 }
 
-// カットシーン生成処理
-void InGame::PlayCatScene(CutSceneType type)
-{
-	switch (type)
-	{
-	case Start:
-		break;
-	case Player1_Win:
-		break;
-	case Player2_Win:
-		break;
-	case TieGame:
-		break;
-	default:
-		break;
-	}
-}
-
 // 終了処理
 void InGame::Finalize()
 {
@@ -162,12 +149,6 @@ void InGame::Finalize()
 const eSceneType InGame::GetNowSceneType() const
 {
 	return eSceneType::in_game;
-}
-
-// 前のシーンタイプ設定処理
-void InGame::SetOldSceneType(eSceneType old_type)
-{
-	this->old_type = old_type;
 }
 
 // ファイルデータ書き込み処理
