@@ -10,7 +10,8 @@ InGame::InGame() :
 sign_manager(nullptr),
 button_match(nullptr),
 player1(),
-player2()
+player2(),
+old_type()
 {
 
 }
@@ -91,13 +92,6 @@ eSceneType InGame::Update(const float &delta_second)
 		break;
 	}
 
-	////決定
-	//if (input->GetButtonDown(XINPUT_BUTTON_A) == true ||
-	//	input->GetKeyDown(KEY_INPUT_RETURN))
-	//{
-	//	player1.point++;
-	//}
-
 	//どちらかのポイントが３ポイントになったら
 	if (player1.point >= 3 || player2.point >= 3)
 	{
@@ -131,18 +125,25 @@ void InGame::Draw() const
 	DrawFormatString(500, 40, 0xffffff, "point:%d",player2.point);
 	DrawFormatString(500, 70, 0xffffff, "faul:%d",player2.faul);
 
-	//入力管理クラスのポインタ
-	InputManager* input = InputManager::GetInstance();
-	if (input->GetButton(0,XINPUT_BUTTON_A) == true)
-	{
-		DrawFormatString(100, 100, 0xffffff, "A");
-	}
-	if (input->GetButton(1, XINPUT_BUTTON_A) == true)
-	{
-		DrawFormatString(400, 100, 0xffffff, "A");
-	}
-
 	sign_manager->Draw();
+}
+
+// カットシーン生成処理
+void InGame::PlayCatScene(CutSceneType type)
+{
+	switch (type)
+	{
+	case Start:
+		break;
+	case Player1_Win:
+		break;
+	case Player2_Win:
+		break;
+	case TieGame:
+		break;
+	default:
+		break;
+	}
 }
 
 // 終了処理
@@ -161,6 +162,12 @@ void InGame::Finalize()
 const eSceneType InGame::GetNowSceneType() const
 {
 	return eSceneType::in_game;
+}
+
+// 前のシーンタイプ設定処理
+void InGame::SetOldSceneType(eSceneType old_type)
+{
+	this->old_type = old_type;
 }
 
 // ファイルデータ書き込み処理

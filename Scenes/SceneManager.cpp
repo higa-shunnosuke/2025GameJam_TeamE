@@ -84,12 +84,6 @@ void SceneManager::ChangeScene(eSceneType next_type)
 		throw ("シーンが生成できませんでした\n");
 	}
 
-	//ロードに前のシーンタイプを渡す
-	if (next_type == eSceneType::load)
-	{
-		dynamic_cast<Loading*>(next_scene)->SetOldSceneType(current_scene->GetNowSceneType());
-	}
-
 	// シーン情報が格納されていたら、削除する
 	if (current_scene != nullptr)
 	{

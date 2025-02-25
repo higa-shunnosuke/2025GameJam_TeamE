@@ -2,6 +2,14 @@
 
 #include "..//SceneBase.h"
 
+//カットシーンタイプ
+enum CutSceneType {
+	Start,			//ゲーム開始
+	Player1_Win,	//１Pの勝利
+	Player2_Win,	//２Pの勝利
+	TieGame			//引き分け
+};
+
 class InGame : public SceneBase
 {
 private:
@@ -9,6 +17,7 @@ private:
 	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
+	eSceneType old_type;
 
 public:
 	// コンストラクタ
@@ -44,6 +53,12 @@ public:
 	/// <returns>現在のシーンタイプ</returns>
 	virtual const eSceneType GetNowSceneType() const override;
 
+	/// <summary>
+	/// 前のシーンタイプを設定する
+	/// </summary>
+	/// <param name="old_type">前のシーンタイプ</param>
+	void SetOldSceneType(eSceneType old_type);
+
 private:
 	/// <summary>
 	/// ファイルデータ書き込み処理
@@ -54,4 +69,9 @@ private:
 	/// ファイルデータ読み込み処理
 	/// </summary>
 	void ReadData();
+
+	/// <summary>
+	/// カットシーン再生処理
+	/// </summary>
+	void PlayCatScene(CutSceneType type);
 };
