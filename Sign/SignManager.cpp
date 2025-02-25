@@ -107,7 +107,7 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(0, XINPUT_BUTTON_Y))
 		{
 			//プレイヤー1にファールを返す
-			ret = SignResult::Player1_Faul;
+			ret = SignResult::Player1_Foul;
 		}
 
 		//プレイヤー2がA,B,X,Yのいずれかを押した場合
@@ -117,7 +117,7 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(1, XINPUT_BUTTON_Y))
 		{
 			//プレイヤー2にファールを返す
-			ret = SignResult::Player2_Faul;
+			ret = SignResult::Player2_Foul;
 		}
 	}
 	//合図を出した場合

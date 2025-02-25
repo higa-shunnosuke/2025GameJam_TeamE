@@ -77,7 +77,7 @@ eSceneType InGame::Update(const float &delta_second)
 		button_match->ButtonReset();
 		return eSceneType::cut;
 		break;
-	case SignResult::Player1_Faul:
+	case SignResult::Player1_Foul:
 		player1.faul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
@@ -88,7 +88,7 @@ eSceneType InGame::Update(const float &delta_second)
 		button_match->ButtonReset();
 		return eSceneType::cut;
 		break;
-	case SignResult::Player2_Faul:
+	case SignResult::Player2_Foul:
 		player2.faul++;
 		sign_manager->Initialize();
 		button_match->ButtonReset();
