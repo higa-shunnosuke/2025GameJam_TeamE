@@ -24,6 +24,8 @@ void Help::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	ResourceManager* rm = ResourceManager::GetInstance();
+	bg_image = rm->GetImages("Resources/images/InGame_BackGround.png")[0];
 }
 
 // 更新処理
@@ -47,6 +49,9 @@ eSceneType Help::Update(const float &delta_second)
 // 描画処理
 void Help::Draw() const
 {
+	//背景描画
+	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
+
 	// フォントサイズ変更
 	SetFontSize(16);
 

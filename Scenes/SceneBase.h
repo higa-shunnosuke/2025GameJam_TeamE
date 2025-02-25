@@ -20,8 +20,9 @@ enum class eSceneType
 {
 	title,		// タイトル
 	help,		// ヘルプ
+	load,		// ロード
 	in_game,	// インゲーム
-	pause,
+	pause,		// ポーズ
 	re_start,	// リスタート
 	result,		// リザルト
 	end,		// 終了
@@ -34,10 +35,12 @@ class SceneBase
 {
 protected:
 	// 各シーンが所有する情報
+	int bg_image;	//背景画像
 
 public:
 	// コンストラクタ
-	SceneBase()
+	SceneBase() :
+		bg_image()
 	{
 
 	}

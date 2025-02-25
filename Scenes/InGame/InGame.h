@@ -9,7 +9,6 @@ private:
 	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
-	int bg_image;	//背景画像
 
 public:
 	// コンストラクタ

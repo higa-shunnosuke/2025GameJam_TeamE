@@ -7,11 +7,10 @@
 
 // コンストラクタ
 InGame::InGame() :
-	sign_manager(nullptr),
-	button_match(nullptr),
-	player1(),
-	player2(),
-	bg_image()
+sign_manager(nullptr),
+button_match(nullptr),
+player1(),
+player2()
 {
 
 }
@@ -84,6 +83,7 @@ eSceneType InGame::Update(const float &delta_second)
 		break;
 	case SignResult::Player2_Faul:
 		player2.faul++;
+
 		sign_manager->Initialize();
 		button_match->ButtonReset();
 		break;

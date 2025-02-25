@@ -3,6 +3,7 @@
 #include "SceneBase.h"
 #include "Title/Title.h"
 #include "Help/Help.h"
+#include "Loading/Loading.h"
 #include "InGame/InGame.h"
 #include "Pause/Pause.h"
 #include "Result/Result.h"
@@ -27,6 +28,9 @@ public:
 			break;
 		case eSceneType::help:
 			return dynamic_cast<SceneBase*>(new Help());
+			break;
+		case eSceneType::load:
+			return dynamic_cast<SceneBase*>(new Loading());
 			break;
 		case eSceneType::in_game:
 		case eSceneType::re_start:
