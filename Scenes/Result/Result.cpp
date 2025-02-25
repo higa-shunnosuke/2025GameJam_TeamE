@@ -73,17 +73,6 @@ void Result::Draw() const
 	SetFontSize(32);
 
 	DrawFormatString(10, 10, 0xffffff, "Result");
-
-	//プレイヤー１の勝利条件
-	if (player1.point > player2.point || player1.foul < player2.foul)
-	{
-		DrawFormatString(250, 240, 0xffffff, "Player1 Win");
-	}
-	//プレイヤー２の勝利条件
-	else if (player1.point < player2.point || player1.foul > player2.foul)
-	{
-		DrawFormatString(250, 240, 0xffffff, "Player2 Win");
-	}
 }
 
 // 終了処理

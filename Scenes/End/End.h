@@ -6,6 +6,7 @@
 class End : public SceneBase
 {
 private:
+	float time;		//描画時間
 
 public:
 	// コンストラクタ

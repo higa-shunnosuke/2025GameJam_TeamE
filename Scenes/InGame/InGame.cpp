@@ -171,6 +171,7 @@ void InGame::Draw() const
 
 	DrawFormatString(0, 0, 0xffffff, "P1:%f", player1.reaction_rate);
 	DrawFormatString(0, 20, 0xffffff, "P2:%f", player2.reaction_rate);
+
 	//合図の描画
 	sign_manager->Draw();
 }

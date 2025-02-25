@@ -9,9 +9,7 @@ CutScene::CutScene() :
 	player2(),
 	old_type(),
 	cut_scene(),
-	now_t(),
-	old_t(),
-	t(),
+	time(),
 	old_player1(),
 	old_player2()
 {
@@ -83,9 +81,30 @@ void CutScene::Initialize()
 	// ムービーを再生状態にする
 	PlayMovieToGraph(cut_scene);
 
-	//前回の時刻の初期化
-	time(&old_t);
-	t = 0;
+	//数字に変換するための文字を格納する変数
+	std::string str;
+	//プレイヤー1のポイント数を文字に変換
+	str = std::to_string(player1.point > 2 ? 2 : player1.point);
+	player1.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+	//プレイヤー2のポイント数を文字に変換
+	str = std::to_string(player2.point > 2 ? 2 : player2.point);
+	player2.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+
+	//プレイヤー1のファウル数を文字に変換
+	str = std::to_string(player1.foul > 1 ? 1 : player1.foul);
+	player1.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+	//プレイヤー2のファウル数を文字に変換
+	str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
+	player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+
+	//画像が入っていない場合
+	if (ui_image.empty())
+	{
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Point/Point.png").at(0));
+		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
+	}
+
+	time = 0;
 }
 
 // 更新処理
@@ -94,18 +113,10 @@ eSceneType CutScene::Update(const float& delta_second)
 	//サウンドが再生されていない場合サウンドを再生する
 	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
 
-	//現在時刻と前回の時刻の更新
-	time(&now_t);
-
-	if (old_t < now_t)
-	{
-		t += 0.8f;
-	}
-
-	old_t = now_t;
+	time += delta_second;
 
 	//３秒経過したら
-	if (t > 2.4f)
+	if (time > 3.0f)
 	{
 		//どちらかのポイントが３ポイントになったら
 		if (player1.point >= 3 || player2.point >= 3)
@@ -133,6 +144,16 @@ void CutScene::Draw() const
 	//カットシーン再生
 	// ムービー映像を画面いっぱいに描画します
 	DrawExtendGraph(0, 0, 640, 480, cut_scene, FALSE);
+
+	//ポイント数の描画
+	DrawGraph(272, 0, ui_image.at(0), TRUE);
+	DrawRotaGraph(225, 15, 1, 0, player1.point_image, TRUE, TRUE);
+	DrawRotaGraph(425, 15, 1, 0, player2.point_image, TRUE);
+
+	//ファウル数の描画
+	DrawGraph(275, 40, ui_image.at(1), TRUE);
+	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
+	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 }
 
 // 終了処理

@@ -3,7 +3,8 @@
 #include "../../Application.h"
 
 // コンストラクタ
-End::End()
+End::End():
+	time()
 {
 
 }
@@ -25,9 +26,16 @@ void End::Initialize()
 // 更新処理
 eSceneType End::Update(const float &delta_second)
 {
-	//ゲームを終了させる
-	Application* app = Application::GetInstance();
-	app->QuitGame(true);
+	time += delta_second;
+
+	//3秒経過したら
+	if (time > 3.0f)
+	{
+		//ゲームを終了させる
+		Application* app = Application::GetInstance();
+		app->QuitGame(true);
+	}
+
 
 	// 親クラスの更新処理を呼び出す
 	return __super::Update(delta_second);

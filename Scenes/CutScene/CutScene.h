@@ -1,5 +1,4 @@
 #include "..//SceneBase.h"
-#include <time.h>
 
 class CutScene : public SceneBase
 {
@@ -8,12 +7,11 @@ private:
 	Data player2;
 	Data old_player1;			//前回のプレイヤー１のポイント
 	Data old_player2;			//前回のプレイヤー２のポイント
-	eSceneType old_type;	//前のシーンタイプ
-	int cut_scene;			//カットシーン
-	float t;				//経過時間
-	time_t old_t;			//前回の時刻
-	time_t now_t;			//現在の時刻
-	
+	eSceneType old_type;		//前のシーンタイプ
+	int cut_scene;				//カットシーン
+	float time;					//再生時間
+	std::vector<int> ui_image;	//UI画像
+
 
 public:
 	// コンストラクタ
