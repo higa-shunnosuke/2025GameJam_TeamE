@@ -11,7 +11,8 @@ enum class SignResult
 	Player1_Point,		//プレイヤー1にポイント
 	Player1_Faul,		//プレイヤー1にファール
 	Player2_Point,		//プレイヤー2にポイント
-	Player2_Faul		//プレイヤー2にファール
+	Player2_Faul,		//プレイヤー2にファール
+	Draw				//引き分け
 };
 
 /// <summary>

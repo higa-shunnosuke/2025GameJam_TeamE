@@ -91,6 +91,9 @@ SignResult SignManager::GetSignResult()
 	//プレイヤーの入力インスタンスを取得
 	ButtonMatch* match = ButtonMatch::GetInstance();
 
+	//返す値
+	SignResult ret = SignResult::None;
+
 	//合図を出していない場合
 	if (!sign->GetIsSign())
 	{
@@ -104,7 +107,7 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(0, XINPUT_BUTTON_Y))
 		{
 			//プレイヤー1にファールを返す
-			return SignResult::Player1_Faul;
+			ret = SignResult::Player1_Faul;
 		}
 
 		//プレイヤー2がA,B,X,Yのいずれかを押した場合
@@ -114,7 +117,7 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(1, XINPUT_BUTTON_Y))
 		{
 			//プレイヤー2にファールを返す
-			return SignResult::Player2_Faul;
+			ret = SignResult::Player2_Faul;
 		}
 	}
 	//合図を出した場合
@@ -123,30 +126,27 @@ SignResult SignManager::GetSignResult()
 		//連打合図とランダム合図ではない場合
 		if (sign->GetSignName() != "MashButtonSign" && sign->GetSignName() != "RandomSign")
 		{
-			//プレイヤー1の判定結果が正解の場合
-			if (match->GetPlayer1Result() == CORRECT)
+			//プレイヤー1の判定結果が正解の場合でプレイヤー2よりも反応速度が速い場合
+			if (match->GetPlayer1Result() == CORRECT &&
+				match->GetPlayer1ReactionTime() < match->GetPlayer2ReactionTime())
 			{
 				//プレイヤー1にポイントを返す
-				return SignResult::Player1_Point;
+				ret = SignResult::Player1_Point;
 			}
-			//プレイヤー2の判定結果が正解の場合
-			else if (match->GetPlayer2Result() == CORRECT)
+			//プレイヤー2の判定結果が正解の場合でプレイヤー1よりも反応速度が速い場合
+			if (match->GetPlayer2Result() == CORRECT &&
+				match->GetPlayer1ReactionTime() > match->GetPlayer2ReactionTime())
 			{
 				//プレイヤー2にポイントを返す
-				return SignResult::Player2_Point;
+				ret = SignResult::Player2_Point;
 			}
-
-			//プレイヤー1の判定結果が不正解の場合
-			if (match->GetPlayer1Result() == INCORRECT)
+			//両者正解で反応時間も同じ場合
+			if (match->GetPlayer1Result() == CORRECT &&
+				match->GetPlayer2Result() == CORRECT &&
+				match->GetPlayer1ReactionTime() == match->GetPlayer2ReactionTime())
 			{
-				//プレイヤー1にファールを返す
-				return SignResult::Player1_Faul;
-			}
-			//プレイヤー2の判定結果が不正解の場合
-			else if (match->GetPlayer2Result() == INCORRECT)
-			{
-				//プレイヤー2にファールを返す
-				return SignResult::Player2_Faul;
+				//引き分けを返す
+				ret = SignResult::Draw;
 			}
 		}
 		//連打合図とランダム合図の場合
@@ -162,13 +162,13 @@ SignResult SignManager::GetSignResult()
 				if (mbs_sign->IsMaximum(0))
 				{
 					//プレイヤー1にポイントを返す
-					return SignResult::Player1_Point;
+					ret = SignResult::Player1_Point;
 				}
 				//プレイヤー2のバーが最大の場合
 				else if (mbs_sign->IsMaximum(1))
 				{
 					//プレイヤー2のにポイントを返す
-					return SignResult::Player2_Point;
+					ret = SignResult::Player2_Point;
 				}
 			}
 			//ランダム合図の場合
@@ -181,18 +181,18 @@ SignResult SignManager::GetSignResult()
 				if (rs_sign->GetButton(0).empty())
 				{
 					//プレイヤー1にポイントを返す
-					return SignResult::Player1_Point;
+					ret = SignResult::Player1_Point;
 				}
-				//プレイヤーの2の押すボタンがない場合
+				//プレイヤー2の押すボタンがない場合
 				else if (rs_sign->GetButton(1).empty())
 				{
 					//プレイヤー2にポイントを返す
-					return SignResult::Player2_Point;
+					ret = SignResult::Player2_Point;
 				}
 			}
 		}
 	}
 
-	//何もしない
-	return SignResult::None;
+	//値を返す
+	return ret;
 }
