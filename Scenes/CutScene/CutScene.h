@@ -6,13 +6,14 @@ class CutScene : public SceneBase
 private:
 	Data player1;
 	Data player2;
+	Data old_player1;			//前回のプレイヤー１のポイント
+	Data old_player2;			//前回のプレイヤー２のポイント
 	eSceneType old_type;	//前のシーンタイプ
 	int cut_scene;			//カットシーン
 	float t;				//経過時間
 	time_t old_t;			//前回の時刻
 	time_t now_t;			//現在の時刻
-	int old_score1;			//前回のプレイヤー１のポイント
-	int old_score2;			//前回のプレイヤー２のポイント
+	
 
 public:
 	// コンストラクタ
