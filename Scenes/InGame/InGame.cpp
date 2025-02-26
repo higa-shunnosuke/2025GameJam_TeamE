@@ -174,7 +174,7 @@ eSceneType InGame::Update(const float &delta_second)
 	player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
 
 	//合図の結果を確認する
-	switch (sign_manager->GetSignResult())
+	switch (sign_manager->GetSignResult(is_cut))
 	{
 		//プレイヤー1にポイントの場合
 	case SignResult::Player1_Point:

@@ -70,7 +70,8 @@ public:
 
 	/// <summary>
 	/// 合図の結果を取得
+	/// <param name="cut_flg">カットシーン中？</param>
 	/// </summary>
-	SignResult GetSignResult();
+	SignResult GetSignResult(const bool& cut_flg);
 };
 
