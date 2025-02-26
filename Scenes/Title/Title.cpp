@@ -119,9 +119,9 @@ eSceneType Title::Update(const float &delta_second)
 		//カーソル音を再生
 		PlaySoundMem(sound.at(1), DX_PLAYTYPE_BACK);
 
-		if (cursor < 0)
+		if (cursor < 1)
 		{
-			cursor = 1;
+			cursor = 2;
 		}
 		else
 		{

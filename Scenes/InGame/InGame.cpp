@@ -159,28 +159,6 @@ eSceneType InGame::Update(const float &delta_second)
 			//ポーズ画面へ
 			return eSceneType::pause;
 		}
-
-		//合図の結果がなしではない場合
-		if (sign_manager->GetSignResult() != SignResult::None)
-		{
-			//リソースマネージャーのインスタンスを取得
-			ResourceManager* rm = ResourceManager::GetInstance();
-			//数字に変換するための文字を格納する変数
-			std::string str;
-			//プレイヤー1のポイント数を文字に変換
-			str = std::to_string(player1.point > 2 ? 2 : player1.point);
-			player1.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
-			//プレイヤー2のポイント数を文字に変換
-			str = std::to_string(player2.point > 2 ? 2 : player2.point);
-			player2.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
-
-			//プレイヤー1のファウル数を文字に変換
-			str = std::to_string(player1.foul > 1 ? 1 : player1.foul);
-			player1.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
-			//プレイヤー2のファウル数を文字に変換
-			str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
-			player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
-		}
 	}
 
 	//合図生成クラスの更新
@@ -205,8 +183,8 @@ eSceneType InGame::Update(const float &delta_second)
 			player1.point++;
 			CreateCutScene(CutType::Win_Player1);
 			is_cut = true;
-			break;
 		}
+		break;
 		//プレイヤー1にファウルの場合
 	case SignResult::Player1_Foul:
 		if (!is_cut)
@@ -214,8 +192,8 @@ eSceneType InGame::Update(const float &delta_second)
 			player1.foul++;
 			CreateCutScene(CutType::Foul_Player1);
 			is_cut = true;
-			break;
 		}
+		break;
 		//プレイヤー2にポイントの場合
 	case SignResult::Player2_Point:
 		if (!is_cut)
@@ -223,8 +201,8 @@ eSceneType InGame::Update(const float &delta_second)
 			player2.point++;
 			CreateCutScene(CutType::Win_Player2);
 			is_cut = true;
-			break;
 		}
+		break;
 		//プレイヤー2にファウルの場合
 	case SignResult::Player2_Foul:
 		if (!is_cut)
@@ -232,16 +210,16 @@ eSceneType InGame::Update(const float &delta_second)
 			player2.foul++;
 			CreateCutScene(CutType::Foul_Player2);
 			is_cut = true;
-			break;
 		}
+		break;
 		//引き分けの場合
 	case SignResult::Draw:
 		if (!is_cut)
 		{
 			CreateCutScene(CutType::TieGame);
 			is_cut = true;
-			break;
 		}
+		break;
 	default:
 		break;
 	}

@@ -78,14 +78,23 @@ void SignManager::Update(float delta_second)
 			//プレイヤーの入力インスタンスを取得
 			ButtonMatch* match = ButtonMatch::GetInstance();
 
+			bool start_flg = false;
+
 			//フェイント合図ならここでリセットする
-			if (sign->GetSignName() == "FeintSign")match->ButtonReset();
+			if (sign->GetSignName() == "FeintSign")
+			{
+				match->ButtonReset();
+
+				start_flg = true;
+			}
 
 			//終了処理
 			sign->Finalize();
 
 			//初期化
 			Initialize();
+
+			if (start_flg)sign->SetIsStart(true);
 		}
 	}
 }
@@ -249,12 +258,30 @@ SignResult SignManager::GetSignResult()
 					//ボタン入力の音をならす
 					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
 				}
+				//プレイヤー1の判定結果が不正解の場合
+				else if (match->GetPlayer1Result() == INCORRECT)
+				{
+					//銃声をならす
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+
+					//プレイヤー1にポイントを返す
+					ret = SignResult::Player1_Foul;
+				}
 
 				//プレイヤー2の判定結果が正解の場合
 				if (match->GetPlayer2Result() == CORRECT)
 				{
 					//ボタン入力の音をならす
 					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+				}
+				//プレイヤー2の判定結果が不正解の場合
+				else if (match->GetPlayer2Result() == INCORRECT)
+				{
+					//銃声をならす
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+
+					//プレイヤー2にポイントを返す
+					ret = SignResult::Player2_Foul;
 				}
 
 				//MashButtonSign型にキャスト

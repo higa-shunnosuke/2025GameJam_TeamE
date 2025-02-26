@@ -6,6 +6,8 @@
 class End : public SceneBase
 {
 private:
+	int thanks_image;
+
 	float time;		//描画時間
 
 public:
