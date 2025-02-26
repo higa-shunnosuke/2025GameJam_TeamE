@@ -205,13 +205,13 @@ void Title::DetaInitialize()
 
 	if (fp == NULL)
 	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
+		throw("Could not open file %s.", FILE_NAME);
 	}
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d,%d,%d\n", 0, 0, 0, 0);
-		fprintf_s(fp, "%d,%d,%d,%d\n", 0, 0, 0, 0);
+		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
 
 		//ファイルを閉じる
 		fclose(fp);
