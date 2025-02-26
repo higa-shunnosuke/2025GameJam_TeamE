@@ -41,8 +41,6 @@ public:
 		case eSceneType::end:
 			return dynamic_cast<SceneBase*>(new End());
 			break;
-		default:
-			break;
 		}
 	}
 };

@@ -210,8 +210,8 @@ void Title::DetaInitialize()
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
-		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d\n", 0, 0);
+		fprintf_s(fp, "%d,%d\n", 0, 0);
 
 		//ファイルを閉じる
 		fclose(fp);

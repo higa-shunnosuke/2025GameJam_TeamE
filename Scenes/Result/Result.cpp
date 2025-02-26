@@ -1,10 +1,11 @@
 ﻿#include "Result.h"
 #include "DxLib.h"
 
-#define FILE_NAME "Resources/datas/InGame_Data.csv"
+#define FILE_NAME "Resources/datas/Reaction_Data.csv"
 
 // コンストラクタ
 Result::Result():
+	count(),
 	player1(),
 	player2()
 {
@@ -36,6 +37,10 @@ void Result::Initialize()
 		ChangeVolumeSoundMem(110, sound.at(0));
 	}
 
+	//カウンタの初期化
+	count = 0;
+
+	//データ読み込み
 	ReadData();
 }
 
@@ -73,13 +78,19 @@ void Result::Draw() const
 	SetFontSize(32);
 
 	DrawFormatString(10, 10, 0xffffff, "Result");
+
+	for (int i = 0; i < count; i++)
+	{
+		DrawFormatString(0, 100 + (30 * i), 0xffffff, "Round%d:1p:%.1f", i, player1[i]);
+
+		DrawFormatString(250, 100 + (30 * i), 0xffffff, "2p:%.1f", player2[i]);
+
+	}
 }
 
 // 終了処理
 void Result::Finalize()
 {
-	DetaInitialize();
-
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
 }
@@ -94,43 +105,24 @@ const eSceneType Result::GetNowSceneType() const
 void Result::ReadData()
 {
 	FILE* fp;
+	char line[16];
 
 	//ファイルを開く
 	fopen_s(&fp, FILE_NAME, "r");
 
 	if (fp == NULL)
 	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
+		throw("Could not open file %s.", FILE_NAME);
 	}
 	else
 	{
-		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d", &player1.point, &player1.foul);
-		fscanf_s(fp, "%d,%d", &player2.point, &player2.foul);
-
-		//ファイルを閉じる
-		fclose(fp);
-	}
-}
-
-//ファイルデータの初期化
-void Result::DetaInitialize()
-{
-	FILE* fp;
-
-	//ファイルを開く
-	fopen_s(&fp, FILE_NAME, "w");
-
-	if (fp == NULL)
-	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
-	}
-	else
-	{
-		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d\n", 0, 0);
-		fprintf_s(fp, "%d,%d\n", 0, 0);
-
+		//データを読み込む
+		while (fgets(line,16,fp) != NULL)
+		{
+			sscanf_s(line, "%f,%f", &player1[count], &player2[count]);
+			count++;
+		}
+		
 		//ファイルを閉じる
 		fclose(fp);
 	}

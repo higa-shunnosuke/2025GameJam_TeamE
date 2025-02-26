@@ -1,12 +1,15 @@
 ﻿#pragma once
 
+#include "string"
+#include "vector"
 #include "..//SceneBase.h"
 
 class Result : public SceneBase
 {
 private:
-	Data player1;
-	Data player2;
+	float player1[7];		//リアクションデータ
+	float player2[7];		//リアクションデータ
+	int count;				//カウンタ
 
 public:
 	// コンストラクタ
@@ -47,9 +50,4 @@ private:
 	/// ファイルデータ読み込み処理
 	/// </summary>
 	void ReadData();
-
-	/// <summary>
-	/// ファイルデータを初期化する
-	/// </summary>
-	void DetaInitialize();
 };

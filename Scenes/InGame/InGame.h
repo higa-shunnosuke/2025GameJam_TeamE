@@ -25,7 +25,7 @@ private:
 	int cut_scene;				//カットシーン
 	CutType type;				//カットシーンタイプ
 	float time;					//カットシーン再生時間
-
+	int round_count;			//ラウンドカウンタ
 public:
 	// コンストラクタ
 	InGame();
@@ -70,6 +70,11 @@ private:
 	/// ファイルデータ読み込み処理
 	/// </summary>
 	void ReadData();
+
+	/// <summary>
+	/// ランキングデータ書き込み処理
+	/// </summary>
+	void WriteRanking();
 
 	/// <summary>
 	/// カットシーン生成処理

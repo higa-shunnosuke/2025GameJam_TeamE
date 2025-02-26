@@ -4,6 +4,7 @@
 #include "../../player/ButtonMatch.h"
 
 #define FILE_NAME "Resources/datas/InGame_Data.csv"
+#define RANKING_NAME "Resources/datas/Reaction_Data.csv"
 
 // コンストラクタ
 InGame::InGame() :
@@ -13,7 +14,8 @@ player1(),
 player2(),
 cut_scene(),
 time(),
-type()
+type(),
+round_count()
 {
 
 }
@@ -77,6 +79,9 @@ void InGame::Initialize()
 
 	//スタートのカットシーンを作成
 	CreateCutScene(CutType::Start);
+
+	//ラウンド回数を初期化
+	round_count = 0;
 }
 
 // 更新処理
@@ -152,8 +157,8 @@ eSceneType InGame::Update(const float &delta_second)
 			return eSceneType::pause;
 		}
 
-		player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
-		player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
+		player1.reaction_rate[round_count] = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
+		player2.reaction_rate[round_count] = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
 
 		switch (sign_manager->GetSignResult())
 		{
@@ -178,6 +183,9 @@ eSceneType InGame::Update(const float &delta_second)
 		default:
 			break;
 		}
+
+		//ファイル書き込み
+		WriteData();
 
 		if (sign_manager->GetSignResult() != SignResult::None)
 		{
@@ -264,8 +272,8 @@ void InGame::CreateCutScene(CutType type)
 // 終了処理
 void InGame::Finalize()
 {
-	//ファイル書き込み
-	WriteData();
+	//ランキングデータ書き込み
+	WriteRanking();
 
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
@@ -294,8 +302,8 @@ void InGame::WriteData()
 	else
 	{
 		//データを書き込む
-		fprintf_s(fp, "%d,%d,%f\n",  player1.point, player1.foul, player1.reaction_rate);
-		fprintf_s(fp, "%d,%d,%f\n",  player2.point, player2.foul, player2.reaction_rate);
+		fprintf_s(fp, "%d,%d\n",  player1.point, player1.foul);
+		fprintf_s(fp, "%d,%d\n",  player2.point, player2.foul);
 
 		//ファイルを閉じる
 		fclose(fp);
@@ -317,8 +325,33 @@ void InGame::ReadData()
 	else
 	{
 		//データを読み込む
-		fscanf_s(fp, "%d,%d,%f",  &player1.point, &player1.foul, &player1.reaction_rate);
-		fscanf_s(fp, "%d,%d,%f",  &player2.point, &player2.foul, &player2.reaction_rate);
+		fscanf_s(fp, "%d,%d",  &player1.point, &player1.foul);
+		fscanf_s(fp, "%d,%d",  &player2.point, &player2.foul);
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
+}
+
+// ランキングデータ書き込み処理
+void InGame::WriteRanking()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, FILE_NAME, "w");
+
+	if (fp == NULL)
+	{
+		throw("Could not open file %s.", FILE_NAME);
+	}
+	else
+	{
+		//データを書き込む
+		for (int i = 0; i < 5; i++)
+		{
+			fprintf_s(fp, "%f,%f\n", player1.reaction_rate[i], player2.reaction_rate[i]);
+		}
 
 		//ファイルを閉じる
 		fclose(fp);

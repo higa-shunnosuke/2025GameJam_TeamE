@@ -12,7 +12,7 @@ struct Data {
 	int point_image;		//ポイント数の画像
 	int foul;				//ファウル数
 	int foul_image;			//ファウル数の画像
-	float reaction_rate;	//反応速度
+	float reaction_rate[5];	//反応速度
 };
 
 /// <summary>
