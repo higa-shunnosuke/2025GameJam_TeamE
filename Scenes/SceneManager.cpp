@@ -84,11 +84,6 @@ void SceneManager::ChangeScene(eSceneType next_type)
 		throw ("シーンが生成できませんでした\n");
 	}
 
-	if (next_type == eSceneType::cut)
-	{
-		dynamic_cast<CutScene*>(next_scene)->SetOldSceneType(current_scene->GetNowSceneType());
-	}
-
 	// シーン情報が格納されていたら、削除する
 	if (current_scene != nullptr)
 	{

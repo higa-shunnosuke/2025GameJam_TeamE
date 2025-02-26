@@ -2,6 +2,16 @@
 
 #include "..//SceneBase.h"
 
+enum CutType
+{
+	Start = 0,
+	Win_Player1,
+	Win_Player2,
+	Foul_Player1,
+	Foul_Player2,
+	TieGame
+};
+
 class InGame : public SceneBase
 {
 private:
@@ -9,10 +19,12 @@ private:
 	class ButtonMatch* button_match;
 	Data player1;
 	Data player2;
-	Data old_player1;
-	Data old_player2;
 
 	std::vector<int> ui_image;
+
+	int cut_scene;				//カットシーン
+	CutType type;				//カットシーンタイプ
+	float time;					//カットシーン再生時間
 
 public:
 	// コンストラクタ
@@ -58,4 +70,10 @@ private:
 	/// ファイルデータ読み込み処理
 	/// </summary>
 	void ReadData();
+
+	/// <summary>
+	/// カットシーン生成処理
+	/// </summary>
+	void CreateCutScene(CutType type);
+
 };

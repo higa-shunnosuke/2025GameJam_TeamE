@@ -11,8 +11,9 @@ sign_manager(nullptr),
 button_match(nullptr),
 player1(),
 player2(),
-old_player1(),
-old_player2()
+cut_scene(),
+time(),
+type()
 {
 
 }
@@ -50,10 +51,6 @@ void InGame::Initialize()
 	//データの初期化
 	ReadData();
 
-	player1.point = old_player1.point;
-	player1.foul = old_player1.foul;
-	player2.point = old_player2.point;
-	player2.foul = old_player2.foul;
 	//数字に変換するための文字を格納する変数
 	std::string str;
 
@@ -77,74 +74,127 @@ void InGame::Initialize()
 		ui_image.push_back(rm->GetImages("Resources/images/UI/Point/Point.png").at(0));
 		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
 	}
+
+	//スタートのカットシーンを作成
+	CreateCutScene(CutType::Start);
 }
 
 // 更新処理
 eSceneType InGame::Update(const float &delta_second)
 {
+
 	//サウンドが再生されていない場合サウンドを再生する
 	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
 
-	//入力管理クラスのポインタ
-	InputManager* input = InputManager::GetInstance();
-
-	//合図生成クラスの更新
-	sign_manager->Update(delta_second);
-
-	if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
-
-	//ボタン判定クラスの更新
-	button_match->ButtonMatchUpdate(delta_second);
-
-	//スタートボタンが押されたら
-	if (input->GetButtonDown(0, XINPUT_BUTTON_START) == true ||
-		input->GetKeyDown(KEY_INPUT_TAB))
+	if (cut_scene != 0)
 	{
-		//ポーズ画面へ
-		return eSceneType::pause;
+		time += delta_second;
+
+		//３秒経過したら
+		if (time > 3.0f)
+		{
+			//どちらかのポイントが３ポイントになったら
+			if (player1.point >= 3 || player2.point >= 3)
+			{
+				//BGMを止める
+				StopSoundMem(sound.at(0));
+
+				//リザルト画面へ
+				return eSceneType::result;
+			}
+			else
+			{
+				//再生時間を初期化
+				time = 0;
+				//カットシーンを削除
+				cut_scene = 0;
+				// 読み込んだムービーファイルのグラフィックハンドルの削除
+				DeleteGraph(cut_scene);
+
+				//リソースマネージャーのインスタンスを取得
+				ResourceManager* rm = ResourceManager::GetInstance();
+				//数字に変換するための文字を格納する変数
+				std::string str;
+				//プレイヤー1のポイント数を文字に変換
+				str = std::to_string(player1.point > 2 ? 2 : player1.point);
+				player1.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+				//プレイヤー2のポイント数を文字に変換
+				str = std::to_string(player2.point > 2 ? 2 : player2.point);
+				player2.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+
+				//プレイヤー1のファウル数を文字に変換
+				str = std::to_string(player1.foul > 1 ? 1 : player1.foul);
+				player1.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+				//プレイヤー2のファウル数を文字に変換
+				str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
+				player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+			}
+		}
 	}
-
-	player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
-	player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
-
-	switch (sign_manager->GetSignResult())
+	else
 	{
-	case SignResult::Player1_Point:
-		player1.point++;
-		break;
-	case SignResult::Player1_Foul:
-		player1.foul++;
-		break;
-	case SignResult::Player2_Point:
-		player2.point++;
-		break;
-	case SignResult::Player2_Foul:
-		player2.foul++;
-		break;
-	case SignResult::Draw:
-		return eSceneType::cut;
-	default:
-		break;
+		//入力管理クラスのポインタ
+		InputManager* input = InputManager::GetInstance();
+
+		//合図生成クラスの更新
+		sign_manager->Update(delta_second);
+
+		if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
+
+		//ボタン判定クラスの更新
+		button_match->ButtonMatchUpdate(delta_second);
+
+		//スタートボタンが押されたら
+		if (input->GetButtonDown(0, XINPUT_BUTTON_START) == true ||
+			input->GetKeyDown(KEY_INPUT_TAB))
+		{
+			//ポーズ画面へ
+			return eSceneType::pause;
+		}
+
+		player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
+		player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
+
+		switch (sign_manager->GetSignResult())
+		{
+		case SignResult::Player1_Point:
+			player1.point++;
+			CreateCutScene(CutType::Win_Player1);
+			break;
+		case SignResult::Player1_Foul:
+			player1.foul++;
+			CreateCutScene(CutType::Foul_Player1);
+			break;
+		case SignResult::Player2_Point:
+			player2.point++;
+			CreateCutScene(CutType::Win_Player2);
+			break;
+		case SignResult::Player2_Foul:
+			player2.foul++;
+			CreateCutScene(CutType::Foul_Player2);
+			break;
+		case SignResult::Draw:
+			CreateCutScene(CutType::TieGame);
+		default:
+			break;
+		}
+
+		if (sign_manager->GetSignResult() != SignResult::None)
+		{
+			sign_manager->Initialize();
+			button_match->ButtonReset();
+		}
+
+		//どちらかのファールが2ポイントになったら
+		if (player1.foul >= 2 || player2.foul >= 2)
+		{
+			//BGMを止める
+			StopSoundMem(sound.at(0));
+
+			//リザルト画面へ
+			return eSceneType::result;
+		}
 	}
-
-	if (sign_manager->GetSignResult() != SignResult::None)
-	{
-
-		sign_manager->Initialize();
-		button_match->ButtonReset();
-		return eSceneType::cut;
-	}
-
-	//どちらかのファールが３ポイントになったら
-	if (player1.foul >= 2 || player2.foul >= 2)
-	{
-		//BGMを止める
-		StopSoundMem(sound.at(0));
-
-		//リザルト画面へ
-		return eSceneType::result;
-	}
-
 	// 親クラスの更新処理を呼び出す
 	return __super::Update(delta_second);
 }
@@ -154,6 +204,12 @@ void InGame::Draw() const
 {
 	//背景描画
 	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
+
+	if (cut_scene != 0)
+	{
+		// ムービー映像を画面いっぱいに描画します
+		DrawExtendGraph(0, 0, 640, 480, cut_scene, FALSE);
+	}
 
 	// フォントサイズ変更
 	SetFontSize(32);
@@ -168,8 +224,41 @@ void InGame::Draw() const
 	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
+	//反応速度の描画
+	DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate);
+	DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate);
+
 	//合図の描画
 	sign_manager->Draw();
+}
+
+// カットシーン生成処理
+void InGame::CreateCutScene(CutType type)
+{
+	// ムービーファイルをロード
+	switch (type)
+	{
+	case Start:
+		cut_scene = LoadGraph("Resources/CatScene/Start.mp4");
+		break;
+	case Win_Player1:
+		cut_scene = LoadGraph("Resources/CatScene/1P_WIN.mp4");
+		break;
+	case Win_Player2:
+		cut_scene = LoadGraph("Resources/CatScene/2P_WIN.mp4");
+		break;
+	case Foul_Player1:
+		cut_scene = LoadGraph("Resources/CatScene/1P_FOUL.mp4");
+		break;
+	case Foul_Player2:
+		cut_scene = LoadGraph("Resources/CatScene/2P_FOUL.mp4");
+		break;
+	case TieGame:
+		cut_scene = LoadGraph("Resources/CatScene/DRAW.mp4");
+		break;
+	}
+	// ムービーを再生状態にする
+	PlayMovieToGraph(cut_scene);
 }
 
 // 終了処理
@@ -205,8 +294,8 @@ void InGame::WriteData()
 	else
 	{
 		//データを書き込む
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", old_player1.point, old_player1.foul, player1.point, player1.foul, player1.reaction_rate);
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", old_player2.point, old_player2.foul, player2.point, player2.foul, player2.reaction_rate);
+		fprintf_s(fp, "%d,%d,%f\n",  player1.point, player1.foul, player1.reaction_rate);
+		fprintf_s(fp, "%d,%d,%f\n",  player2.point, player2.foul, player2.reaction_rate);
 
 		//ファイルを閉じる
 		fclose(fp);
@@ -228,8 +317,8 @@ void InGame::ReadData()
 	else
 	{
 		//データを読み込む
-		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player1.point, &old_player1.foul, &old_player1.point, &old_player1.foul, &player1.reaction_rate);
-		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player2.point, &old_player2.foul, &old_player2.point, &old_player2.foul, &player2.reaction_rate);
+		fscanf_s(fp, "%d,%d,%f",  &player1.point, &player1.foul, &player1.reaction_rate);
+		fscanf_s(fp, "%d,%d,%f",  &player2.point, &player2.foul, &player2.reaction_rate);
 
 		//ファイルを閉じる
 		fclose(fp);

@@ -3,7 +3,6 @@
 #include "SceneBase.h"
 #include "Title/Title.h"
 #include "Help/Help.h"
-#include "CutScene/CutScene.h"
 #include "InGame/InGame.h"
 #include "Pause/Pause.h"
 #include "Result/Result.h"
@@ -30,9 +29,6 @@ public:
 			return dynamic_cast<SceneBase*>(new Help());
 			break;
 		case eSceneType::re_start:
-		case eSceneType::cut:
-			return dynamic_cast<SceneBase*>(new CutScene());
-			break;
 		case eSceneType::in_game:
 			return dynamic_cast<SceneBase*>(new InGame());
 			break;

@@ -205,8 +205,8 @@ void Pause::DetaInitialize()
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
 
 		//ファイルを閉じる
 		fclose(fp);

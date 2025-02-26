@@ -142,7 +142,7 @@ eSceneType Title::Update(const float &delta_second)
 			StopSoundMem(sound.at(0));
 
 			//インゲーム画面へ
-			return eSceneType::cut;
+			return eSceneType::in_game;
 		}
 		else if (cursor == 1)
 		{
@@ -210,8 +210,8 @@ void Title::DetaInitialize()
 	else
 	{
 		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
-		fprintf_s(fp, "%d,%d,%d,%d,%f\n", 0, 0, 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
+		fprintf_s(fp, "%d,%d,%f\n", 0, 0, 0.0f);
 
 		//ファイルを閉じる
 		fclose(fp);
