@@ -4,6 +4,7 @@
 
 // コンストラクタ
 End::End():
+	thanks_image(),
 	time()
 {
 
@@ -21,6 +22,10 @@ void End::Initialize()
 	// 親クラスの初期化処理を呼び出す
 	__super::Initialize();
 
+	ResourceManager* rm = ResourceManager::GetInstance();
+	bg_image = rm->GetImages("Resources/images/End/Credit_1.png")[0];
+	thanks_image = rm->GetImages("Resources/images/End/Credit_2.png")[0];
+
 }
 
 // 更新処理
@@ -28,10 +33,15 @@ eSceneType End::Update(const float &delta_second)
 {
 	time += delta_second;
 
+	//2秒経過したら
+	if (time > 2.0f)
+	{
+		bg_image = thanks_image;
+	}
+
 	//3秒経過したら
 	if (time > 3.0f)
 	{
-		time = 3.0f;
 		//ゲームを終了させる
 		Application* app = Application::GetInstance();
 		app->QuitGame(true);
@@ -48,9 +58,8 @@ void End::Draw() const
 	// フォントサイズ変更
 	SetFontSize(32);
 
-	DrawFormatString(10, 10, 0xffffff, "End");
-	DrawFormatString(100, 240, 0xffffff, "Thank you for playing");
-	DrawFormatString(620, 450, 0xffffff, "%.0f",3.0f - time);
+	//背景描画
+	DrawGraph(0, 0, bg_image, TRUE);
 
 }
 

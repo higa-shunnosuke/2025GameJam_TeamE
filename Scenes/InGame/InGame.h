@@ -25,6 +25,9 @@ private:
 	int cut_scene;				//カットシーン
 	CutType type;				//カットシーンタイプ
 	float time;					//カットシーン再生時間
+
+	bool is_cut;				//カットシーン中？
+
 	int round_count;			//ラウンドカウンタ
 public:
 	// コンストラクタ

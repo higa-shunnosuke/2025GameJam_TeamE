@@ -89,11 +89,36 @@ private:
 	float player1ReactionTime;
 	float player2ReactionTime;
 
+	bool isCorrectPlayer1;		//プレイヤー1は正解した？
+	bool isCorrectPlayer2;		//プレイヤー2は正解した？
+
 	/// <summary>
 	/// 4つのボタン（A, B, X, Y）の入力かどうか判定します。
 	/// </summary>
 	/// <param name="button">判定対象のボタンのコード</param>
 	/// <returns>True:4つのボタン（A, B, X, Y)のいずれか False:それ以外</returns>
 	bool IsAllowedButton(int button) const;
+
+public:
+	bool GetIsCorrectPlayer1()const { return isCorrectPlayer1; }
+	bool GetIsCorrectPlayer2()const { return isCorrectPlayer2; }
+
+	/// <summary>
+	/// プレイヤー1の正解フラグを設定
+	/// </summary>
+	/// <param name="flg">設定したいフラグ</param>
+	void SetIsCorrectPlayer1(const bool flg)
+	{
+		isCorrectPlayer1 = flg;
+	}
+
+	/// <summary>
+	/// プレイヤー2の正解フラグを設定
+	/// </summary>
+	/// <param name="flg">設定したいフラグ</param>
+	void SetIsCorrectPlayer2(const bool flg)
+	{
+		isCorrectPlayer2 = flg;
+	}
 };
 

@@ -78,14 +78,23 @@ void SignManager::Update(float delta_second)
 			//プレイヤーの入力インスタンスを取得
 			ButtonMatch* match = ButtonMatch::GetInstance();
 
-			//リセット
-			match->ButtonReset();
+			bool start_flg = false;
+
+			//フェイント合図ならここでリセットする
+			if (sign->GetSignName() == "FeintSign")
+			{
+				match->ButtonReset();
+
+				start_flg = true;
+			}
 
 			//終了処理
 			sign->Finalize();
 
 			//初期化
 			Initialize();
+
+			if (start_flg)sign->SetIsStart(true);
 		}
 	}
 }
@@ -107,7 +116,7 @@ SignBase* SignManager::GetSignInstance() const
 	return this->sign;
 }
 
-SignResult SignManager::GetSignResult()
+SignResult SignManager::GetSignResult(const bool& cut_flg)
 {
 	//返す値
 	SignResult ret = SignResult::None;
@@ -125,7 +134,10 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(0, XINPUT_BUTTON_Y))
 		{
 			//銃声をならす
-			PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+			if (!cut_flg)
+			{
+				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+			}
 
 			//プレイヤー1にファールを返す
 			ret = SignResult::Player1_Foul;
@@ -138,7 +150,10 @@ SignResult SignManager::GetSignResult()
 			input->GetButtonDown(1, XINPUT_BUTTON_Y))
 		{
 			//銃声をならす
-			PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+			if (!cut_flg)
+			{
+				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+			}
 
 			//プレイヤー2にファールを返す
 			ret = SignResult::Player2_Foul;
@@ -157,7 +172,13 @@ SignResult SignManager::GetSignResult()
 			if (match->GetPlayer1Result() == CORRECT)
 			{
 				//銃声をならす
-				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				if (!cut_flg)
+				{
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				}
+
+				//プレイヤー1を正解判定にする
+				match->SetIsCorrectPlayer1(true);
 
 				//プレイヤー1にポイントを返す
 				ret = SignResult::Player1_Point;
@@ -166,7 +187,10 @@ SignResult SignManager::GetSignResult()
 			else if (match->GetPlayer1Result() == INCORRECT)
 			{
 				//銃声をならす
-				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				if (!cut_flg)
+				{
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				}
 
 				//プレイヤー1にポイントを返す
 				ret = SignResult::Player1_Foul;
@@ -176,7 +200,13 @@ SignResult SignManager::GetSignResult()
 			if (match->GetPlayer2Result() == CORRECT)
 			{
 				//銃声をならす
-				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				if (!cut_flg)
+				{
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				}
+
+				//プレイヤー2を正解判定にする
+				match->SetIsCorrectPlayer2(true);
 
 				//プレイヤー2にポイントを返す
 				ret = SignResult::Player2_Point;
@@ -185,7 +215,10 @@ SignResult SignManager::GetSignResult()
 			else if (match->GetPlayer2Result() == INCORRECT)
 			{
 				//銃声をならす
-				PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				if (!cut_flg)
+				{
+					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+				}
 
 				//プレイヤー2にポイントを返す
 				ret = SignResult::Player2_Foul;
@@ -199,7 +232,13 @@ SignResult SignManager::GetSignResult()
 				if (match->GetPlayer1ReactionTime() > match->GetPlayer2ReactionTime())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー2を正解判定にする
+					match->SetIsCorrectPlayer2(true);
 
 					//プレイヤー2にポイントを返す
 					ret = SignResult::Player2_Point;
@@ -208,7 +247,13 @@ SignResult SignManager::GetSignResult()
 				else if (match->GetPlayer1ReactionTime() < match->GetPlayer2ReactionTime())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー1を正解判定にする
+					match->SetIsCorrectPlayer1(true);
 
 					//プレイヤー1にポイントを返す
 					ret = SignResult::Player1_Point;
@@ -218,7 +263,10 @@ SignResult SignManager::GetSignResult()
 				else if (match->GetPlayer1ReactionTime() == match->GetPlayer2ReactionTime())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
 
 					//引き分けを返す
 					ret = SignResult::Draw;
@@ -235,14 +283,44 @@ SignResult SignManager::GetSignResult()
 				if (match->GetPlayer1Result() == CORRECT)
 				{
 					//ボタン入力の音をならす
-					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					}
+				}
+				//プレイヤー1の判定結果が不正解の場合
+				else if (match->GetPlayer1Result() == INCORRECT)
+				{
+					//銃声をならす
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー1にポイントを返す
+					ret = SignResult::Player1_Foul;
 				}
 
 				//プレイヤー2の判定結果が正解の場合
 				if (match->GetPlayer2Result() == CORRECT)
 				{
 					//ボタン入力の音をならす
-					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					}
+				}
+				//プレイヤー2の判定結果が不正解の場合
+				else if (match->GetPlayer2Result() == INCORRECT)
+				{
+					//銃声をならす
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー2にポイントを返す
+					ret = SignResult::Player2_Foul;
 				}
 
 				//MashButtonSign型にキャスト
@@ -252,25 +330,42 @@ SignResult SignManager::GetSignResult()
 				if (mbs_sign->IsMaximum(0))
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー1を正解判定にする
+					match->SetIsCorrectPlayer1(true);
 
 					//プレイヤー1にポイントを返す
 					ret = SignResult::Player1_Point;
 				}
+
 				//プレイヤー2のバーが最大の場合
-				else if (mbs_sign->IsMaximum(1))
+				if (mbs_sign->IsMaximum(1))
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー2を正解判定にする
+					match->SetIsCorrectPlayer2(true);
 
 					//プレイヤー2のにポイントを返す
 					ret = SignResult::Player2_Point;
 				}
+
 				//両者最大の場合
-				else if (mbs_sign->IsMaximum(0) && mbs_sign->IsMaximum(1))
+				if (mbs_sign->IsMaximum(0) && mbs_sign->IsMaximum(1))
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
 
 					//引き分けを返す
 					ret = SignResult::Draw;
@@ -283,14 +378,20 @@ SignResult SignManager::GetSignResult()
 				if (match->GetPlayer1Result() == CORRECT)
 				{
 					//ボタン入力の音をならす
-					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					}
 				}
 
 				//プレイヤー2の判定結果が正解の場合
 				if (match->GetPlayer2Result() == CORRECT)
 				{
 					//ボタン入力の音をならす
-					PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(1), DX_PLAYTYPE_BACK);
+					}
 				}
 
 				//RandomSign型にキャスト
@@ -300,30 +401,54 @@ SignResult SignManager::GetSignResult()
 				if (rs_sign->GetButton(0).empty())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー1を正解判定にする
+					match->SetIsCorrectPlayer1(true);
 
 					//プレイヤー1にポイントを返す
 					ret = SignResult::Player1_Point;
 				}
+
 				//プレイヤー2の押すボタンがない場合
-				else if (rs_sign->GetButton(1).empty())
+				if (rs_sign->GetButton(1).empty())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
+
+					//プレイヤー2を正解判定にする
+					match->SetIsCorrectPlayer2(true);
 
 					//プレイヤー2にポイントを返す
 					ret = SignResult::Player2_Point;
 				}
+
 				//両者押すボタンがない場合
-				else if (rs_sign->GetButton(0).empty() && rs_sign->GetButton(1).empty())
+				if (rs_sign->GetButton(0).empty() && rs_sign->GetButton(1).empty())
 				{
 					//銃声をならす
-					PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					if (!cut_flg)
+					{
+						PlaySoundMem(sound_effect.at(0), DX_PLAYTYPE_BACK);
+					}
 
 					//引き分けを返す
 					ret = SignResult::Draw;
 				}
 			}
+		}
+
+		//両者正解判定の場合
+		if (match->GetIsCorrectPlayer1() && match->GetIsCorrectPlayer2())
+		{
+			//何もしない
+			ret = SignResult::None;
 		}
 	}
 
