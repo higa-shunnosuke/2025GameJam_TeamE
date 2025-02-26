@@ -7,9 +7,8 @@
 class Result : public SceneBase
 {
 private:
-	float player1[7];		//リアクションデータ
-	float player2[7];		//リアクションデータ
-	int count;				//カウンタ
+	float player1[5];		//リアクションデータ
+	float player2[5];		//リアクションデータ
 
 public:
 	// コンストラクタ

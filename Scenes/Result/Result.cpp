@@ -5,7 +5,6 @@
 
 // コンストラクタ
 Result::Result():
-	count(),
 	player1(),
 	player2()
 {
@@ -37,11 +36,16 @@ void Result::Initialize()
 		ChangeVolumeSoundMem(110, sound.at(0));
 	}
 
-	//カウンタの初期化
-	count = 0;
-
 	//データ読み込み
 	ReadData();
+
+	player1[0] = 1.0f;
+	player1[1] = 1.5f;
+	player1[2] = 1.0f;
+	player2[0] = 1.5f;
+	player2[1] = 1.0f;
+	player2[2] = 1.0f;
+
 }
 
 // 更新処理
@@ -79,12 +83,32 @@ void Result::Draw() const
 
 	DrawFormatString(10, 10, 0xffffff, "Result");
 
-	for (int i = 0; i < count; i++)
+	DrawFormatString(128, 70, 0xffffff, "1P  |             | 2P");
+
+	for (int i = 0; i < 5; i++)
 	{
-		DrawFormatString(0, 100 + (30 * i), 0xffffff, "Round%d:1p:%.1f", i, player1[i]);
+		if (player1[i] != NULL && player2[i] != NULL)
+		{
+			//プレイヤー１
+			DrawFormatString(0, 100 + (30 * i), 0xffffff, "Round%d:%.1f", i + 1, player1[i]);
 
-		DrawFormatString(250, 100 + (30 * i), 0xffffff, "2p:%.1f", player2[i]);
+			//勝敗
+			if (player1[i] < player2[i])
+			{
+				DrawFormatString(200, 100 + (30 * i), 0xffffff, "| Win  : Loss |");
+			}
+			else if (player1[i] > player2[i])
+			{
+				DrawFormatString(200, 100 + (30 * i), 0xffffff, "| Loss :  Win |");
+			}
+			else
+			{
+				DrawFormatString(200, 100 + (30 * i), 0xffffff, "|    Draw     |");
+			}
 
+			//プレイヤー２
+			DrawFormatString(500, 100 + (30 * i), 0xffffff, "%.1f", player2[i]);
+		}
 	}
 }
 
@@ -105,7 +129,6 @@ const eSceneType Result::GetNowSceneType() const
 void Result::ReadData()
 {
 	FILE* fp;
-	char line[16];
 
 	//ファイルを開く
 	fopen_s(&fp, FILE_NAME, "r");
@@ -116,11 +139,9 @@ void Result::ReadData()
 	}
 	else
 	{
-		//データを読み込む
-		while (fgets(line,16,fp) != NULL)
+		for (int i = 0; i < 5; i++)
 		{
-			sscanf_s(line, "%f,%f", &player1[count], &player2[count]);
-			count++;
+			fscanf_s(fp, "%f,%f", &player1[i], &player2[i]);
 		}
 		
 		//ファイルを閉じる

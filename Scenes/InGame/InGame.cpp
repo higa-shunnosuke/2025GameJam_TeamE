@@ -94,10 +94,21 @@ eSceneType InGame::Update(const float &delta_second)
 	if (cut_scene != 0)
 	{
 		time += delta_second;
-
+	
 		//３秒経過したら
 		if (time > 3.0f)
 		{
+			if (type == CutType::Win_Player1 || type == CutType::Win_Player2)
+			{
+				round_count++;
+			}
+
+			//ファイル書き込み
+			WriteData();
+
+			//ランキングデータ書き込み
+			WriteRanking();
+
 			//どちらかのポイントが３ポイントになったら
 			if (player1.point >= 3 || player2.point >= 3)
 			{
@@ -117,7 +128,7 @@ eSceneType InGame::Update(const float &delta_second)
 				return eSceneType::result;
 			}
 			else
-			{
+			{				
 				//再生時間を初期化
 				time = 0;
 				//カットシーンを削除
@@ -166,8 +177,9 @@ eSceneType InGame::Update(const float &delta_second)
 		}
 	}
 
-		player1.reaction_rate[round_count] = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
-		player2.reaction_rate[round_count] = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
+	player1.reaction_rate[round_count] = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
+	player2.reaction_rate[round_count] = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
+
 	//合図生成クラスの更新
 	sign_manager->Update(delta_second);
 
@@ -176,9 +188,6 @@ eSceneType InGame::Update(const float &delta_second)
 
 	//ボタン判定クラスの更新
 	button_match->ButtonMatchUpdate(delta_second);
-
-	player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
-	player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
 
 	//合図の結果を確認する
 	switch (sign_manager->GetSignResult(is_cut))
@@ -228,10 +237,7 @@ eSceneType InGame::Update(const float &delta_second)
 			break;
 		}
 
-		//ファイル書き込み
-		WriteData();
-
-		if (sign_manager->GetSignResult() != SignResult::None)
+		if (sign_manager->GetSignResult(is_cut) != SignResult::None)
 		{
 			sign_manager->Initialize();
 			button_match->ButtonReset();
@@ -247,8 +253,6 @@ eSceneType InGame::Update(const float &delta_second)
 			return eSceneType::result;
 			is_cut = true;
 		}
-		break;
-	default:
 		break;
 	}
 
@@ -284,14 +288,17 @@ void InGame::Draw() const
 	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
-	//反応速度の描画
-	DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate);
-	DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate);
+	////反応速度の描画
+	//DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate[round_count]);
+	//DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate[round_count]);
 }
 
 // カットシーン生成処理
 void InGame::CreateCutScene(CutType type)
 {
+	//タイプを保存
+	this->type = type;
+
 	// ムービーファイルをロード
 	switch (type)
 	{
@@ -321,9 +328,6 @@ void InGame::CreateCutScene(CutType type)
 // 終了処理
 void InGame::Finalize()
 {
-	//ランキングデータ書き込み
-	WriteRanking();
-
 	// 親クラスの終了時処理を呼び出す
 	__super::Finalize();
 
@@ -388,16 +392,16 @@ void InGame::WriteRanking()
 	FILE* fp;
 
 	//ファイルを開く
-	fopen_s(&fp, FILE_NAME, "w");
+	fopen_s(&fp, RANKING_NAME, "w");
 
 	if (fp == NULL)
 	{
-		throw("Could not open file %s.", FILE_NAME);
+		throw("Could not open file %s.", RANKING_NAME);
 	}
 	else
 	{
 		//データを書き込む
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < round_count; i++)
 		{
 			fprintf_s(fp, "%f,%f\n", player1.reaction_rate[i], player2.reaction_rate[i]);
 		}
