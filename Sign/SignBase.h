@@ -23,6 +23,7 @@ protected:
 	float count_time;				//計測時間
 
 	bool is_sign;					//合図を出す？
+	bool is_start;					//計測開始
 
 public:
 	/// <summary>
@@ -31,7 +32,8 @@ public:
 	SignBase() :
 		waiting_time(0),
 		count_time(0.f),
-		is_sign(false)
+		is_sign(false),
+		is_start(false)
 	{
 
 	}
@@ -52,6 +54,7 @@ public:
 		waiting_time = GetRandRange(1, MAX_RANDOM_TIME);
 		count_time = 0.f;
 		is_sign = false;
+		is_start = false;
 	}
 
 	/// <summary>
@@ -60,16 +63,18 @@ public:
 	/// <param name="delta_second">1フレームあたりの時間</param>
 	virtual void Update(float delta_second)
 	{
-		//計測
-		count_time += delta_second;
-
-		//計測時間が合図を出すまでの時間を超えた場合
-		if (count_time > waiting_time)
+		if (is_start)
 		{
-			//合図を出す
-			is_sign = true;
-		}
+			//計測
+			count_time += delta_second;
 
+			//計測時間が合図を出すまでの時間を超えた場合
+			if (count_time > waiting_time)
+			{
+				//合図を出す
+				is_sign = true;
+			}
+		}
 	}
 
 	/// <summary>
@@ -188,5 +193,18 @@ public:
 	/// </summary>
 	/// <returns>合図を出すフラグ</returns>
 	bool GetIsSign()const { return is_sign; }
+
+	/// <summary>
+	/// 計測開始のフラグの取得
+	/// </summary>
+	/// <returns>計測開始のフラグ</returns>
+	bool GetIsStart()const { return is_start; }
+
+public:
+	/// <summary>
+	/// 計測開始のフラグを設定
+	/// </summary>
+	/// <param name="flg">設定したい値</param>
+	void SetIsStart(const bool flg) { is_start = flg; }
 
 };

@@ -14,7 +14,9 @@ ButtonMatch::ButtonMatch()
     player2ExpectedButton(-1),
     activationTime(0),
     player1ReactionTime(0.f),
-    player2ReactionTime(0.f)
+    player2ReactionTime(0.f),
+    isCorrectPlayer1(false),
+    isCorrectPlayer2(false)
 {
 }
 
@@ -35,6 +37,8 @@ void ButtonMatch::ButtonReset()
     activationTime = 0;
     player1ReactionTime = 0.f;
     player2ReactionTime = 0.f;
+    isCorrectPlayer1 = false;
+    isCorrectPlayer2 = false;
 }
 
 bool ButtonMatch::IsAllowedButton(int button) const
@@ -134,8 +138,10 @@ void ButtonMatch::ButtonMatchUpdate(const float& delta_second)
 {
     if (!activated) return;
 
-    player1ReactionTime += delta_second;
-    player2ReactionTime += delta_second;
+    //プレイヤー1の判定が成功でないなら時間を加算する
+    if (!isCorrectPlayer1)player1ReactionTime += delta_second;
+    //プレイヤー2の判定が成功でないなら時間を加算する
+    if (!isCorrectPlayer2)player2ReactionTime += delta_second;
 
     // --- プレイヤー１の判定 ---
     if (!player1Judged)

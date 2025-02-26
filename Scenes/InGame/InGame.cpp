@@ -7,13 +7,14 @@
 
 // コンストラクタ
 InGame::InGame() :
-sign_manager(nullptr),
-button_match(nullptr),
-player1(),
-player2(),
-cut_scene(),
-time(),
-type()
+	sign_manager(nullptr),
+	button_match(nullptr),
+	player1(),
+	player2(),
+	cut_scene(),
+	time(),
+	type(),
+	is_cut(nullptr)
 {
 
 }
@@ -82,7 +83,6 @@ void InGame::Initialize()
 // 更新処理
 eSceneType InGame::Update(const float &delta_second)
 {
-
 	//サウンドが再生されていない場合サウンドを再生する
 	if (!CheckSoundMem(sound.at(0)))PlaySoundMem(sound.at(0), DX_PLAYTYPE_LOOP);
 
@@ -102,6 +102,15 @@ eSceneType InGame::Update(const float &delta_second)
 				//リザルト画面へ
 				return eSceneType::result;
 			}
+			//どちらかのファールが2ポイントになったら
+			else if (player1.foul >= 2 || player2.foul >= 2)
+			{
+				//BGMを止める
+				StopSoundMem(sound.at(0));
+
+				//リザルト画面へ
+				return eSceneType::result;
+			}
 			else
 			{
 				//再生時間を初期化
@@ -110,6 +119,10 @@ eSceneType InGame::Update(const float &delta_second)
 				cut_scene = 0;
 				// 読み込んだムービーファイルのグラフィックハンドルの削除
 				DeleteGraph(cut_scene);
+
+				//初期化する
+				button_match->ButtonReset();
+				sign_manager->Initialize();
 
 				//リソースマネージャーのインスタンスを取得
 				ResourceManager* rm = ResourceManager::GetInstance();
@@ -128,6 +141,9 @@ eSceneType InGame::Update(const float &delta_second)
 				//プレイヤー2のファウル数を文字に変換
 				str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
 				player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+
+				is_cut = false;
+				sign_manager->GetSignInstance()->SetIsStart(true);
 			}
 		}
 	}
@@ -135,14 +151,6 @@ eSceneType InGame::Update(const float &delta_second)
 	{
 		//入力管理クラスのポインタ
 		InputManager* input = InputManager::GetInstance();
-
-		//合図生成クラスの更新
-		sign_manager->Update(delta_second);
-
-		if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
-
-		//ボタン判定クラスの更新
-		button_match->ButtonMatchUpdate(delta_second);
 
 		//スタートボタンが押されたら
 		if (input->GetButtonDown(0, XINPUT_BUTTON_START) == true ||
@@ -152,49 +160,92 @@ eSceneType InGame::Update(const float &delta_second)
 			return eSceneType::pause;
 		}
 
-		player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
-		player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
-
-		switch (sign_manager->GetSignResult())
-		{
-		case SignResult::Player1_Point:
-			player1.point++;
-			CreateCutScene(CutType::Win_Player1);
-			break;
-		case SignResult::Player1_Foul:
-			player1.foul++;
-			CreateCutScene(CutType::Foul_Player1);
-			break;
-		case SignResult::Player2_Point:
-			player2.point++;
-			CreateCutScene(CutType::Win_Player2);
-			break;
-		case SignResult::Player2_Foul:
-			player2.foul++;
-			CreateCutScene(CutType::Foul_Player2);
-			break;
-		case SignResult::Draw:
-			CreateCutScene(CutType::TieGame);
-		default:
-			break;
-		}
-
+		//合図の結果がなしではない場合
 		if (sign_manager->GetSignResult() != SignResult::None)
 		{
-			sign_manager->Initialize();
-			button_match->ButtonReset();
-		}
+			//リソースマネージャーのインスタンスを取得
+			ResourceManager* rm = ResourceManager::GetInstance();
+			//数字に変換するための文字を格納する変数
+			std::string str;
+			//プレイヤー1のポイント数を文字に変換
+			str = std::to_string(player1.point > 2 ? 2 : player1.point);
+			player1.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
+			//プレイヤー2のポイント数を文字に変換
+			str = std::to_string(player2.point > 2 ? 2 : player2.point);
+			player2.point_image = rm->GetImages("Resources/images/UI/Point/Point_" + str + ".png").at(0);
 
-		//どちらかのファールが2ポイントになったら
-		if (player1.foul >= 2 || player2.foul >= 2)
-		{
-			//BGMを止める
-			StopSoundMem(sound.at(0));
-
-			//リザルト画面へ
-			return eSceneType::result;
+			//プレイヤー1のファウル数を文字に変換
+			str = std::to_string(player1.foul > 1 ? 1 : player1.foul);
+			player1.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
+			//プレイヤー2のファウル数を文字に変換
+			str = std::to_string(player2.foul > 1 ? 1 : player2.foul);;
+			player2.foul_image = rm->GetImages("Resources/images/UI/Foul/Foul_" + str + ".png").at(0);
 		}
 	}
+
+	//合図生成クラスの更新
+	sign_manager->Update(delta_second);
+
+	//合図がでた場合
+	if (sign_manager->GetSignInstance()->GetIsSign())button_match->Activate(sign_manager->GetSignInstance());
+
+	//ボタン判定クラスの更新
+	button_match->ButtonMatchUpdate(delta_second);
+
+	player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
+	player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
+
+	//合図の結果を確認する
+	switch (sign_manager->GetSignResult())
+	{
+		//プレイヤー1にポイントの場合
+	case SignResult::Player1_Point:
+		if (!is_cut)
+		{
+			player1.point++;
+			CreateCutScene(CutType::Win_Player1);
+			is_cut = true;
+			break;
+		}
+		//プレイヤー1にファウルの場合
+	case SignResult::Player1_Foul:
+		if (!is_cut)
+		{
+			player1.foul++;
+			CreateCutScene(CutType::Foul_Player1);
+			is_cut = true;
+			break;
+		}
+		//プレイヤー2にポイントの場合
+	case SignResult::Player2_Point:
+		if (!is_cut)
+		{
+			player2.point++;
+			CreateCutScene(CutType::Win_Player2);
+			is_cut = true;
+			break;
+		}
+		//プレイヤー2にファウルの場合
+	case SignResult::Player2_Foul:
+		if (!is_cut)
+		{
+			player2.foul++;
+			CreateCutScene(CutType::Foul_Player2);
+			is_cut = true;
+			break;
+		}
+		//引き分けの場合
+	case SignResult::Draw:
+		if (!is_cut)
+		{
+			CreateCutScene(CutType::TieGame);
+			is_cut = true;
+			break;
+		}
+	default:
+		break;
+	}
+
 	// 親クラスの更新処理を呼び出す
 	return __super::Update(delta_second);
 }
@@ -204,6 +255,9 @@ void InGame::Draw() const
 {
 	//背景描画
 	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
+
+	//合図の描画
+	sign_manager->Draw();
 
 	if (cut_scene != 0)
 	{
@@ -227,9 +281,6 @@ void InGame::Draw() const
 	//反応速度の描画
 	DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate);
 	DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate);
-
-	//合図の描画
-	sign_manager->Draw();
 }
 
 // カットシーン生成処理

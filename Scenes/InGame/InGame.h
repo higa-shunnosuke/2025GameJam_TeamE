@@ -26,6 +26,8 @@ private:
 	CutType type;				//カットシーンタイプ
 	float time;					//カットシーン再生時間
 
+	bool is_cut;				//カットシーン中？
+
 public:
 	// コンストラクタ
 	InGame();
