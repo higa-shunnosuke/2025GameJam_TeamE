@@ -104,8 +104,8 @@ eSceneType InGame::Update(const float &delta_second)
 		return eSceneType::pause;
 	}
 
-	player1.reaction_rate = button_match->GetPlayer1ReactionTime();
-	player2.reaction_rate = button_match->GetPlayer1ReactionTime();
+	player1.reaction_rate = floor(button_match->GetPlayer1ReactionTime() * 10) / 10;
+	player2.reaction_rate = floor(button_match->GetPlayer2ReactionTime() * 10) / 10;
 
 	switch (sign_manager->GetSignResult())
 	{
@@ -168,10 +168,6 @@ void InGame::Draw() const
 	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
-
-	DrawFormatString(0, 0, 0xffffff, "P1:%f", player1.reaction_rate);
-	DrawFormatString(0, 20, 0xffffff, "P2:%f", player2.reaction_rate);
-
 	//合図の描画
 	sign_manager->Draw();
 }
@@ -204,13 +200,13 @@ void InGame::WriteData()
 
 	if (fp == NULL)
 	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
+		throw("Could not open file %s.", FILE_NAME);
 	}
 	else
 	{
-		//ファイルがなければ生成する
-		fprintf_s(fp, "%d,%d,%d,%d\n", old_player1.point, old_player1.foul, player1.point, player1.foul);
-		fprintf_s(fp, "%d,%d,%d,%d\n", old_player2.point, old_player2.foul, player2.point, player2.foul);
+		//データを書き込む
+		fprintf_s(fp, "%d,%d,%d,%d,%f\n", old_player1.point, old_player1.foul, player1.point, player1.foul, player1.reaction_rate);
+		fprintf_s(fp, "%d,%d,%d,%d,%f\n", old_player2.point, old_player2.foul, player2.point, player2.foul, player2.reaction_rate);
 
 		//ファイルを閉じる
 		fclose(fp);
@@ -227,13 +223,13 @@ void InGame::ReadData()
 
 	if (fp == NULL)
 	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
+		throw("Could not open file %s.", FILE_NAME);
 	}
 	else
 	{
-		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d,%d,%d", &old_player1.point, &old_player1.foul, &old_player1.point, &old_player1.foul);
-		fscanf_s(fp, "%d,%d,%d,%d", &old_player2.point, &old_player2.foul, &old_player2.point, &old_player2.foul);
+		//データを読み込む
+		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player1.point, &old_player1.foul, &old_player1.point, &old_player1.foul, &player1.reaction_rate);
+		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player2.point, &old_player2.foul, &old_player2.point, &old_player2.foul, &player2.reaction_rate);
 
 		//ファイルを閉じる
 		fclose(fp);

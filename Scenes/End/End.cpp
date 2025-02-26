@@ -31,6 +31,7 @@ eSceneType End::Update(const float &delta_second)
 	//3秒経過したら
 	if (time > 3.0f)
 	{
+		time = 3.0f;
 		//ゲームを終了させる
 		Application* app = Application::GetInstance();
 		app->QuitGame(true);
@@ -49,6 +50,7 @@ void End::Draw() const
 
 	DrawFormatString(10, 10, 0xffffff, "End");
 	DrawFormatString(100, 240, 0xffffff, "Thank you for playing");
+	DrawFormatString(620, 450, 0xffffff, "%.0f",3.0f - time);
 
 }
 
