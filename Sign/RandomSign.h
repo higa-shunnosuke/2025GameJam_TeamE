@@ -10,6 +10,12 @@ class RandomSign :public SignBase
 private:
 	std::vector<std::vector<int>> button;			//ボタン
 
+	float alpha_blend_1;							//プレイヤー1のボタンを透過する値
+	float alpha_blend_2;							//プレイヤー2のボタンを透過する値
+
+	bool is_alpha_blend_1;							//プレイヤー1のボタンを透過させる？
+	bool is_alpha_blend_2;							//プレイヤー2のボタンを透過させる？
+
 public:
 	/// <summary>
 	/// コンストラクタ

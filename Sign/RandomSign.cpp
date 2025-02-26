@@ -18,7 +18,11 @@ enum RandomSignImage
 	Quick
 };
 
-RandomSign::RandomSign()
+RandomSign::RandomSign() :
+	alpha_blend_1(255.f),
+	alpha_blend_2(255.f),
+	is_alpha_blend_1(false),
+	is_alpha_blend_2(false)
 {
 
 }
@@ -67,6 +71,12 @@ void RandomSign::Initialize()
 		button[0] = sign_button;
 		button[1] = sign_button;
 	}
+
+	alpha_blend_1 = 255.f;
+	alpha_blend_2 = 255.f;
+
+	is_alpha_blend_1 = false;
+	is_alpha_blend_2 = false;
 }
 
 void RandomSign::Update(float delta_second)
@@ -81,17 +91,75 @@ void RandomSign::Update(float delta_second)
 		ButtonMatch* match = ButtonMatch::GetInstance();
 
 		//プレイヤー1の判定結果が正解の場合
-		if (match->GetPlayer1Result() == CORRECT)
+		if (!is_alpha_blend_1 && match->GetPlayer1Result() == CORRECT)
 		{
-			//最初の要素を削除する
-			button[0].erase(button[0].begin());
+			//ボタンの数が1より大きい場合
+			if (button[0].size() > 1)
+			{
+				//透過させる
+				is_alpha_blend_1 = true;
+			}
+			//ボタンの数が1より小さい場合
+			else
+			{
+				//最初の要素を削除する
+				button[0].erase(button[0].begin());
+			}
+		}
+		
+		//プレイヤー2の判定結果が正解の場合
+		if (!is_alpha_blend_2 && match->GetPlayer2Result() == CORRECT)
+		{
+			//ボタンの数が1より大きい場合
+			if (button[1].size() > 1)
+			{
+				//透過させる
+				is_alpha_blend_2 = true;
+			}
+			//ボタンの数が1より小さい場合
+			else
+			{
+				//最初の要素を削除する
+				button[1].erase(button[1].begin());
+			}
 		}
 
-		//プレイヤー2の判定結果が正解の場合
-		if (match->GetPlayer2Result() == CORRECT)
+		//プレイヤー1のボタンを透過させる場合
+		if (is_alpha_blend_1)
 		{
-			//最初の要素を削除する
-			button[1].erase(button[1].begin());
+			//1フレーム当たりにかかった時間に800をかけた値で減算する
+			//800は要調整
+			alpha_blend_1 -= 800.f * delta_second;
+
+			//透過されて見えなくなった場合
+			if (alpha_blend_1 < 0.f)
+			{
+				//初期化する
+				alpha_blend_1 = 255.f;
+				is_alpha_blend_1 = false;
+
+				//最初の要素を削除する
+				button[0].erase(button[0].begin());
+			}
+		}
+		
+		//プレイヤー2のボタンを透過させる場合
+		if (is_alpha_blend_2)
+		{
+			//1フレーム当たりにかかった時間に800をかけた値で減算する
+			//800は要調整
+			alpha_blend_2 -= 800.f * delta_second;
+
+			//透過されて見えなくなった場合
+			if (alpha_blend_2 < 0.f)
+			{
+				//初期化する
+				alpha_blend_1 = 255.f;
+				is_alpha_blend_2 = false;
+
+				//最初の要素を削除する
+				button[1].erase(button[1].begin());
+			}
 		}
 	}
 }
@@ -113,7 +181,6 @@ void RandomSign::Draw() const
 		//説明
 		DrawGraph(210, 90, sign_image[RandomSignImage::Quick], TRUE);
 
-
 		//プレイヤー1のボタンの合図を描画
 		for (int i = 0; i < button[0].size(); i++)
 		{		
@@ -125,23 +192,39 @@ void RandomSign::Draw() const
 			switch (button[0][i])
 			{
 			case XINPUT_BUTTON_A:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1	);
 				//Aボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_B:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
 				//Bボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_X:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
 				//Xボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_Y:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
 				//Yボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			default:
@@ -159,23 +242,39 @@ void RandomSign::Draw() const
 			switch (button[1][i])
 			{
 			case XINPUT_BUTTON_A:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
 				//Aボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_B:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
 				//Bボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_X:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
 				//Xボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			case XINPUT_BUTTON_Y:
+				//ここから透過する
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
 				//Yボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
+				//ここから透過しない
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 				break;
 
 			default:
