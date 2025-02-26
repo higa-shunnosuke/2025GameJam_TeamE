@@ -154,7 +154,7 @@ void RandomSign::Update(float delta_second)
 			if (alpha_blend_2 < 0.f)
 			{
 				//初期化する
-				alpha_blend_1 = 255.f;
+				alpha_blend_2 = 255.f;
 				is_alpha_blend_2 = false;
 
 				//最初の要素を削除する
@@ -193,7 +193,7 @@ void RandomSign::Draw() const
 			{
 			case XINPUT_BUTTON_A:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1	);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_1	);
 				//Aボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
 				//ここから透過しない
@@ -202,7 +202,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_B:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_1);
 				//Bボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
 				//ここから透過しない
@@ -211,7 +211,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_X:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_1);
 				//Xボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
 				//ここから透過しない
@@ -220,7 +220,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_Y:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_1);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_1);
 				//Yボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
 				//ここから透過しない
@@ -243,7 +243,7 @@ void RandomSign::Draw() const
 			{
 			case XINPUT_BUTTON_A:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_2);
 				//Aボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::A], TRUE);
 				//ここから透過しない
@@ -252,7 +252,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_B:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_2);
 				//Bボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::B], TRUE);
 				//ここから透過しない
@@ -261,7 +261,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_X:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_2);
 				//Xボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::X], TRUE);
 				//ここから透過しない
@@ -270,7 +270,7 @@ void RandomSign::Draw() const
 
 			case XINPUT_BUTTON_Y:
 				//ここから透過する
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha_blend_2);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha_blend_2);
 				//Yボタンの合図を描画
 				DrawGraph(sign_image_x, sign_image_y - (i * 128), sign_image[RandomSignImage::Y], TRUE);
 				//ここから透過しない

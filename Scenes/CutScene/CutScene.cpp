@@ -2,6 +2,7 @@
 #include "DxLib.h"
 
 #define FILE_NAME "Resources/datas/InGame_Data.csv"
+#define RANKING "Resources/datas/Reaction_Data.csv"
 
 // コンストラクタ
 CutScene::CutScene() :
@@ -11,7 +12,8 @@ CutScene::CutScene() :
 	cut_scene(),
 	time(),
 	old_player1(),
-	old_player2()
+	old_player2(),
+	reaction_rate()
 {
 
 }
@@ -52,6 +54,11 @@ void CutScene::Initialize()
 		break;
 	case eSceneType::in_game:
 		//表示するカットシーンを設定する
+		/*if (player1.reaction_rate == player2.reaction_rate)
+		{
+			cut_scene = LoadGraph("Resources/CatScene/DRAW.mp4");
+		}
+		else */
 		if (old_player1.point < player1.point)
 		{
 			cut_scene = LoadGraph("Resources/CatScene/1P_WIN.mp4");
@@ -104,7 +111,18 @@ void CutScene::Initialize()
 		ui_image.push_back(rm->GetImages("Resources/images/UI/Foul/Foul.png").at(0));
 	}
 
+	//再生時間の初期化
 	time = 0;
+
+	//反応速度が速い方を更新
+	if (player1.reaction_rate < player2.reaction_rate)
+	{
+		reaction_rate[6] = player1.reaction_rate;
+	}
+	else
+	{
+		reaction_rate[6] = player2.reaction_rate;
+	}
 }
 
 // 更新処理
@@ -154,6 +172,9 @@ void CutScene::Draw() const
 	DrawGraph(275, 40, ui_image.at(1), TRUE);
 	DrawRotaGraph(237, 50, 1, 0, player1.foul_image, TRUE, TRUE);
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
+
+	DrawFormatString(0, 0, 0xffffff, "P1:%f", player1.reaction_rate);
+	DrawFormatString(0, 20, 0xffffff, "P2:%f", player2.reaction_rate);
 }
 
 // 終了処理
@@ -188,13 +209,64 @@ void CutScene::ReadData()
 
 	if (fp == NULL)
 	{
-		throw("%sファイルを開けませんでした。", FILE_NAME);
+		throw("Could not open file %s.", FILE_NAME);
 	}
 	else
 	{
-		//ファイルがなければ生成する
-		fscanf_s(fp, "%d,%d,%d,%d", &old_player1.point, &old_player1.foul, &player1.point, &player1.foul);
-		fscanf_s(fp, "%d,%d,%d,%d", &old_player2.point, &old_player2.foul, &player2.point, &player2.foul);
+		//データを読み込む
+		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player1.point, &old_player1.foul, &player1.point, &player1.foul, &player1.reaction_rate);
+		fscanf_s(fp, "%d,%d,%d,%d,%f", &old_player2.point, &old_player2.foul, &player2.point, &player2.foul, &player2.reaction_rate);
+
+		//ファイルを閉じる
+		fclose(fp);
+
+	}
+}
+
+// ランキングデータ読み込み処理
+void CutScene::ReadRankingData()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, RANKING, "r");
+
+	if (fp == NULL)
+	{
+		throw("Could not open file %s.。", RANKING);
+	}
+	else
+	{
+		//データを読み込む
+		for (int i = 0; i < 6; i++)
+		{
+			fscanf_s(fp, "%f\n",&reaction_rate[i]);
+		}
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
+}
+
+// ランキングデータ書き込み処理
+void CutScene::WriteRankingData()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, RANKING, "w");
+
+	if (fp == NULL)
+	{
+		throw("Could not open file %s.", RANKING);
+	}
+	else
+	{
+		//データを書き込む
+		for (int i = 0; i < 6; i++)
+		{
+			fprintf_s(fp, "%f",reaction_rate[i]);
+		}
 
 		//ファイルを閉じる
 		fclose(fp);

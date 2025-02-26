@@ -11,7 +11,7 @@ private:
 	int cut_scene;				//カットシーン
 	float time;					//再生時間
 	std::vector<int> ui_image;	//UI画像
-
+	float reaction_rate[7];		//反応速度更新用変数
 
 public:
 	// コンストラクタ
@@ -59,4 +59,13 @@ private:
 	/// </summary>
 	void ReadData();
 
+	/// <summary>
+	/// ランキングデータ読み込み処理
+	/// </summary>
+	void ReadRankingData();
+
+	/// <summary>
+	/// ランキングデータ書き込み処理
+	/// </summary>
+	void WriteRankingData();
 };
