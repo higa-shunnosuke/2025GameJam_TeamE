@@ -42,5 +42,7 @@ public:
 			return dynamic_cast<SceneBase*>(new End());
 			break;
 		}
+
+		return nullptr;
 	}
 };
