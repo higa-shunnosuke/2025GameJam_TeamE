@@ -154,7 +154,7 @@ void RandomSign::Update(float delta_second)
 			if (alpha_blend_2 < 0.f)
 			{
 				//初期化する
-				alpha_blend_1 = 255.f;
+				alpha_blend_2 = 255.f;
 				is_alpha_blend_2 = false;
 
 				//最初の要素を削除する
