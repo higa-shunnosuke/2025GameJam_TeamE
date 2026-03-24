@@ -228,10 +228,10 @@ JudgeResult ButtonMatch::GetPlayer2Result() const
 
 float ButtonMatch::GetPlayer1ReactionTime() const
 {
-    return player1ReactionTime;
+    return floor(player1ReactionTime *10) / 10;
 }
 
 float ButtonMatch::GetPlayer2ReactionTime() const
 {
-    return player2ReactionTime;
+    return floor(player2ReactionTime * 10) / 10;
 }

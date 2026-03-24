@@ -5,6 +5,7 @@
 #include "DxLib.h"
 #include "../Utilitys/InputManager.h"
 #include "../Utilitys/ResourceManager.h"
+#include "../Utilitys/ProjectConfig.h"
 
 //データ
 struct Data {

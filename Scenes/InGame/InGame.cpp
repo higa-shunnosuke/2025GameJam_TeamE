@@ -230,17 +230,16 @@ eSceneType InGame::Update(const float &delta_second)
 		break;
 		//引き分けの場合
 	case SignResult::Draw:
+		//ポイント加算
+		player1.point++;
+		player2.point++;
+
 		if (!is_cut)
 		{
 			CreateCutScene(CutType::TieGame);
+			is_cut = true;
 		default:
 			break;
-		}
-
-		if (sign_manager->GetSignResult(is_cut) != SignResult::None)
-		{
-			sign_manager->Initialize();
-			button_match->ButtonReset();
 		}
 
 		//どちらかのファールが2ポイントになったら
@@ -289,8 +288,8 @@ void InGame::Draw() const
 	DrawRotaGraph(413, 50, 1, 0, player2.foul_image, TRUE);
 
 	////反応速度の描画
-	//DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate[round_count]);
-	//DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate[round_count]);
+	/*DrawFormatString(0, 0, 0xffffff, "1P:%f", player1.reaction_rate[round_count]);
+	DrawFormatString(0, 30, 0xffffff, "2P:%f", player2.reaction_rate[round_count]);*/
 }
 
 // カットシーン生成処理

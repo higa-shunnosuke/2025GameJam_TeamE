@@ -38,14 +38,6 @@ void Result::Initialize()
 
 	//データ読み込み
 	ReadData();
-
-	player1[0] = 1.0f;
-	player1[1] = 1.5f;
-	player1[2] = 1.0f;
-	player2[0] = 1.5f;
-	player2[1] = 1.0f;
-	player2[2] = 1.0f;
-
 }
 
 // 更新処理
@@ -83,31 +75,32 @@ void Result::Draw() const
 
 	DrawFormatString(10, 10, 0xffffff, "Result");
 
-	DrawFormatString(128, 70, 0xffffff, "1P  |             | 2P");
+
+	DrawFormatString(158, 70, 0xffffff, "    | 1P      2P  | ");
 
 	for (int i = 0; i < 5; i++)
 	{
 		if (player1[i] != NULL && player2[i] != NULL)
 		{
 			//プレイヤー１
-			DrawFormatString(0, 100 + (30 * i), 0xffffff, "Round%d:%.1f", i + 1, player1[i]);
+			DrawFormatString(30, 100 + (30 * i), 0xffffff, "Round%d:%.1f", i + 1, player1[i]);
 
 			//勝敗
 			if (player1[i] < player2[i])
 			{
-				DrawFormatString(200, 100 + (30 * i), 0xffffff, "| Win  : Loss |");
+				DrawFormatString(230, 100 + (30 * i), 0xffffff, "| Win  : Loss |");
 			}
 			else if (player1[i] > player2[i])
 			{
-				DrawFormatString(200, 100 + (30 * i), 0xffffff, "| Loss :  Win |");
+				DrawFormatString(230, 100 + (30 * i), 0xffffff, "| Loss :  Win |");
 			}
 			else
 			{
-				DrawFormatString(200, 100 + (30 * i), 0xffffff, "|    Draw     |");
+				DrawFormatString(230, 100 + (30 * i), 0xffffff, "|    Draw     |");
 			}
 
 			//プレイヤー２
-			DrawFormatString(500, 100 + (30 * i), 0xffffff, "%.1f", player2[i]);
+			DrawFormatString(530, 100 + (30 * i), 0xffffff, "%.1f", player2[i]);
 		}
 	}
 }

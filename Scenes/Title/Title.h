@@ -51,4 +51,9 @@ private:
 	/// ファイルデータを初期化する
 	/// </summary>
 	void DetaInitialize();
+
+	/// <summary>
+	/// リザルトデータを初期化する
+	/// </summary>
+	void ResultInitialize();
 };

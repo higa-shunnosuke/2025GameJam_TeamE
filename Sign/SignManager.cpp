@@ -445,7 +445,7 @@ SignResult SignManager::GetSignResult(const bool& cut_flg)
 		}
 
 		//両者正解判定の場合
-		if (match->GetIsCorrectPlayer1() && match->GetIsCorrectPlayer2())
+		if (cut_flg)
 		{
 			//何もしない
 			ret = SignResult::None;

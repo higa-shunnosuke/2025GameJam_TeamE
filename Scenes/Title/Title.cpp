@@ -3,7 +3,8 @@
 #define COLOR_ON 0xff0000	//赤
 #define COLOR_OFF 0xffffff	//白
 
-#define FILE_NAME "Resources/datas/InGame_Data.csv"
+#define INGAME_FILE_NAME "Resources/datas/InGame_Data.csv"
+#define RESULT_FILE_NAME "Resources/datas/Reaction_Data.csv"
 
 // コンストラクタ
 Title::Title():
@@ -164,7 +165,7 @@ eSceneType Title::Update(const float &delta_second)
 void Title::Draw() const
 {
 	//背景描画
-	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
+	DrawRotaGraph(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2, 3.0, 0.0, bg_image, TRUE);
 
 	//タイトル名
 	DrawGraph(100, 100, image.at(0), TRUE);
@@ -201,11 +202,34 @@ void Title::DetaInitialize()
 	FILE* fp;
 
 	//ファイルを開く
-	fopen_s(&fp, FILE_NAME, "w");
+	fopen_s(&fp, INGAME_FILE_NAME, "w");
 
 	if (fp == NULL)
 	{
-		throw("Could not open file %s.", FILE_NAME);
+		throw("Could not open file %s.", INGAME_FILE_NAME);
+	}
+	else
+	{
+		//ファイルがなければ生成する
+		fprintf_s(fp, "%d,%d\n", 0, 0);
+		fprintf_s(fp, "%d,%d\n", 0, 0);
+
+		//ファイルを閉じる
+		fclose(fp);
+	}
+}
+
+// リザルトデータを初期化する
+void Title::ResultInitialize()
+{
+	FILE* fp;
+
+	//ファイルを開く
+	fopen_s(&fp, RESULT_FILE_NAME, "w");
+
+	if (fp == NULL)
+	{
+		throw("Could not open file %s.", RESULT_FILE_NAME);
 	}
 	else
 	{
