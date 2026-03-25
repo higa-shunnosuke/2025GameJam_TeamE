@@ -165,7 +165,7 @@ eSceneType Title::Update(const float &delta_second)
 void Title::Draw() const
 {
 	//背景描画
-	DrawRotaGraph(D_WIN_MAX_X / 2, D_WIN_MAX_Y / 2, 3.0, 0.0, bg_image, TRUE);
+	DrawRotaGraph(320, 240, 1.0, 0.0, bg_image, TRUE);
 
 	//タイトル名
 	DrawGraph(100, 100, image.at(0), TRUE);
